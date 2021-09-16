@@ -1,2 +1,2 @@
-# Mortgage Calculator
- Mobile app designed and written using android studio
+# My Scratch! App
+ Mobile app designed and written using Android Studio, for CECS 491A - Senior Project Project I
