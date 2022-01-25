@@ -44,44 +44,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        userEmail = findViewById(R.id.editTextTextEmailAddress);
-        userPass = findViewById(R.id.editTextTextPassword);
-        fAuth = FirebaseAuth.getInstance();
-        login = (TextView) findViewById(R.id.button5);
-        login.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                String email = userEmail.getText().toString();
-                String password = userPass.getText().toString();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-                if(TextUtils.isEmpty(email)){
-                    userEmail.setError("Email is Required.");
-                    return;
-                }
-                if(TextUtils.isEmpty(password)){
-                    userEmail.setError("Password is Required.");
-                    return;
-                }
-                if(password.length() < 6){
-                    userPass.setError("Password must be more than 6 characters");
-                    return;
-                }
-                fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(MainActivity.this, "Logged in Sucessfully.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        }
-                        else{Toast.makeText(MainActivity.this, "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-            }
-        });
     }
 
 

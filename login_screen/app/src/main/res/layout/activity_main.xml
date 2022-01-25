@@ -13,89 +13,28 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.scratchappfeature.AppBarOverlay">
 
-        <!--<androidx.appcompat.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/colorPrimary"
             android:visibility="visible"
-            app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />-->
+            app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <EditText
-        android:id="@+id/editTextTextPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button5"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="58dp"
-        android:layout_marginBottom="35dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:textColorHint="@color/white"
-        android:autofillHints="" />
 
-    <EditText
-        android:id="@+id/editTextTextEmailAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/editTextTextPassword"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="59dp"
-        android:layout_marginBottom="23dp"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:textColorHint="@color/white" />
 
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView3"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="138dp"
         android:layout_marginBottom="65dp"
-        android:text="LOGIN" />
+        android:text="LOGOUT" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/editTextTextEmailAddress"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="129dp"
-        android:layout_marginBottom="26dp"
-        android:fontFamily="cursive"
-        android:text="@string/app_name"
-        android:textColor="@color/white"
-        android:textSize="34sp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="202dp"
-        android:layout_height="49dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="197dp"
-        android:layout_marginBottom="137dp"
-        android:text="Forgot password?"
-        android:textColor="#FBF6F6"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="160dp"
-        android:text="Register"
-        android:textColor="#FFFCFF"
-        android:textSize="20sp" />
 
 
 </RelativeLayout>
