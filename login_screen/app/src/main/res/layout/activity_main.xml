@@ -24,17 +24,16 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="138dp"
-        android:layout_marginBottom="65dp"
-        android:text="LOGOUT" />
-
-
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="145dp"
+        android:layout_marginBottom="247dp"
+        android:text="LOGOUT"
+        android:onClick="logout"/>
 
 
 </RelativeLayout>

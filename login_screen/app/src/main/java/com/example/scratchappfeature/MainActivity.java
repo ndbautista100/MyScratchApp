@@ -56,4 +56,14 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    public void logout(View v){
+        // logout function
+        // obtain the firebase instance and call sign out
+        FirebaseAuth.getInstance().signOut();
+
+        // start the login activity again since we are logged out
+        startActivity(new Intent(getApplicationContext(),Login.class));
+        finish();
+    }
 }
