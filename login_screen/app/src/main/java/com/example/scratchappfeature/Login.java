@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -88,9 +89,23 @@ public class Login extends AppCompatActivity {
                             public void onSuccess(Void unused) {
                                 Toast.makeText(Login.this, "Reset link has been sent to your email", Toast.LENGTH_SHORT).show();
                             }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(Login.this, "Error! Reset link could not be sent." + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         });
                     }
                 });
+
+                passwordReset.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // nothing so dialog closes
+                    }
+                });
+
+                passwordReset.create().show();
             }
         });
 
