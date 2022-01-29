@@ -7,9 +7,12 @@
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.590625" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.590625" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/drawable/ic_launcher_background.xml" value="0.590625" />
-        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/layout/activity_create_recipe.xml" value="0.5744791666666667" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/layout/activity_add_tool.xml" value="0.34479166666666666" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/layout/activity_create_recipe.xml" value="0.5" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/layout/activity_main.xml" value="0.490036231884058" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/layout/activity_recipe_page.xml" value="0.5" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/layout/activity_scratch_notes.xml" value="0.483695652173913" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/layout/create_recipe_tools.xml" value="0.34479166666666666" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/layout/tool_bar.xml" value="0.483695652173913" />
         <entry key="..\:/scratchappfeature/app/src/main/res/drawable/ic_search.xml" value="0.525" />
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/activity_main.xml" value="0.4846014492753623" />

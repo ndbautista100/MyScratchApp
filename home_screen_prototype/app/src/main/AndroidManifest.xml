@@ -10,11 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.scratchappfeature">
         <activity
+            android:name=".RecipePageActivity"
+            android:exported="true"
+            android:parentActivityName=".ScratchNotesActivity"/>
+        <activity
+            android:name=".AddToolActivity"
+            android:exported="true"
+            android:parentActivityName=".CreateRecipeActivity" />
+        <activity
             android:name=".CreateRecipeActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".ScratchNotesActivity" />
         <activity
             android:name=".ScratchNotesActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

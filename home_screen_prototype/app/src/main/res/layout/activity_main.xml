@@ -32,5 +32,4 @@
         android:layout_centerHorizontal="true"
         android:text="Scratch Notes"/>
 
-
 </RelativeLayout>
