@@ -12,7 +12,9 @@
         <activity
             android:name=".RecipePageActivity"
             android:exported="true"
-            android:parentActivityName=".ScratchNotesActivity"/>
+            android:label="Recipe Name"
+            android:parentActivityName=".ScratchNotesActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
             android:name=".AddToolActivity"
             android:exported="true"
@@ -20,11 +22,14 @@
         <activity
             android:name=".CreateRecipeActivity"
             android:exported="true"
+            android:label="Create Recipe"
             android:parentActivityName=".ScratchNotesActivity" />
         <activity
             android:name=".ScratchNotesActivity"
             android:exported="true"
-            android:parentActivityName=".MainActivity" />
+            android:label="Scratch Notes"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
