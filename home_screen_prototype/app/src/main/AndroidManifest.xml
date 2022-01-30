@@ -23,7 +23,8 @@
             android:name=".CreateRecipeActivity"
             android:exported="true"
             android:label="Create Recipe"
-            android:parentActivityName=".ScratchNotesActivity" />
+            android:parentActivityName=".ScratchNotesActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"/>
         <activity
             android:name=".ScratchNotesActivity"
             android:exported="true"

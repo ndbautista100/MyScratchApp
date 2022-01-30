@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -24,7 +25,7 @@ import org.w3c.dom.Text;
 
 import classes.AddToolDialogFragment;
 
-public class CreateRecipeActivity extends FragmentActivity implements AddToolDialogFragment.AddToolDialogListener {
+public class CreateRecipeActivity extends AppCompatActivity implements AddToolDialogFragment.AddToolDialogListener {
     ImageButton addToolButton;
     Button doneButton;
     TextView toolsList;
@@ -33,6 +34,10 @@ public class CreateRecipeActivity extends FragmentActivity implements AddToolDia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_recipe);
+        Toolbar toolbarCreateRecipe = (Toolbar) findViewById(R.id.toolbarCreateRecipe);
+        setSupportActionBar(toolbarCreateRecipe);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         toolsList = (TextView) findViewById(R.id.toolsList);
 

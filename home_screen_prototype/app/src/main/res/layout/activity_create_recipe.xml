@@ -9,21 +9,21 @@
     android:background="@drawable/notebook_background"
     android:orientation="vertical">
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:id="@+id/appBarLayoutCreateRecipe"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:theme="@style/Theme.scratchappfeature.AppBarOverlay">-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutCreateRecipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.scratchappfeature.AppBarOverlay">
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/toolbarCreateRecipe"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:background="?attr/colorPrimary"-->
-<!--            android:visibility="visible"-->
-<!--            app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarCreateRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            android:visibility="visible"
+            app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />
 
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
+    </com.google.android.material.appbar.AppBarLayout>
 
     <EditText
         android:id="@+id/recipeName"
