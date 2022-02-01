@@ -87,3 +87,5 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+home_screen_prototype/local.properties
+home_screen_prototype/local.properties
