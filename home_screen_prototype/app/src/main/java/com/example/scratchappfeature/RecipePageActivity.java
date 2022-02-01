@@ -31,7 +31,7 @@ import classes.Recipe;
 public class RecipePageActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Recipe recipe;
-    ImageView recipeImages;
+    ImageView recipeImagesImageView;
     Button showImagesButton;
     int SELECT_PICTURE = 200;
 
@@ -56,8 +56,8 @@ public class RecipePageActivity extends AppCompatActivity {
         // database snippet
 
 
-        showImagesButton = (Button) findViewById(R.id.showImages);
-        recipeImages = (ImageView) findViewById(R.id.recipeImages);
+        showImagesButton = (Button) findViewById(R.id.showImagesButton);
+        recipeImagesImageView = (ImageView) findViewById(R.id.recipeImagesImageView);
 
         showImagesButton.setOnClickListener(new View.OnClickListener() {
             @Override

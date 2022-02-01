@@ -26,7 +26,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <ImageView
-        android:id="@+id/recipeImages"
+        android:id="@+id/recipeImagesImageView"
         android:layout_width="wrap_content"
         android:layout_height="300dp"
         android:layout_below="@id/appBarLayoutRecipePage"
@@ -36,25 +36,25 @@
         android:background="@color/black"/>
 
     <Button
-        android:id="@+id/showImages"
+        android:id="@+id/showImagesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/recipeImages"
+        android:layout_below="@id/recipeImagesImageView"
         android:text="Add Image"/>
 
     <LinearLayout
-        android:id="@+id/ingredientsAndInstructions"
+        android:id="@+id/ingredientsAndInstructionsLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/showImages"
+        android:layout_below="@id/showImagesButton"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp">
 
         <TextView
-            android:id="@+id/IngredientsHeader"
+            android:id="@+id/ingredientsPageHeaderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ingredients"
@@ -65,7 +65,7 @@
             android:layout_marginBottom="5dp" />
 
         <TextView
-            android:id="@+id/InstructionsHeader"
+            android:id="@+id/InstructionsPageHeaderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Instructions"

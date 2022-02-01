@@ -39,10 +39,10 @@ import classes.Recipe;
 
 public class CreateRecipeActivity extends AppCompatActivity implements AddToolDialogFragment.AddToolDialogListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ImageButton addToolButton;
+    ImageButton addToolImageButton;
     Button doneButton;
-    TextView toolsList;
-    EditText recipeName;
+    TextView toolsTextView;
+    EditText recipeNameEditText;
     Recipe recipe;
 
     @Override
@@ -54,10 +54,10 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        toolsList = (TextView) findViewById(R.id.toolsList);
+        toolsTextView = (TextView) findViewById(R.id.toolsTextView);
 
-        addToolButton = (ImageButton) findViewById(R.id.addToolButton);
-        addToolButton.setOnClickListener(new View.OnClickListener() {
+        addToolImageButton = (ImageButton) findViewById(R.id.addToolImageButton);
+        addToolImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAddToolDialog();
@@ -66,15 +66,15 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
 
 
         doneButton = (Button) findViewById(R.id.doneButton);
-        recipeName = (EditText) findViewById(R.id.recipeNameEnter);
+        recipeNameEditText = (EditText) findViewById(R.id.recipeNameEditText);
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recipe = new Recipe(recipeName.getText().toString());
+                recipe = new Recipe(recipeNameEditText.getText().toString());
 
-                if(TextUtils.isEmpty(recipeName.getText().toString())) {
-                    recipeName.setError("Please enter your recipe's name.");
+                if(TextUtils.isEmpty(recipeNameEditText.getText().toString())) {
+                    recipeNameEditText.setError("Please enter your recipe's name.");
                     return;
                 }
 
@@ -91,7 +91,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         // add the tool to the tools list
-        // toolsList.setText("tool sample");
+        // toolsTextView.setText("tool sample");
     }
 
     @Override

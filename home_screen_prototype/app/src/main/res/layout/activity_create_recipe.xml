@@ -26,7 +26,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <EditText
-        android:id="@+id/recipeNameEnter"
+        android:id="@+id/recipeNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -38,17 +38,17 @@
         android:hint="Recipe name"/>
 
     <LinearLayout
-        android:id="@+id/toolsLine"
+        android:id="@+id/toolsLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/recipeNameEnter"
+        android:layout_below="@id/recipeNameEditText"
         android:layout_marginStart="25dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp">
 
         <ImageButton
-            android:id="@+id/addToolButton"
+            android:id="@+id/addToolImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="2dp"
@@ -63,7 +63,7 @@
             android:src="@drawable/ic_baseline_add_circle_24" />
 
         <TextView
-            android:id="@+id/toolsHeader"
+            android:id="@+id/toolsHeaderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -76,28 +76,28 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/toolsList"
+        android:id="@+id/toolsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tools List"
-        android:layout_below="@+id/toolsLine"
+        android:layout_below="@+id/toolsLinearLayout"
         android:layout_marginStart="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"/>
 
     <LinearLayout
-        android:id="@+id/ingredientsLine"
+        android:id="@+id/ingredientsLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/toolsList"
+        android:layout_below="@id/toolsTextView"
         android:layout_marginStart="25dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp">
 
         <ImageButton
-            android:id="@+id/addIngredientButton"
+            android:id="@+id/addIngredientImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="2dp"
@@ -112,7 +112,7 @@
             android:src="@drawable/ic_baseline_add_circle_24" />
 
         <TextView
-            android:id="@+id/ingredientsHeader"
+            android:id="@+id/ingredientsHeaderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -125,7 +125,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/ingredientsList"
+        android:id="@+id/ingredientsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ingredients List"
