@@ -15,13 +15,13 @@ import com.example.scratchappfeature.CreateRecipeActivity;
 import com.example.scratchappfeature.R;
 
 public class AddToolDialogFragment extends AppCompatDialogFragment {
-
     public interface AddToolDialogListener {
         public void onDialogPositiveClick(androidx.fragment.app.DialogFragment dialog);
         public void onDialogNegativeClick(androidx.fragment.app.DialogFragment dialog);
     }
 
     AddToolDialogListener listener;
+    String toolName;
 
     @Override
     public void onAttach(@NonNull Context context) {

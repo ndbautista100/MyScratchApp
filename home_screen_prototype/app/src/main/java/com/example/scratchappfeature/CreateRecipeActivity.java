@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
     ImageButton addToolButton;
     Button doneButton;
     TextView toolsList;
+    EditText recipeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +51,14 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
             }
         });
 
+
         doneButton = (Button) findViewById(R.id.doneButton);
+        recipeName = (EditText) findViewById(R.id.recipeNameEnter);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openRecipePageActivity();
+                String recipeNameString = recipeName.getText().toString();
+                openRecipePageActivity(recipeNameString);
             }
         });
     }
@@ -66,8 +71,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         // add the tool to the tools list
-        toolsList.setText("tool sample");
-
+        // toolsList.setText("tool sample");
     }
 
     @Override
@@ -75,8 +79,9 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
         // do nothing - they selected the "Cancel" option
     }
 
-    public void openRecipePageActivity() {
-        Intent intent = new Intent(this, RecipePageActivity.class);
+    public void openRecipePageActivity(String recipeName) {
+        Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
+        intent.putExtra("recipe_name", recipeName);
         startActivity(intent);
     }
 }
