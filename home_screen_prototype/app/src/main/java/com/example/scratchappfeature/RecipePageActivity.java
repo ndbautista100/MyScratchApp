@@ -7,11 +7,33 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import classes.Recipe;
+
 public class RecipePageActivity extends AppCompatActivity {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Recipe recipe;
+    ImageView recipeImages;
+    Button showImagesButton;
+    int SELECT_PICTURE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +44,34 @@ public class RecipePageActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
+        // getting recipe
         Intent intent = getIntent();
-        String recipeName = intent.getStringExtra("recipe_name");
-        ab.setTitle(recipeName);
+        recipe = (Recipe) intent.getSerializableExtra("recipe");
 
+        ab.setTitle(recipe.getName()); // set toolbar title
+
+        Map<String, Object> recipeMap = new HashMap<>();
+        recipeMap.put("name", recipe.getName());
+
+        // database snippet
+
+
+        showImagesButton = (Button) findViewById(R.id.showImages);
+        recipeImages = (ImageView) findViewById(R.id.recipeImages);
+
+        showImagesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imageChooser();
+            }
+        });
+
+    }
+
+    void imageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
     }
 
     @Override

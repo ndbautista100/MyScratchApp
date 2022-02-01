@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -22,15 +24,26 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import org.w3c.dom.Text;
 
 import classes.AddToolDialogFragment;
+import classes.Recipe;
 
 public class CreateRecipeActivity extends AppCompatActivity implements AddToolDialogFragment.AddToolDialogListener {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     ImageButton addToolButton;
     Button doneButton;
     TextView toolsList;
     EditText recipeName;
+    Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +67,18 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
 
         doneButton = (Button) findViewById(R.id.doneButton);
         recipeName = (EditText) findViewById(R.id.recipeNameEnter);
+
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String recipeNameString = recipeName.getText().toString();
-                openRecipePageActivity(recipeNameString);
+                recipe = new Recipe(recipeName.getText().toString());
+
+                if(TextUtils.isEmpty(recipeName.getText().toString())) {
+                    recipeName.setError("Please enter your recipe's name.");
+                    return;
+                }
+
+                openRecipePageActivity(recipe);
             }
         });
     }
@@ -79,9 +99,13 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
         // do nothing - they selected the "Cancel" option
     }
 
-    public void openRecipePageActivity(String recipeName) {
+    public void openRecipePageActivity(Recipe recipe) {
+        // add recipe to database
+//        db.collection("recipe")
+//                .
+
         Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
-        intent.putExtra("recipe_name", recipeName);
+        intent.putExtra("recipe", recipe);
         startActivity(intent);
     }
 }

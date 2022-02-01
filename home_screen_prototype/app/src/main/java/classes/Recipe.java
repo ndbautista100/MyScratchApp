@@ -1,8 +1,9 @@
 package classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Recipe {
+public class Recipe implements Serializable {
     private String name;
     private String description;
     private ArrayList<String> ingredients;
@@ -13,6 +14,10 @@ public class Recipe {
         this.description = description;
         this.ingredients = ingredients;
         this.tools = tools;
+    }
+
+    public Recipe(String name) {
+        this.name = name;
     }
 
     public String getName() {
