@@ -37,6 +37,10 @@ import org.w3c.dom.Text;
 import classes.AddToolDialogFragment;
 import classes.Recipe;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Map;
+
 public class CreateRecipeActivity extends AppCompatActivity implements AddToolDialogFragment.AddToolDialogListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ImageButton addToolImageButton;
@@ -100,9 +104,26 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
     }
 
     public void openRecipePageActivity(Recipe recipe) {
+        // parse Recipe object to Map
+        ObjectMapper oMapper = new ObjectMapper();
+        Map<String, Object> recipeMap = oMapper.convertValue(recipe, Map.class);
+
+
         // add recipe to database
-//        db.collection("recipe")
-//                .
+        db.collection("recipes")
+            .add(recipeMap)
+            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Log.d("Success", "DocumentSnapshot added with ID: " + documentReference.getId());
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w("Failure", "Error adding document", e);
+                }
+            });
 
         Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
         intent.putExtra("recipe", recipe);

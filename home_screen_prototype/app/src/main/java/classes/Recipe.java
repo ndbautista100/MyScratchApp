@@ -3,13 +3,13 @@ package classes;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Recipe implements Serializable {
+public class Recipe implements Serializable { // Serializable allows classes to be transferred between Activities
     private String name;
     private String description;
-    private ArrayList<String> ingredients;
-    private ArrayList<String> tools;
+    private String ingredients;
+    private String tools;
 
-    public Recipe(String name, String description, ArrayList<String> ingredients, ArrayList<String> tools) {
+    public Recipe(String name, String description, String ingredients, String tools) {
         this.name = name;
         this.description = description;
         this.ingredients = ingredients;
@@ -36,19 +36,19 @@ public class Recipe implements Serializable {
         this.description = description;
     }
 
-    public ArrayList<String> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<String> ingredients) {
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 
-    public ArrayList<String> getTools() {
+    public String getTools() {
         return tools;
     }
 
-    public void setTools(ArrayList<String> tools) {
+    public void setTools(String tools) {
         this.tools = tools;
     }
 }
