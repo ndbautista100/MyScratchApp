@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/db test.iml" filepath="$PROJECT_DIR$/.idea/db test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scratchappfeature.iml" filepath="$PROJECT_DIR$/.idea/modules/scratchappfeature.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/scratchappfeature.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/scratchappfeature.app.iml" />
     </modules>
   </component>
 </project>
