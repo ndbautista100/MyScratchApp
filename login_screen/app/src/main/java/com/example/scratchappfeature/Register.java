@@ -25,7 +25,6 @@ public class Register extends AppCompatActivity {
     EditText mFullName, mEmail, mPassword, mConfirmPassword;
     Button mRegisterButton;
     TextView mAlreadyMember;
-    //TextView mLoginButton;
     FirebaseAuth fAuth;
 
     @Override
@@ -48,6 +47,7 @@ public class Register extends AppCompatActivity {
             finish();
         }
 
+        //If AlreadyMember is clicked, send user back to Login
         mAlreadyMember.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
