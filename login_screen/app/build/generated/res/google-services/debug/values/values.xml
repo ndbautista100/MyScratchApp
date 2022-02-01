@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">60654452968-4omtv7gc0jtjjfsa7l6gosd9e5d60fj4.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://scratchapp-a5e20-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">60654452968</string>
+    <string name="google_api_key" translatable="false">AIzaSyCO4015dI8IVa2O1CpQmPppGojMUpGDuSo</string>
+    <string name="google_app_id" translatable="false">1:60654452968:android:50307b2d9d734a42db495d</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCO4015dI8IVa2O1CpQmPppGojMUpGDuSo</string>
+    <string name="google_storage_bucket" translatable="false">scratchapp-a5e20.appspot.com</string>
+    <string name="project_id" translatable="false">scratchapp-a5e20</string>
+</resources>

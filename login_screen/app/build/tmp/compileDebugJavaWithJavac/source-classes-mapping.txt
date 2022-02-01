@@ -1,0 +1,13 @@
+com/example/scratchappfeature/MainActivity.java
+ com.example.scratchappfeature.MainActivity
+com/example/scratchappfeature/BuildConfig.java
+ com.example.scratchappfeature.BuildConfig
+com/example/scratchappfeature/Login.java
+ com.example.scratchappfeature.Login
+ com.example.scratchappfeature.Login$1
+ com.example.scratchappfeature.Login$1$1
+ com.example.scratchappfeature.Login$2
+ com.example.scratchappfeature.Login$2$1
+ com.example.scratchappfeature.Login$2$1$1
+ com.example.scratchappfeature.Login$2$1$2
+ com.example.scratchappfeature.Login$2$2
