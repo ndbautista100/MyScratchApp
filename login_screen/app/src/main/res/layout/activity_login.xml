@@ -57,15 +57,26 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/create_acc"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="148dp"
-        android:layout_marginBottom="231dp"
+        android:layout_marginEnd="158dp"
+        android:layout_marginBottom="29dp"
         android:background="#673AB7"
         android:text="Login"
         android:textColor="#FAF9F9"
         android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/create_acc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="147dp"
+        android:layout_marginBottom="123dp"
+        android:background="@color/login_text_back"
+        android:text="New here?"
+        android:textColor="@color/white" />
 
 
 </RelativeLayout>

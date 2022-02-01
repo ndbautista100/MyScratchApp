@@ -40,6 +40,7 @@ public class Register extends AppCompatActivity {
         mAlreadyMember      = findViewById(R.id.textViewAlreadyMember);
 
         fAuth = FirebaseAuth.getInstance();
+       
 
         //If User is already logged in, send them back to main activity
         if(fAuth.getCurrentUser() != null){
