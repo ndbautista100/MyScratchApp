@@ -44,11 +44,10 @@ public class RecipePageActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        // getting recipe
+        // getting recipe sent from CreateRecipeActivity
         Intent intent = getIntent();
         recipe = (Recipe) intent.getSerializableExtra("recipe");
-
-        ab.setTitle(recipe.getName()); // set toolbar title
+        ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
 
         Map<String, Object> recipeMap = new HashMap<>();
         recipeMap.put("name", recipe.getName());

@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import com.example.scratchappfeature.CreateRecipeActivity;
 import com.example.scratchappfeature.R;
 
+/**
+ * DialogFragment that pops up when a user wants to add a tool to a recipe
+ */
 public class AddToolDialogFragment extends AppCompatDialogFragment {
     public interface AddToolDialogListener {
         public void onDialogPositiveClick(androidx.fragment.app.DialogFragment dialog);

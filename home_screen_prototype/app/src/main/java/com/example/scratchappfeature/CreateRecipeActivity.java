@@ -68,10 +68,9 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
             }
         });
 
-
-        doneButton = (Button) findViewById(R.id.doneButton);
         recipeNameEditText = (EditText) findViewById(R.id.recipeNameEditText);
 
+        doneButton = (Button) findViewById(R.id.doneButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,7 +93,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        // add the tool to the tools list
+        // TODO: add the tool to the tools list
         // toolsTextView.setText("tool sample");
     }
 

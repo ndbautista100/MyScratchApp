@@ -32,7 +32,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
 
-        // ??????????????????????
+        // use the database to display the user's recipes
         mGetContent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
