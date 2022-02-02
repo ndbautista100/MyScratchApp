@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Login extends AppCompatActivity {
     EditText userEmail, userPass;
     Button logBtn;
-    TextView createBtn;
+    TextView createAcc;
     FirebaseAuth fAuth;
     TextView forgot;
 
@@ -38,6 +38,7 @@ public class Login extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         forgot = findViewById(R.id.textView2);
         logBtn = (Button) findViewById(R.id.button2);
+        createAcc = (TextView) findViewById(R.id.create_acc);
         logBtn.setOnClickListener(new View.OnClickListener(){
             @Override
                     public void onClick(View v){
@@ -60,7 +61,7 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(Login.this, "Logged in Sucessfully.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Logged in Successfully.", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }
                         else{Toast.makeText(Login.this, "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -109,5 +110,12 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        createAcc.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Register.class));
+            }
+        });
     }
 }
