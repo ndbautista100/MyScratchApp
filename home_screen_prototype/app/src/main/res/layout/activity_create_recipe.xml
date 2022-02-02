@@ -129,7 +129,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ingredients List"
-        android:layout_below="@+id/ingredientsLine"
+        android:layout_below="@+id/ingredientsLinearLayout"
         android:layout_marginStart="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="5dp"

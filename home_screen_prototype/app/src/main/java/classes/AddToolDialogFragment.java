@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-import com.example.scratchappfeature.CreateRecipeActivity;
 import com.example.scratchappfeature.R;
 
 /**
@@ -19,8 +18,8 @@ import com.example.scratchappfeature.R;
  */
 public class AddToolDialogFragment extends AppCompatDialogFragment {
     public interface AddToolDialogListener {
-        public void onDialogPositiveClick(androidx.fragment.app.DialogFragment dialog);
-        public void onDialogNegativeClick(androidx.fragment.app.DialogFragment dialog);
+        public void onToolDialogPositiveClick(androidx.fragment.app.DialogFragment dialog);
+        public void onToolDialogNegativeClick(androidx.fragment.app.DialogFragment dialog);
     }
 
     AddToolDialogListener listener;
@@ -46,14 +45,14 @@ public class AddToolDialogFragment extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // add the tool
-                        listener.onDialogPositiveClick(AddToolDialogFragment.this);
+                        listener.onToolDialogPositiveClick(AddToolDialogFragment.this);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // cancel adding tool
-                        listener.onDialogNegativeClick(AddToolDialogFragment.this);
+                        listener.onToolDialogNegativeClick(AddToolDialogFragment.this);
                     }
                 });
 

@@ -16,10 +16,6 @@
             android:parentActivityName=".ScratchNotesActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
-            android:name=".AddToolActivity"
-            android:exported="true"
-            android:parentActivityName=".CreateRecipeActivity" />
-        <activity
             android:name=".CreateRecipeActivity"
             android:exported="true"
             android:label="Create Recipe"

@@ -34,6 +34,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.w3c.dom.Text;
 
+import classes.AddIngredientDialogFragment;
 import classes.AddToolDialogFragment;
 import classes.Recipe;
 
@@ -41,12 +42,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 
-public class CreateRecipeActivity extends AppCompatActivity implements AddToolDialogFragment.AddToolDialogListener {
+public class CreateRecipeActivity extends AppCompatActivity implements AddToolDialogFragment.AddToolDialogListener, AddIngredientDialogFragment.AddIngredientDialogListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ImageButton addToolImageButton;
-    Button doneButton;
+    ImageButton addIngredientImageButton;
     TextView toolsTextView;
+    TextView ingredientsTextView;
     EditText recipeNameEditText;
+    Button doneButton;
     Recipe recipe;
 
     @Override
@@ -59,12 +62,21 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
         ab.setDisplayHomeAsUpEnabled(true);
 
         toolsTextView = (TextView) findViewById(R.id.toolsTextView);
+        ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextView);
 
         addToolImageButton = (ImageButton) findViewById(R.id.addToolImageButton);
         addToolImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAddToolDialog();
+            }
+        });
+
+        addIngredientImageButton = (ImageButton) findViewById(R.id.addIngredientImageButton);
+        addIngredientImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddIngredientDialog();
             }
         });
 
@@ -91,15 +103,31 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
         dialog.show(getSupportFragmentManager(), "AddToolDialogFragment");
     }
 
+    public void showAddIngredientDialog() {
+        DialogFragment dialog = new AddIngredientDialogFragment();
+        dialog.show(getSupportFragmentManager(), "AddIngredientDialogFragment");
+    }
+
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onToolDialogPositiveClick(DialogFragment dialog) {
         // TODO: add the tool to the tools list
         // toolsTextView.setText("tool sample");
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        // do nothing - they selected the "Cancel" option
+    public void onToolDialogNegativeClick(DialogFragment dialog) {
+        // do nothing - user selected the "Cancel" option
+    }
+
+    @Override
+    public void onIngredientDialogPositiveClick(DialogFragment dialog) {
+        // TODO: add the ingredient to the ingredients list
+        // ingredientsTextView.setText("ingredient sample");
+    }
+
+    @Override
+    public void onIngredientDialogNegativeClick(DialogFragment dialog) {
+        // do nothing - user selected the "Cancel" option
     }
 
     public void openRecipePageActivity(Recipe recipe) {
