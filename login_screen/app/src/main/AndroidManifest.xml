@@ -28,6 +28,13 @@
             android:theme="@style/Theme.scratchappfeature.NoActionBar">
 
         </activity>
+        <activity
+            android:name=".Register"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar">
+
+        </activity>
 
 
     </application>
