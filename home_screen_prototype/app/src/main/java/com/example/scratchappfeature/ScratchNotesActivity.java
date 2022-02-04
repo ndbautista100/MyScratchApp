@@ -14,13 +14,25 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class ScratchNotesActivity extends AppCompatActivity {
-    ActivityResultLauncher<Intent> mGetContent; // ???????????????????????
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private TextView recipesTextView;
+    private String recipesList = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,20 +43,35 @@ public class ScratchNotesActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-
         // use the database to display the user's recipes
-        mGetContent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if(result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getData();
+        db.collection("recipes")
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()) {
+                        for(QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("Success", document.getId() + " => " + document.getData());
+                            // recipesList += document.getData().get("name") + "\n\n";
                         }
+                    } else {
+                        Log.d("Failure", "Error getting documents: ", task.getException());
                     }
-        });
-        ///////////////////////////////////
+                }
+            });
+
+        // recipesTextView.setText(recipesList);
+
     }
 
+    public void openCreateRecipeActivity() {
+        Intent intent = new Intent(this, CreateRecipeActivity.class);
+        startActivity(intent);
+    }
+
+    /*
+            Opens the tool bar for the Scratch Notes page
+         */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -52,6 +79,11 @@ public class ScratchNotesActivity extends AppCompatActivity {
         return true;
     }
 
+    /*
+        Recipe Page action bar options:
+        - Search for a Recipe
+        - Create a Recipe
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -63,10 +95,5 @@ public class ScratchNotesActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public void openCreateRecipeActivity() {
-        Intent intent = new Intent(this, CreateRecipeActivity.class);
-        startActivity(intent);
     }
 }

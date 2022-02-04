@@ -43,14 +43,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 
 public class CreateRecipeActivity extends AppCompatActivity implements AddToolDialogFragment.AddToolDialogListener, AddIngredientDialogFragment.AddIngredientDialogListener {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    ImageButton addToolImageButton;
-    ImageButton addIngredientImageButton;
-    TextView toolsTextView;
-    TextView ingredientsTextView;
-    EditText recipeNameEditText;
-    Button doneButton;
-    Recipe recipe;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ImageButton addToolImageButton;
+    private ImageButton addIngredientImageButton;
+    private TextView toolsTextView;
+    private TextView ingredientsTextView;
+    private EditText recipeNameEditText;
+    private EditText toolNameEditText;
+    private Button doneButton;
+    private Recipe recipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
         setSupportActionBar(toolbarCreateRecipe);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+
+        recipeNameEditText = (EditText) findViewById(R.id.recipeNameEditText);
 
         toolsTextView = (TextView) findViewById(R.id.toolsTextView);
         ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextView);
@@ -80,54 +83,42 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
             }
         });
 
-        recipeNameEditText = (EditText) findViewById(R.id.recipeNameEditText);
-
         doneButton = (Button) findViewById(R.id.doneButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recipe = new Recipe(recipeNameEditText.getText().toString());
-
                 if(TextUtils.isEmpty(recipeNameEditText.getText().toString())) {
                     recipeNameEditText.setError("Please enter your recipe's name.");
                     return;
                 }
+                recipe = new Recipe(recipeNameEditText.getText().toString());
+                recipe.setTools(toolsTextView.getText().toString());
+                recipe.setIngredients(ingredientsTextView.getText().toString());
 
+                // open recipe page and add recipe to database
                 openRecipePageActivity(recipe);
             }
         });
     }
 
     public void showAddToolDialog() {
-        DialogFragment dialog = new AddToolDialogFragment();
+        AddToolDialogFragment dialog = new AddToolDialogFragment();
         dialog.show(getSupportFragmentManager(), "AddToolDialogFragment");
     }
 
+    @Override
+    public void applyToolName(String toolName) {
+        toolsTextView.setText(toolName);
+    }
+
     public void showAddIngredientDialog() {
-        DialogFragment dialog = new AddIngredientDialogFragment();
+        AddIngredientDialogFragment dialog = new AddIngredientDialogFragment();
         dialog.show(getSupportFragmentManager(), "AddIngredientDialogFragment");
     }
 
     @Override
-    public void onToolDialogPositiveClick(DialogFragment dialog) {
-        // TODO: add the tool to the tools list
-        // toolsTextView.setText("tool sample");
-    }
-
-    @Override
-    public void onToolDialogNegativeClick(DialogFragment dialog) {
-        // do nothing - user selected the "Cancel" option
-    }
-
-    @Override
-    public void onIngredientDialogPositiveClick(DialogFragment dialog) {
-        // TODO: add the ingredient to the ingredients list
-        // ingredientsTextView.setText("ingredient sample");
-    }
-
-    @Override
-    public void onIngredientDialogNegativeClick(DialogFragment dialog) {
-        // do nothing - user selected the "Cancel" option
+    public void applyIngredientName(String ingredientName) {
+        ingredientsTextView.setText(ingredientName);
     }
 
     public void openRecipePageActivity(Recipe recipe) {

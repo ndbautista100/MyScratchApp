@@ -29,11 +29,13 @@ import java.util.Map;
 import classes.Recipe;
 
 public class RecipePageActivity extends AppCompatActivity {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    Recipe recipe;
-    ImageView recipeImagesImageView;
-    Button showImagesButton;
-    int SELECT_PICTURE = 200;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Recipe recipe;
+    private ImageView recipeImagesImageView;
+    private Button showImagesButton;
+    private TextView toolsTextView;
+    private TextView ingredientsTextView;
+    private int SELECT_PICTURE = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +51,14 @@ public class RecipePageActivity extends AppCompatActivity {
         recipe = (Recipe) intent.getSerializableExtra("recipe");
         ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
 
+        toolsTextView = (TextView) findViewById(R.id.toolsTextViewRecipePage);
+        toolsTextView.setText(recipe.getTools());
+        ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextViewRecipePage);
+        ingredientsTextView.setText(recipe.getIngredients());
+
+        // database snippet - everythinig below here doesn't work yet
         Map<String, Object> recipeMap = new HashMap<>();
         recipeMap.put("name", recipe.getName());
-
-        // database snippet
-
 
         showImagesButton = (Button) findViewById(R.id.showImagesButton);
         recipeImagesImageView = (ImageView) findViewById(R.id.recipeImagesImageView);
@@ -73,6 +78,9 @@ public class RecipePageActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
     }
 
+    /*
+        Opens the tool bar for the Recipe Page
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -80,6 +88,11 @@ public class RecipePageActivity extends AppCompatActivity {
         return true;
     }
 
+    /*
+        Recipe Page action bar options:
+        - Share Recipe
+        - Edit Recipe
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
