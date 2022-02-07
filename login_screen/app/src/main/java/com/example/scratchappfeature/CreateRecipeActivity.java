@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -91,9 +92,11 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
                     recipeNameEditText.setError("Please enter your recipe's name.");
                     return;
                 }
+                String user = FirebaseAuth.getInstance().getCurrentUser().toString();
                 recipe = new Recipe(recipeNameEditText.getText().toString());
                 recipe.setTools(toolsTextView.getText().toString());
                 recipe.setIngredients(ingredientsTextView.getText().toString());
+                recipe.setUser_ID(user);
 
                 // open recipe page and add recipe to database
                 openRecipePageActivity(recipe);
