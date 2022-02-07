@@ -92,7 +92,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
                     recipeNameEditText.setError("Please enter your recipe's name.");
                     return;
                 }
-                String user = FirebaseAuth.getInstance().getCurrentUser().toString();
+                String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 recipe = new Recipe(recipeNameEditText.getText().toString());
                 recipe.setTools(toolsTextView.getText().toString());
                 recipe.setIngredients(ingredientsTextView.getText().toString());
