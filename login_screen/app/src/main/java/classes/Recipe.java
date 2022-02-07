@@ -1,5 +1,7 @@
 package classes;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,6 +10,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String description;
     private String ingredients;
     private String tools;
+    private String user_ID;
 
     public Recipe(String name, String description, String ingredients, String tools) {
         this.name = name;
@@ -15,6 +18,15 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.ingredients = ingredients;
         this.tools = tools;
     }
+
+    public Recipe(String name, String description, String ingredients, String tools, String userID) {
+        this.name = name;
+        this.description = description;
+        this.ingredients = ingredients;
+        this.tools = tools;
+        this.user_ID = userID;
+    }
+
 
     public Recipe(String name) {
         this.name = name;
@@ -51,4 +63,8 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     public void setTools(String tools) {
         this.tools = tools;
     }
+
+    public String getUser_ID(){ return user_ID;}
+
+    public void setUser_ID(String user){this.user_ID = user;}
 }
