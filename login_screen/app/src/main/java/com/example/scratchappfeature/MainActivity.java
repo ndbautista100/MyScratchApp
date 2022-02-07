@@ -12,7 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,5 +54,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ScratchNotesActivity.class);
         startActivity(intent);
     }
+
+    public void logout(View view){
+    FirebaseAuth.getInstance().signOut();
+    startActivity(new Intent(getApplicationContext(), Login.class));
+    finish();
+    }
+
+
 
 }
