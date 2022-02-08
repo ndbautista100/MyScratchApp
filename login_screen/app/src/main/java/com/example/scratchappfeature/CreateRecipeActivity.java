@@ -111,7 +111,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
 
     @Override
     public void applyToolName(String toolName) {
-        toolsTextView.setText(toolName);
+        toolsTextView.append(" "+ toolName);
     }
 
     public void showAddIngredientDialog() {
@@ -121,7 +121,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
 
     @Override
     public void applyIngredientName(String ingredientName) {
-        ingredientsTextView.append(ingredientName);
+        ingredientsTextView.append(" "+ingredientName);
     }
 
     public void openRecipePageActivity(Recipe recipe) {
