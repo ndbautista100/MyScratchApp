@@ -72,6 +72,14 @@ public class RecipePageActivity extends AppCompatActivity {
 
     }
 
+    public void openEditRecipeActivity() {
+        // use database?
+
+        Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
+        intent.putExtra("recipe", recipe);
+        startActivity(intent);
+    }
+
     void imageChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -99,6 +107,7 @@ public class RecipePageActivity extends AppCompatActivity {
             case R.id.action_share_recipe:
                 return true;
             case R.id.action_edit_recipe:
+                openEditRecipeActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -30,6 +30,8 @@
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/menu.xml" value="0.432518115942029" />
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/tool_bar.xml" value="0.30052083333333335" />
         <entry key="..\:/scratchappfeature/app/src/main/res/menu/menu_main.xml" value="0.30104166666666665" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/activity_recipe_page.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/activity_scratch_notes.xml" value="0.1" />
       </map>
     </option>
