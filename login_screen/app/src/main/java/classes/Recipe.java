@@ -67,4 +67,15 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     public String getUser_ID(){ return user_ID;}
 
     public void setUser_ID(String user){this.user_ID = user;}
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", ingredients='" + ingredients + '\'' +
+                ", tools='" + tools + '\'' +
+                ", user_ID='" + user_ID + '\'' +
+                '}';
+    }
 }
