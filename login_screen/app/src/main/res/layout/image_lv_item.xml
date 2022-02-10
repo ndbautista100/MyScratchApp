@@ -5,13 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:layout_marginTop="1dp"
+    android:layout_marginTop="40dp"
     android:padding="2dp"
+    android:background="@android:color/transparent"
     app:cardElevation="3dp">
+
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
 
         <!--Image view for displaying our image-->
 
@@ -23,11 +27,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="40dp"
+            android:background="@android:color/transparent"
             android:padding="3dp"
             android:text="Category Text"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:background="@android:color/transparent"/>
+
+            android:textColor="@color/black" />
 
     </RelativeLayout>
 
