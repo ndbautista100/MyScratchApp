@@ -58,27 +58,10 @@ public class ScratchNotesActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-
-
-        // use the database to display the user's recipes
-        /*db.collection("recipes")
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()) {
-                        for(QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("Success", document.getId() + " => " + document.getData());
-                            // recipesList += document.getData().get("name") + "\n\n";
-                        }
-                    } else {
-                        Log.d("Failure", "Error getting documents: ", task.getException());
-                    }
-                }
-            });*/
-
-        // recipesTextView.setText(recipesList);
+        // create a listview to store the recipe name textviews
         ListView coursesLV = findViewById(R.id.idLVCourses);
+
+        // create a
         ArrayList<DataModal> user_recipes = new ArrayList<DataModal>();
         db.collection("recipes")
                 .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
