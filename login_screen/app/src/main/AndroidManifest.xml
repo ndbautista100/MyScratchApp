@@ -11,7 +11,10 @@
         android:theme="@style/Theme.scratchappfeature">
         <activity
             android:name=".EditRecipeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Edit Recipe"
+            android:parentActivityName=".RecipePageActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
             android:name=".RecipePageActivity"
             android:exported="true"

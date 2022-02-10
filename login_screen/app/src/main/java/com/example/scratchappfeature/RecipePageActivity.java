@@ -48,7 +48,7 @@ public class RecipePageActivity extends AppCompatActivity {
 
         // getting recipe sent from CreateRecipeActivity
         Intent intent = getIntent();
-        recipe = (Recipe) intent.getSerializableExtra("recipe");
+        recipe = (Recipe) intent.getSerializableExtra("create_recipe");
         ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
 
         toolsTextView = (TextView) findViewById(R.id.toolsTextViewRecipePage);
@@ -56,7 +56,7 @@ public class RecipePageActivity extends AppCompatActivity {
         ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextViewRecipePage);
         ingredientsTextView.setText(recipe.getIngredients());
 
-        // database snippet - everythinig below here doesn't work yet
+        // database snippet - everything below here doesn't work yet
         Map<String, Object> recipeMap = new HashMap<>();
         recipeMap.put("name", recipe.getName());
 
@@ -76,7 +76,7 @@ public class RecipePageActivity extends AppCompatActivity {
         // use database?
 
         Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
-        intent.putExtra("recipe", recipe);
+        intent.putExtra("edit_recipe", recipe);
         startActivity(intent);
     }
 
