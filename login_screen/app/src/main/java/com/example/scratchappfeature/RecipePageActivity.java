@@ -31,6 +31,7 @@ import classes.Recipe;
 public class RecipePageActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Recipe recipe;
+    private String recipe_ID;
     private ImageView recipeImagesImageView;
     private Button showImagesButton;
     private TextView toolsTextView;
@@ -47,7 +48,16 @@ public class RecipePageActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         // getting recipe sent from CreateRecipeActivity
+        // create different scenarios for opening from CreateRecipe and EditRecipe
         Intent intent = getIntent();
+
+        if(intent.hasExtra("create_recipe")) {
+            recipe = (Recipe) intent.getSerializableExtra("create_recipe");
+
+        } else if (intent.hasExtra("edit_recipe_done")) {
+
+        }
+
         recipe = (Recipe) intent.getSerializableExtra("create_recipe");
         ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
 
@@ -76,7 +86,7 @@ public class RecipePageActivity extends AppCompatActivity {
         // use database?
 
         Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
-        intent.putExtra("edit_recipe", recipe);
+        intent.putExtra("edit_recipe", recipe.getDocument_ID());
         startActivity(intent);
     }
 
