@@ -28,6 +28,10 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.user_ID = userID;
     }
 
+    public Recipe() {
+
+    }
+
 
     public Recipe(String name) {
         this.name = name;

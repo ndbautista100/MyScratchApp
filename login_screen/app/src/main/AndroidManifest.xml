@@ -13,7 +13,6 @@
             android:name=".EditRecipeActivity"
             android:exported="false"
             android:label="Edit Recipe"
-            android:parentActivityName=".RecipePageActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
             android:name=".RecipePageActivity"
