@@ -50,7 +50,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
     private TextView toolsTextView;
     private TextView ingredientsTextView;
     private EditText recipeNameEditText;
-    private EditText toolNameEditText;
+    private EditText recipeDescriptionEditText;
     private Button doneButton;
     private Recipe recipe;
 
@@ -64,6 +64,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
         ab.setDisplayHomeAsUpEnabled(true);
 
         recipeNameEditText = (EditText) findViewById(R.id.recipeNameEditText);
+        recipeDescriptionEditText = (EditText) findViewById(R.id.recipeDescriptionEditText);
 
         toolsTextView = (TextView) findViewById(R.id.toolsTextView);
         ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextView);
@@ -94,6 +95,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
                 }
                 String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 recipe = new Recipe(recipeNameEditText.getText().toString());
+                recipe.setDescription(recipeDescriptionEditText.getText().toString());
                 recipe.setTools(toolsTextView.getText().toString());
                 recipe.setIngredients(ingredientsTextView.getText().toString());
                 recipe.setUser_ID(user);
@@ -136,7 +138,15 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
+                    // update the newly added document to set its document ID - on the Java object and Firebase document reference
+                    recipe.setDocument_ID(documentReference.getId());
+                    documentReference.update("document_ID", documentReference.getId());
+
                     Log.d("Success", "DocumentSnapshot added with ID: " + documentReference.getId());
+
+                    Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
+                    intent.putExtra("create_recipe", recipe);
+                    startActivity(intent);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -146,8 +156,6 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
                 }
             });
 
-        Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
-        intent.putExtra("recipe", recipe);
-        startActivity(intent);
+
     }
 }

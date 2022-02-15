@@ -11,6 +11,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String ingredients;
     private String tools;
     private String user_ID;
+    private String document_ID;
 
     public Recipe(String name, String description, String ingredients, String tools) {
         this.name = name;
@@ -25,6 +26,10 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.ingredients = ingredients;
         this.tools = tools;
         this.user_ID = userID;
+    }
+
+    public Recipe() {
+
     }
 
 
@@ -64,7 +69,31 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.tools = tools;
     }
 
-    public String getUser_ID(){ return user_ID;}
+    public String getUser_ID() {
+        return user_ID;
+    }
 
-    public void setUser_ID(String user){this.user_ID = user;}
+    public void setUser_ID(String user) {
+        this.user_ID = user;
+    }
+
+    public String getDocument_ID()
+    {
+        return document_ID;
+    }
+
+    public void setDocument_ID(String id) {
+        this.document_ID = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", ingredients='" + ingredients + '\'' +
+                ", tools='" + tools + '\'' +
+                ", user_ID='" + user_ID + '\'' +
+                '}';
+    }
 }
