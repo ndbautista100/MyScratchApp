@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+<<<<<<< Updated upstream
     public void logout(View v){
         // logout function
         // obtain the firebase instance and call sign out
@@ -65,5 +66,39 @@ public class MainActivity extends AppCompatActivity {
         // start the login activity again since we are logged out
         startActivity(new Intent(getApplicationContext(),Login.class));
         finish();
+=======
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_create:
+                openScratchNotesActivity();
+                return true;
+            case R.id.action_search:
+                return true;
+            case R.id.action_profile:
+                openProfilePageActivity();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void openScratchNotesActivity() {
+        Intent intent = new Intent(this, ScratchNotesActivity.class);
+        startActivity(intent);
+    }
+
+    public void openProfilePageActivity(){
+        Intent intent = new Intent(this, profile_pagae.class);
+        startActivity(intent);
+    }
+
+    public void logout(View view){
+    FirebaseAuth.getInstance().signOut();
+    startActivity(new Intent(getApplicationContext(), Login.class));
+    finish();
+>>>>>>> Stashed changes
     }
 }
