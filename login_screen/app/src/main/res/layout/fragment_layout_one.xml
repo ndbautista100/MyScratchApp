@@ -18,7 +18,6 @@
         android:paddingVertical="104dp"
         android:background="@drawable/text_view_background_gray"
         android:gravity="center"
-
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/text_view_background_gray"
+            android:background="@drawable/blk_outline"
             android:padding="24dp"
             android:text="Tools"
             android:textSize="25sp"
