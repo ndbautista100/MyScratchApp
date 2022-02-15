@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.scratchappfeature">
         <activity
+            android:name=".EditRecipeActivity"
+            android:exported="false"
+            android:label="Edit Recipe"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+        <activity
             android:name=".RecipePageActivity"
             android:exported="true"
             android:label="Recipe Name"
@@ -20,7 +25,7 @@
             android:exported="true"
             android:label="Create Recipe"
             android:parentActivityName=".ScratchNotesActivity"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar"/>
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
             android:name=".ScratchNotesActivity"
             android:exported="true"
@@ -32,18 +37,12 @@
             android:exported="true"
             android:label="@string/app_name"
             android:parentActivityName=".Login"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"></activity>
         <activity
             android:name=".Register"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"></activity>
         <activity
             android:name=".Login"
             android:exported="true"

@@ -43,13 +43,23 @@
         android:layout_below="@id/recipeImagesImageView"
         android:text="Add Image"/>
 
+    <TextView
+        android:id="@+id/recipePageDescriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/showImagesButton"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+
     <LinearLayout
         android:id="@+id/ingredientsAndInstructionsLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/showImagesButton"
+        android:layout_below="@id/recipePageDescriptionTextView"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp">
 
@@ -82,22 +92,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ingredientsAndInstructionsLinearLayout"
-        android:textColor="@color/black"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/ingredientsTextViewRecipePage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolsTextViewRecipePage"
-        android:textColor="@color/black"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/black" />
 
 
 </RelativeLayout>
