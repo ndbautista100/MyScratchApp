@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
         db.collection("recipes")
-                .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().toString())
+                .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

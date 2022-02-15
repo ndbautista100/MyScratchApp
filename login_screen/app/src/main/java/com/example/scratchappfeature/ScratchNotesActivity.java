@@ -12,27 +12,42 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import classes.DataModal;
+
 public class ScratchNotesActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView recipesTextView;
     private String recipesList = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,25 +58,35 @@ public class ScratchNotesActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        // use the database to display the user's recipes
+        // create a listview to store the recipe name textviews
+        ListView coursesLV = findViewById(R.id.idLVCourses);
+
+        // create a
+        ArrayList<DataModal> user_recipes = new ArrayList<DataModal>();
         db.collection("recipes")
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()) {
-                        for(QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("Success", document.getId() + " => " + document.getData());
-                            // recipesList += document.getData().get("name") + "\n\n";
+                .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("Success", FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
+                                DataModal dataModal = document.toObject(DataModal.class);
+                                user_recipes.add(dataModal);
+
+                            }
+                            RecipesLVAdapter adapter = new RecipesLVAdapter(getApplicationContext(), user_recipes);
+
+                            // after passing this array list to our adapter
+                            // class we are setting our adapter to our list view.
+                            coursesLV.setAdapter(adapter);
+                        } else {
+                            Log.d("err", "Error getting documents: ", task.getException());
                         }
-                    } else {
-                        Log.d("Failure", "Error getting documents: ", task.getException());
                     }
-                }
-            });
 
-        // recipesTextView.setText(recipesList);
-
+                });
     }
 
     public void openCreateRecipeActivity() {

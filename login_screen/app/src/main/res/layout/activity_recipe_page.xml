@@ -39,9 +39,9 @@
         android:id="@+id/showImagesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/recipeImagesImageView"
-        android:text="Add Image"/>
+        android:layout_centerHorizontal="true"
+        android:text="Add Image" />
 
     <TextView
         android:id="@+id/recipePageDescriptionTextView"
@@ -108,6 +108,16 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:textColor="@color/black" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/showImagesButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="141dp"
+        android:layout_marginBottom="62dp"
+        tools:srcCompat="@tools:sample/avatars" />
 
 
 </RelativeLayout>

@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/notebook_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/rootContainer">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutScratchNotes"
@@ -25,14 +26,17 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/recipesTextView"
+
+    <ListView
+        android:id="@+id/idLVCourses"
+        android:paddingTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginTop="125dp"
-        android:layout_marginBottom="5dp" />
+        android:background="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"/>
+
+
+
 
 </RelativeLayout>
