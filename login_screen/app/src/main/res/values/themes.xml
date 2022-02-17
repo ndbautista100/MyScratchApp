@@ -24,4 +24,5 @@
 
     <style name="Theme.scratchappfeature.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
 </resources>
