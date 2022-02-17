@@ -8,5 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#673AB7</color>
-    <color name="login_text_back">#3A3434</color>
+    <color name="login_text_back">#3E3030</color>
 </resources>
