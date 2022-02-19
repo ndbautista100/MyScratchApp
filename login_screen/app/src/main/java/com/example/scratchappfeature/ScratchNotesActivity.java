@@ -43,7 +43,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
-import classes.DataModal;
+import classes.DataModel;
 import classes.Recipe;
 
 public class ScratchNotesActivity extends AppCompatActivity {
@@ -61,10 +61,10 @@ public class ScratchNotesActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        // create a listview to store the recipe name textviews
+        // create a RecyclerView to store the recipe name TextViews
         RecyclerView coursesLV = findViewById(R.id.idRVCourses);
         coursesLV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        // create a
+        // create an ArrayList to store the user's Recipes
         ArrayList<Recipe> user_recipes = new ArrayList<Recipe>();
         db.collection("recipes")
                 .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -75,8 +75,8 @@ public class ScratchNotesActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Success", FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
-                                Recipe dataModal = document.toObject(Recipe.class);
-                                user_recipes.add(dataModal);
+                                Recipe dataModel = document.toObject(Recipe.class);
+                                user_recipes.add(dataModel);
 
                             }
                             RecipeRVAdapter adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
