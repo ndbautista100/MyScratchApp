@@ -155,7 +155,7 @@ public class RecipePageActivity extends AppCompatActivity {
     public void uploadImage() {
         try {
             if(imageLocationUri != null) {
-                String imageName = UUID.randomUUID().toString() + "_" + recipe.getName() + "." + getExtension(imageLocationUri);
+                String imageName = recipe.getName() + "_" + UUID.randomUUID().toString() + "." + getExtension(imageLocationUri);
                 StorageReference imageReference = storageReference.child(imageName);
 
                 UploadTask uploadTask = imageReference.putFile(imageLocationUri);
