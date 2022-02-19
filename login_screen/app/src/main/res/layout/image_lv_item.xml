@@ -29,6 +29,7 @@
 
         <!--Text view for displaying our text -->
         <TextView
+            android:layout_toEndOf="@id/idIVimage"
             android:id="@+id/idTVtext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,7 +38,7 @@
             android:background="@android:color/transparent"
             android:padding="3dp"
             android:text="Category Text"
-
+            android:textSize="20sp"
             android:textColor="@color/black" />
 
     </RelativeLayout>
