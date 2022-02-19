@@ -1,5 +1,7 @@
 package classes;
 
+import android.graphics.Bitmap;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
@@ -12,6 +14,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String tools;
     private String user_ID;
     private String document_ID;
+    String image_URL;
 
     public Recipe(String name, String description, String ingredients, String tools) {
         this.name = name;
@@ -84,6 +87,14 @@ public class Recipe implements Serializable { // Serializable allows classes to 
 
     public void setDocument_ID(String id) {
         this.document_ID = id;
+    }
+
+    public String getImage_URL() {
+        return image_URL;
+    }
+
+    public void setImage_URL(String image_URL) {
+        this.image_URL = image_URL;
     }
 
     @Override

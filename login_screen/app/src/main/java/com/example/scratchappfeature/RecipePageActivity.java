@@ -1,11 +1,16 @@
 package com.example.scratchappfeature;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,15 +20,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,6 +45,7 @@ import com.google.firebase.firestore.OnProgressListener;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
@@ -44,23 +59,32 @@ import classes.Recipe;
 public class RecipePageActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Recipe recipe;
-    private String recipe_ID;
-    private ImageView recipeImagesImageView;
-    private Button showImagesButton;
+    private ImageView recipeImageView;
+    private Button addImageButton;
     private TextView descriptionTextView;
     private TextView toolsTextView;
     private TextView ingredientsTextView;
-    private int SELECT_PICTURE = 200;
-    // Uri indicates, where the image will be picked from
-    private Uri filePath;
-    // view for image view
-    private ImageView imageView;
 
-    FirebaseStorage storage;
-    StorageReference storageReference;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+    private Uri imageLocationUri;
 
     // request code
     private final int PICK_IMAGE_REQUEST = 22;
+
+    // must be placed outside of onCreate
+    // startActivityForResult is deprecated
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+        @Override
+        public void onActivityResult(Uri result) {
+            if(result != null) {
+                recipeImageView.setImageURI(result);
+                imageLocationUri = result;
+
+                uploadImage();
+            }
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,47 +94,21 @@ public class RecipePageActivity extends AppCompatActivity {
         setSupportActionBar(toolbarScratchNotes);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        // get the Firebase  storage reference
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
 
+        // get the Firebase storage reference
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference("images/");
 
         // getting recipe sent from CreateRecipeActivity
         // create different scenarios for opening from CreateRecipe and EditRecipe
         Intent intent = getIntent();
 
-
-
-
         if(intent.hasExtra("create_recipe")) {
             recipe = (Recipe) intent.getSerializableExtra("create_recipe");
-            ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
-
-            descriptionTextView = (TextView) findViewById(R.id.recipePageDescriptionTextView);
-            descriptionTextView.setText(recipe.getDescription());
-            toolsTextView = (TextView) findViewById(R.id.toolsTextViewRecipePage);
-            toolsTextView.setText(recipe.getTools());
-            ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextViewRecipePage);
-            ingredientsTextView.setText(recipe.getIngredients());
-            imageView = findViewById(R.id.imageView);
-
-            // database snippet - everything below here doesn't work yet
-            Map<String, Object> recipeMap = new HashMap<>();
-            recipeMap.put("name", recipe.getName());
-
-            showImagesButton = (Button) findViewById(R.id.showImagesButton);
-            recipeImagesImageView = (ImageView) findViewById(R.id.recipeImagesImageView);
-
-            showImagesButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    imageChooser();
-                    uploadImage();
-                }
-            });
+            populateRecipePage(ab);
 
         } else if (intent.hasExtra("edit_recipe_done")) {
-            recipe_ID = intent.getStringExtra("edit_recipe_done");
+            String recipe_ID = intent.getStringExtra("edit_recipe_done");
 
             // with the recipe ID, find the document and create a Recipe object
             DocumentReference docRef = db.collection("recipes").document(recipe_ID);
@@ -123,15 +121,8 @@ public class RecipePageActivity extends AppCompatActivity {
                             Log.d("Success", "Found document!");
 
                             recipe = document.toObject(Recipe.class);
+                            populateRecipePage(ab);
 
-                            ab.setTitle(recipe.getName()); // set toolbar title using the updated recipe name
-
-                            descriptionTextView = (TextView) findViewById(R.id.recipePageDescriptionTextView);
-                            descriptionTextView.setText(recipe.getDescription());
-                            toolsTextView = (TextView) findViewById(R.id.toolsTextViewRecipePage);
-                            toolsTextView.setText(recipe.getTools());
-                            ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextViewRecipePage);
-                            ingredientsTextView.setText(recipe.getIngredients());
                         } else {
                             Log.d("Fail", "No such document.");
                         }
@@ -143,110 +134,113 @@ public class RecipePageActivity extends AppCompatActivity {
         }
     }
 
-    void imageChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(
-                Intent.createChooser(
-                        intent,
-                        "Select Image from here..."),
-                PICK_IMAGE_REQUEST);
+    public void populateRecipePage(ActionBar ab) {
+        ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
 
+        descriptionTextView = (TextView) findViewById(R.id.recipePageDescriptionTextView);
+        descriptionTextView.setText(recipe.getDescription());
+        toolsTextView = (TextView) findViewById(R.id.toolsTextViewRecipePage);
+        toolsTextView.setText(recipe.getTools());
+        ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextViewRecipePage);
+        ingredientsTextView.setText(recipe.getIngredients());
+
+        // recipe images
+        recipeImageView = (ImageView) findViewById(R.id.recipeImageView);
+        addImageButton = (Button) findViewById(R.id.addImageButton);
+        addImageButton.setOnClickListener(view -> mGetContent.launch("image/*"));
+
+        downloadImage();
     }
 
-    protected void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    Intent data)
-    {
+    public void uploadImage() {
+        try {
+            if(imageLocationUri != null) {
+                String imageName = recipe.getName() + "_" + UUID.randomUUID().toString() + "." + getExtension(imageLocationUri);
+                StorageReference imageReference = storageReference.child(imageName);
 
-        super.onActivityResult(requestCode,
-                resultCode,
-                data);
-
-        // checking request code and result code
-        // if request code is PICK_IMAGE_REQUEST and
-        // resultCode is RESULT_OK
-        // then set image in the image view
-        if (requestCode == PICK_IMAGE_REQUEST
-                && resultCode == RESULT_OK
-                && data != null
-                && data.getData() != null) {
-
-            // Get the Uri of data
-            filePath = data.getData();
-            try {
-
-                // Setting image on image view using Bitmap
-                Bitmap bitmap = MediaStore
-                        .Images
-                        .Media
-                        .getBitmap(
-                                getContentResolver(),
-                                filePath);
-                imageView.setImageBitmap(bitmap);
-            }
-            catch (IOException e) {
-                // Log the exception
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    // UploadImage method
-    private void uploadImage() {
-        if (filePath != null) {
-
-            // Code for showing progressDialog while uploading
-            ProgressDialog progressDialog
-                    = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-
-            // Defining the child of storageReference
-            StorageReference ref
-                    = storageReference
-                    .child(
-                            "images/"
-                                    + UUID.randomUUID().toString());
-
-            // adding listeners on upload
-            // or failure of image
-            ref.putFile(filePath)
-                    .addOnSuccessListener(
-                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
-
-                                @Override
-                                public void onSuccess(
-                                        UploadTask.TaskSnapshot taskSnapshot) {
-
-                                    // Image uploaded successfully
-                                    // Dismiss dialog
-                                    progressDialog.dismiss();
-                                    Toast
-                                            .makeText(RecipePageActivity.this,
-                                                    "Image Uploaded!!",
-                                                    Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            })
-
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                            // Error, Image not uploaded
-                            progressDialog.dismiss();
-                            Toast
-                                    .makeText(RecipePageActivity.this,
-                                            "Failed " + e.getMessage(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
+                UploadTask uploadTask = imageReference.putFile(imageLocationUri);
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if(!task.isSuccessful()) {
+                            throw task.getException();
                         }
-                    });
+                        return imageReference.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if(task.isSuccessful()) {
+                            //store image
+                            recipe.setImage_URL(task.getResult().toString());
+                            db.collection("recipes")
+                                .document(recipe.getDocument_ID())
+                                .update("image_URL", recipe.getImage_URL())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(RecipePageActivity.this, "Recipe image uploaded!", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(RecipePageActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        } else if(!task.isSuccessful()) {
+                            Toast.makeText(RecipePageActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Toast.makeText(RecipePageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+    private String getExtension(Uri uri) {
+        try {
+            ContentResolver contentResolver = getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+            return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void downloadImage() {
+        try {
+            // get the recipe document from the database
+            DocumentReference downloadRef = db.collection("recipes").document(recipe.getDocument_ID());
+
+            downloadRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    String downloadUrl = documentSnapshot.getString("image_URL");
+
+                    // Glide makes it easy to load images into ImageViews
+                    if(downloadUrl != null) {
+                        Glide.with(RecipePageActivity.this)
+                                .load(downloadUrl)
+                                .into(recipeImageView);
+                    }
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(RecipePageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(RecipePageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void openEditRecipeActivity() {
         Intent intent = new Intent(getApplicationContext(), EditRecipeActivity.class);
         intent.putExtra("edit_recipe", recipe.getDocument_ID());
