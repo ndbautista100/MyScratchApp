@@ -50,7 +50,8 @@ public class ScratchNotesActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView recipesTextView;
     private String recipesList = "";
-
+    private RecyclerView recipesRV;
+    private RecipeRVAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,35 +62,48 @@ public class ScratchNotesActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        // create a listview to store the recipe name textviews
-        RecyclerView coursesLV = findViewById(R.id.idRVCourses);
-        coursesLV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        // create a
+        // create a RecyclerView to store the recipe name TextViews
+        recipesRV = findViewById(R.id.recipesRecyclerView);
+        recipesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        // create an ArrayList to store all of the user's recipes
         ArrayList<Recipe> user_recipes = new ArrayList<Recipe>();
+
         db.collection("recipes")
-                .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("Success", FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
-                                Recipe dataModal = document.toObject(Recipe.class);
-                                user_recipes.add(dataModal);
+            .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Log.d("Success", FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
 
-                            }
-                            RecipeRVAdapter adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
-
-                            // after passing this array list to our adapter
-                            // class we are setting our adapter to our list view.
-                            coursesLV.setAdapter(adapter);
-                        } else {
-                            Log.d("err", "Error getting documents: ", task.getException());
+                            Recipe dataModal = document.toObject(Recipe.class);
+                            user_recipes.add(dataModal);
                         }
-                    }
+                        adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
+                        // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
+                        recipesRV.setAdapter(adapter);
 
-                });
+                        adapter.setOnItemClickListener(new RecipeRVAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                Recipe clickedRecipe = user_recipes.get(position);
+                                openRecipePageActivity(clickedRecipe.getDocument_ID());
+                            }
+                        });
+                    } else {
+                        Log.d("err", "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+    }
+
+    public void openRecipePageActivity(String recipe_ID) {
+        Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
+        intent.putExtra("open_recipe_from_id", recipe_ID);
+        startActivity(intent);
     }
 
     public void openCreateRecipeActivity() {

@@ -107,8 +107,8 @@ public class RecipePageActivity extends AppCompatActivity {
             recipe = (Recipe) intent.getSerializableExtra("create_recipe");
             populateRecipePage(ab);
 
-        } else if (intent.hasExtra("edit_recipe_done")) {
-            String recipe_ID = intent.getStringExtra("edit_recipe_done");
+        } else if (intent.hasExtra("open_recipe_from_id")) {
+            String recipe_ID = intent.getStringExtra("open_recipe_from_id");
 
             // with the recipe ID, find the document and create a Recipe object
             DocumentReference docRef = db.collection("recipes").document(recipe_ID);
@@ -225,8 +225,8 @@ public class RecipePageActivity extends AppCompatActivity {
                     // Glide makes it easy to load images into ImageViews
                     if(downloadUrl != null) {
                         Glide.with(RecipePageActivity.this)
-                                .load(downloadUrl)
-                                .into(recipeImageView);
+                            .load(downloadUrl)
+                            .into(recipeImageView);
                     }
 
                 }

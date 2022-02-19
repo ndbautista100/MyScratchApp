@@ -121,7 +121,7 @@ public class EditRecipeActivity extends AppCompatActivity {
 
     private void openRecipePageActivity() {
         Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
-        intent.putExtra("edit_recipe_done", recipe_ID);
+        intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }
 

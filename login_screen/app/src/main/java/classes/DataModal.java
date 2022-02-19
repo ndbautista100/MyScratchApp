@@ -2,18 +2,18 @@ package classes;
 
 
 public class DataModal {
-
-    // variables for storing our image and name.
     private String name;
+    private String description;
     private String imgUrl;
 
     public DataModal() {
-        // empty constructor required for firebase.
+        // empty constructor required for Firebase
     }
 
-    // constructor for our object class.
-    public DataModal(String name, String imgUrl) {
+    // constructor for our object class
+    public DataModal(String name, String description, String imgUrl) {
         this.name = name;
+        this.description = description;
         this.imgUrl = imgUrl;
     }
 
