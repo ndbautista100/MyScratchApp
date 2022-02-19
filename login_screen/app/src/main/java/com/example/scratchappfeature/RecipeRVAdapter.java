@@ -18,17 +18,16 @@ import java.util.ArrayList;
 import classes.Recipe;
 
 public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHolder> {
-    private ArrayList<Recipe> dataModelArrayList;
+    private ArrayList<Recipe> dataModalArrayList;
     private Context context;
 
     // constructor class for our Adapter
-    public RecipeRVAdapter(ArrayList<Recipe> dataModelArrayList, Context context) {
-        this.dataModelArrayList = dataModelArrayList;
+    public RecipeRVAdapter(ArrayList<Recipe> dataModalArrayList, Context context) {
+        this.dataModalArrayList = dataModalArrayList;
         this.context = context;
     }
 
     public RecipeRVAdapter(View inflate) {
-
     }
 
     @NonNull
@@ -41,18 +40,18 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecipeRVAdapter.ViewHolder holder, int position) {
         // setting data to our views in Recycler view items.
-        Recipe model = dataModelArrayList.get(position);
-        holder.courseNameTV.setText(model.getName());
+        Recipe modal = dataModalArrayList.get(position);
+        holder.courseNameTV.setText(modal.getName());
 
         // we are using Picasso to load images
         // from URL inside our image view.
-        Picasso.with(context.getApplicationContext()).load(model.getImage_URL()).into(holder.courseIV);
+        Picasso.with(context.getApplicationContext()).load(modal.getImage_URL()).into(holder.courseIV);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // setting on click listener
                 // for our items of recycler items.
-                Toast.makeText(context, "Clicked item is " + model.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Clicked item is " + modal.getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -60,7 +59,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHo
     @Override
     public int getItemCount() {
         // returning the size of array list.
-        return dataModelArrayList.size();
+        return dataModalArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

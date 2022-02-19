@@ -1,18 +1,18 @@
 package classes;
 
 
-public class DataModel {
+public class DataModal {
 
     // variables for storing our image and name.
     private String name;
     private String imgUrl;
 
-    public DataModel() {
+    public DataModal() {
         // empty constructor required for firebase.
     }
 
     // constructor for our object class.
-    public DataModel(String name, String imgUrl) {
+    public DataModal(String name, String imgUrl) {
         this.name = name;
         this.imgUrl = imgUrl;
     }
