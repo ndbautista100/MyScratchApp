@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,11 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import classes.Recipe;
 
-public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.RecipeViewHolder> {
+public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.RecipeViewHolder> implements Filterable {
     private ArrayList<Recipe> dataModalArrayList;
+    private ArrayList<Recipe> dataModalArrayListFull;
     private Context context;
     private OnItemClickListener mListener;
 
@@ -61,6 +66,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
     // constructor class for our Adapter
     public RecipeRVAdapter(ArrayList<Recipe> dataModalArrayList, Context context) {
         this.dataModalArrayList = dataModalArrayList;
+        dataModalArrayListFull = new ArrayList<>(dataModalArrayList); // create a copy that doesn't point to the same ArrayList
         this.context = context;
     }
 
@@ -97,4 +103,40 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         // returning the size of array list.
         return dataModalArrayList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<Recipe> filteredList = new ArrayList<>();
+
+            if(charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(dataModalArrayListFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase(Locale.ROOT).trim();
+
+                for(Recipe recipe : dataModalArrayListFull) {
+                    if(recipe.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(recipe);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            dataModalArrayList.clear();
+            dataModalArrayList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 }
