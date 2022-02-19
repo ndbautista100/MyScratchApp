@@ -3,6 +3,7 @@ package com.example.scratchappfeature;
 
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +16,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import classes.DataModal;
+import classes.Recipe;
 
-public class RecipesLVAdapter extends ArrayAdapter<DataModal> {
+public class RecipesLVAdapter extends ArrayAdapter<Recipe> {
 
     // constructor for our list view adapter.
-    public RecipesLVAdapter(@NonNull Context context, ArrayList<DataModal> dataModalArrayList) {
+    public RecipesLVAdapter(@NonNull Context context, ArrayList<Recipe> dataModalArrayList) {
         super(context, 0, dataModalArrayList);
     }
 
@@ -40,15 +43,17 @@ public class RecipesLVAdapter extends ArrayAdapter<DataModal> {
         // after inflating an item of listview item
         // we are getting data from array list inside
         // our modal class.
-        DataModal dataModal = getItem(position);
+        Recipe dataModal = getItem(position);
 
         // initializing our UI components of list view item.
         TextView nameTV = listitemView.findViewById(R.id.idTVtext);
+        ImageView imageView = listitemView.findViewById(R.id.idIVimage);
 
 
         // after initializing our items we are
         // setting data to our view.
         // below line is use to set data to our text view.
+        Picasso.with(getContext()).load(dataModal.getImage_URL()).into(imageView);
         nameTV.setText(dataModal.getName());
 
         // below line is use to add item click listener

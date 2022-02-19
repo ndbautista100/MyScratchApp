@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import classes.DataModal;
+import classes.Recipe;
 
 public class ScratchNotesActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -62,7 +63,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
         ListView coursesLV = findViewById(R.id.idLVCourses);
 
         // create a
-        ArrayList<DataModal> user_recipes = new ArrayList<DataModal>();
+        ArrayList<Recipe> user_recipes = new ArrayList<Recipe>();
         db.collection("recipes")
                 .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
@@ -72,7 +73,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Success", FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
-                                DataModal dataModal = document.toObject(DataModal.class);
+                                Recipe dataModal = document.toObject(Recipe.class);
                                 user_recipes.add(dataModal);
 
                             }

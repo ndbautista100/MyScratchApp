@@ -18,7 +18,14 @@
 
 
         <!--Image view for displaying our image-->
-
+        <ImageView
+            android:id="@+id/idIVimage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="8dp"
+            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:padding="3dp" />
 
         <!--Text view for displaying our text -->
         <TextView
