@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/msa_woodbg02"
     android:orientation="vertical"
     tools:context=".CreateThemeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal"
         android:paddingTop="150dp">
 
@@ -18,9 +20,10 @@
             android:layout_width="25dp"
             android:layout_height="35dp"
             android:layout_weight="1"
+            android:background="@color/login_text_back"
             android:text="Font"
             android:textAlignment="center"
-            android:textColor="#000000"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
         <Button
@@ -28,8 +31,10 @@
             android:layout_width="25dp"
             android:layout_height="35dp"
             android:layout_weight="1"
-            android:text="Colors"
+            android:background="@color/login_text_back"
+            android:text="Background"
             android:textAlignment="center"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
         <Button
@@ -37,8 +42,10 @@
             android:layout_width="25dp"
             android:layout_height="35dp"
             android:layout_weight="1"
-            android:text="Background"
+            android:background="@color/login_text_back"
+            android:text="Colors"
             android:textAlignment="center"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -53,7 +60,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/login_text_back"
             android:text="Layout"
+            android:textAlignment="center"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
     </LinearLayout>
