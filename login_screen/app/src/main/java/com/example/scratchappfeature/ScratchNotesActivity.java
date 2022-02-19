@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import classes.DataModal;
+import classes.Recipe;
 
 public class ScratchNotesActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -59,10 +62,10 @@ public class ScratchNotesActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         // create a listview to store the recipe name textviews
-        ListView coursesLV = findViewById(R.id.idLVCourses);
-
+        RecyclerView coursesLV = findViewById(R.id.idRVCourses);
+        coursesLV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         // create a
-        ArrayList<DataModal> user_recipes = new ArrayList<DataModal>();
+        ArrayList<Recipe> user_recipes = new ArrayList<Recipe>();
         db.collection("recipes")
                 .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
@@ -72,11 +75,11 @@ public class ScratchNotesActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Success", FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
-                                DataModal dataModal = document.toObject(DataModal.class);
+                                Recipe dataModal = document.toObject(Recipe.class);
                                 user_recipes.add(dataModal);
 
                             }
-                            RecipesLVAdapter adapter = new RecipesLVAdapter(getApplicationContext(), user_recipes);
+                            RecipeRVAdapter adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
 
                             // after passing this array list to our adapter
                             // class we are setting our adapter to our list view.
