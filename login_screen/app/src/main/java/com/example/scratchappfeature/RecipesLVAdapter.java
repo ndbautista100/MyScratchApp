@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.squareup.picasso.Picasso;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import classes.DataModal;
 import classes.Recipe;
 
-public class RecipesLVAdapter extends ArrayAdapter<Recipe> {
+/*public class RecipesLVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.ViewHolder> {
 
     // constructor for our list view adapter.
     public RecipesLVAdapter(@NonNull Context context, ArrayList<Recipe> dataModalArrayList) {
@@ -68,4 +69,5 @@ public class RecipesLVAdapter extends ArrayAdapter<Recipe> {
         });
         return listitemView;
     }
-}
+
+}*/

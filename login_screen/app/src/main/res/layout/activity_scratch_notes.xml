@@ -27,8 +27,8 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <ListView
-        android:id="@+id/idLVCourses"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/idRVCourses"
         android:paddingTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
