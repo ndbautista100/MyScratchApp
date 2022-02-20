@@ -40,4 +40,8 @@ public class Profile {
     public void setfavoritefood(String favoritefood) {
         pfavoritefood = favoritefood;
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
