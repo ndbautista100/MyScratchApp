@@ -87,7 +87,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
                         adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
                         // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
                         recipesRV.setAdapter(adapter);
-
+                        // this is called when a recipe is clicked
                         adapter.setOnItemClickListener(new RecipeRVAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position) {
