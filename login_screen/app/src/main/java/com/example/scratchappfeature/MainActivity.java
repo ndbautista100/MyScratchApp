@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "myTag";
+    private Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
+
+        logoutButton = (Button) findViewById(R.id.btn_logout);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
         db.collection("recipes")
                 .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
@@ -45,6 +55,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void openScratchNotesActivity() {
+        Intent intent = new Intent(this, ScratchNotesActivity.class);
+        startActivity(intent);
+    }
+
+    public void logout(){
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getApplicationContext(), Login.class));
+        finish();
     }
 
     @Override
@@ -70,18 +91,4 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    public void openScratchNotesActivity() {
-        Intent intent = new Intent(this, ScratchNotesActivity.class);
-        startActivity(intent);
-    }
-
-    public void logout(View view){
-    FirebaseAuth.getInstance().signOut();
-    startActivity(new Intent(getApplicationContext(), Login.class));
-    finish();
-    }
-
-
-
 }
