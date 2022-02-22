@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -64,6 +65,8 @@ public class RecipePageActivity extends AppCompatActivity {
     private TextView descriptionTextView;
     private TextView toolsTextView;
     private TextView ingredientsTextView;
+
+    private Button nextButton;
 
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -144,6 +147,14 @@ public class RecipePageActivity extends AppCompatActivity {
         ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextViewRecipePage);
         ingredientsTextView.setText(recipe.getIngredients());
 
+        nextButton = (Button) findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                openCustomizeRecipeFeatureActivity(recipe);
+            }
+        });
         // recipe images
         recipeImageView = (ImageView) findViewById(R.id.recipeImageView);
         addImageButton = (Button) findViewById(R.id.addImageButton);
@@ -273,5 +284,16 @@ public class RecipePageActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void openCustomizeRecipeFeatureActivity(Recipe recipe) {
+        //Parse Recipe object to map
+        ObjectMapper oMapper = new ObjectMapper();
+        Map<String, Object> recipeMap = oMapper.convertValue(recipe, Map.class);
+
+        Intent intent = new Intent(getApplicationContext(), CustomizeRecipeFeature.class);
+        intent.putExtra("customize_recipe", recipe);
+        startActivity(intent);
+
     }
 }
