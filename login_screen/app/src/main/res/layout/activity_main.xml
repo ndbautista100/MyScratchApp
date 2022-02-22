@@ -9,7 +9,7 @@
     android:background="@drawable/cookingapp">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/appBarLayoutMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.scratchappfeature.AppBarOverlay">
@@ -24,14 +24,21 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/userRecipesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appBarLayoutMain"
+        android:padding="4dp"
+        android:scrollbars="vertical"
+        android:background="@color/gray"/>
+
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="143dp"
-        android:layout_marginBottom="286dp"
         android:text="Logout" />
 
 </RelativeLayout>

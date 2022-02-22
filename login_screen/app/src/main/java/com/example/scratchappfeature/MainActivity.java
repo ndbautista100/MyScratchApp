@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,10 +22,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
+import classes.Recipe;
+
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "myTag";
     private Button logoutButton;
+    private RecyclerView userRecipesRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
+
+        userRecipesRV = findViewById(R.id.userRecipesRecyclerView);
+        userRecipesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        // create an ArrayList to store all of the users' recipes
+        ArrayList<Recipe> recipes_feed = new ArrayList<Recipe>();
 
         logoutButton = (Button) findViewById(R.id.btn_logout);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -41,20 +54,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
         db.collection("recipes")
-                .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Log.d("Success", FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.d("err", "Error getting documents: ", task.getException());
+            //.whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Recipe userRecipe = document.toObject(Recipe.class);
+                            recipes_feed.add(userRecipe);
                         }
+                        // TODO: implement RVadapter for UserRecipes
+//                        adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
+//                        // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
+//                        recipesRV.setAdapter(adapter);
+//                        // this is called when a recipe is clicked
+//                        adapter.setOnItemClickListener(new RecipeRVAdapter.OnItemClickListener() {
+//                            @Override
+//                            public void onItemClick(int position) {
+//                                Recipe clickedRecipe = user_recipes.get(position);
+//                                openRecipePageActivity(clickedRecipe.getDocument_ID());
+//                            }
+//                        });
+                    } else {
+                        Log.d("err", "Error getting documents: ", task.getException());
                     }
-                });
+                }
+            });
     }
 
     public void openScratchNotesActivity() {
