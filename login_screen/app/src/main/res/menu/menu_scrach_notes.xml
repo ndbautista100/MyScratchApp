@@ -10,7 +10,8 @@
         android:orderInCategory="100"
         android:title="Search for Recipe"
         android:icon="@drawable/searchimageicon"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.widget.SearchView"/>
     <item
         android:id="@+id/action_create_recipe"
         android:orderInCategory="400"

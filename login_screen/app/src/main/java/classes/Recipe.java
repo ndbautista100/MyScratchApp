@@ -14,6 +14,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String tools;
     private String user_ID;
     private String document_ID;
+    private int layoutChoice;
     String image_URL;
 
     public Recipe(String name, String description, String ingredients, String tools) {
@@ -29,6 +30,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.ingredients = ingredients;
         this.tools = tools;
         this.user_ID = userID;
+        this.layoutChoice = 1;
     }
 
     public Recipe() {
@@ -106,5 +108,13 @@ public class Recipe implements Serializable { // Serializable allows classes to 
                 ", tools='" + tools + '\'' +
                 ", user_ID='" + user_ID + '\'' +
                 '}';
+    }
+
+    public int getLayoutChoice() {
+        return layoutChoice;
+    }
+
+    public void setLayoutChoice(int layoutChoice) {
+        this.layoutChoice = layoutChoice;
     }
 }
