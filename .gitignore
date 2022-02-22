@@ -89,3 +89,11 @@ lint/tmp/
 *.hprof
 home_screen_prototype/local.properties
 home_screen_prototype/local.properties
+
+#Additional files to ignore
+login_screen/local.properties
+login_screen/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+login_screen/.gradle/buildOutputCleanup/otuputFiles.bin
+outputFiles.binlogin_screen/.gradle/checksums/checksums.lock
+login_screen/.gradle/checksums/md5-checksums.bin
+login_screen/.gradle/checksums/sha1-checksums.bin
