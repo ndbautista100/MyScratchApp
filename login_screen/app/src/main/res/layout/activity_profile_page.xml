@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/profilebg">
+
+
+    <ImageView
+        android:id="@+id/profilepicture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp"
+        android:src="@drawable/blankpicture" />
+
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="216dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Name"
+        android:textSize="20dp"
+        tools:layout_conversion_absoluteHeight="47dp"
+        tools:layout_conversion_absoluteWidth="243dp"
+        tools:layout_editor_absoluteX="72dp"
+        tools:layout_editor_absoluteY="39dp" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="249dp"
+        android:ems="10"
+        android:hint='John Smith' />
+
+    <TextView
+        android:id="@+id/bioView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="326dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Bio"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/bio"
+        android:layout_width="355dp"
+        android:layout_height="75dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="364dp"
+        android:ems="10"
+        android:hint='Age, hobbies, interest, etc...' />
+
+    <TextView
+        android:id="@+id/favoritefoodView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="461dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Favorite foods"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/favoritefood"
+        android:layout_width="355dp"
+        android:layout_height="75dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="495dp"
+        android:ems="10"
+        android:hint='Pasta, Salad, Pizza, etc...' />
+
+    <Button
+        android:id="@+id/finishbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="90dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="#37AEE4"
+        android:text="Done" />
+
+    <Button
+        android:id="@+id/editbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="90dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="#37AEE4"
+        android:text="Edit" />
+
+</RelativeLayout>

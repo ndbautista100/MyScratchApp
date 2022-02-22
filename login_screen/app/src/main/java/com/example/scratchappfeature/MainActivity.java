@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_search:
                 return true;
             case R.id.action_profile:
+                openProfilePageActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -73,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void openScratchNotesActivity() {
         Intent intent = new Intent(this, ScratchNotesActivity.class);
+        startActivity(intent);
+    }
+
+    public void openProfilePageActivity() {
+        Intent intent = new Intent(this, ProfilePage.class);
         startActivity(intent);
     }
 
