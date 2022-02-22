@@ -24,6 +24,18 @@ import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,8 +58,12 @@ public class RecipePageActivity extends AppCompatActivity {
     private TextView toolsTextView;
     private TextView ingredientsTextView;
 
+
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
     private final StorageReference storageReference = storage.getReference("images/recipes");
+
+    private Button nextButton;
+
     private Uri imageLocationUri;
 
     private Toolbar toolbarScratchNotes;
@@ -114,6 +130,14 @@ public class RecipePageActivity extends AppCompatActivity {
         toolsTextView = findViewById(R.id.toolsTextViewRecipePage);
         ingredientsTextView = findViewById(R.id.ingredientsTextViewRecipePage);
 
+        nextButton = (Button) findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                openCustomizeRecipeFeatureActivity(recipe);
+            }
+        });
         // recipe images
         recipeImageView = findViewById(R.id.recipeImageView);
         addImageButton = findViewById(R.id.addImageButton);
@@ -282,5 +306,16 @@ public class RecipePageActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void openCustomizeRecipeFeatureActivity(Recipe recipe) {
+        //Parse Recipe object to map
+        ObjectMapper oMapper = new ObjectMapper();
+        Map<String, Object> recipeMap = oMapper.convertValue(recipe, Map.class);
+
+        Intent intent = new Intent(getApplicationContext(), CustomizeRecipeFeature.class);
+        intent.putExtra("customize_recipe", recipe);
+        startActivity(intent);
+
     }
 }
