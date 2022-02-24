@@ -6,16 +6,11 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -23,24 +18,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.util.ArrayList;
 import java.util.UUID;
 
 import classes.Profile;
@@ -51,6 +43,7 @@ public class EditProfilePage extends AppCompatActivity {
     private String bio;
     private String favoritefood;
     private String id;
+    private String imagename;
     private EditText nameInput;
     private EditText bioInput;
     private EditText favoritefoodInput;
@@ -64,6 +57,19 @@ public class EditProfilePage extends AppCompatActivity {
     private StorageReference storageRef;
     private String userID;
     private Profile profile;
+    
+
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+        @Override
+        public void onActivityResult(Uri result) {
+            if(result != null){
+                profileImage.setImageURI(result);
+                profileImageUri = result;
+
+                uploadImage();
+            }
+        }
+    });
 
 
 
@@ -74,6 +80,13 @@ public class EditProfilePage extends AppCompatActivity {
         nameInput = (EditText) findViewById(R.id.nameInput);
         bioInput = (EditText) findViewById(R.id.bioInput);
         favoritefoodInput = (EditText) findViewById(R.id.favoritefoodInput);
+
+        fstorage = FirebaseStorage.getInstance();
+        storageRef = fstorage.getReference("images/");
+
+        profileImage = (ImageView) findViewById(R.id.profilepicture);
+        uploadbutton = (Button) findViewById(R.id.uploadbutton);
+        uploadbutton.setOnClickListener(view -> mGetContent.launch("image/*"));
 
         fstore = FirebaseFirestore.getInstance();
         fauth = FirebaseAuth.getInstance();
@@ -93,6 +106,8 @@ public class EditProfilePage extends AppCompatActivity {
                         nameInput.setText(name);
                         bioInput.setText(bio);
                         favoritefoodInput.setText(favoritefood);
+
+                        downloadimage();
                     }
                     else{
                         Log.d("docv", "No such info");
@@ -104,15 +119,6 @@ public class EditProfilePage extends AppCompatActivity {
             }
         });
 
-        profileImage = (ImageView) findViewById(R.id.profilepicture);
-        profileImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                mGetContent.launch("image/");
-            }
-        });
-
-
         finishbutton = (Button) findViewById(R.id.finishbutton);
         finishbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,21 +127,22 @@ public class EditProfilePage extends AppCompatActivity {
                 bio = bioInput.getText().toString();
                 favoritefood = favoritefoodInput.getText().toString();
 
-                addDatatoDatabase(name, bio, favoritefood);
+
+                addDatatoDatabase(name, bio, favoritefood, imagename);
 
                 //Change this to submitting the the information, picture, and everything.
                 returnToProfileActivity();
             }
         });
-
-        uploadbutton = (Button) findViewById(R.id.uploadbutton);
-        uploadbutton.setOnClickListener(view -> mGetContent.launch("image/"));
     }
+
+    //error with string imagename, saying im setting a name to a null object. so something in there is
+    //pointing to a null value.
 
     private void uploadImage(){
         try {
             if (profileImageUri != null) {
-                String imagename = profile.getImageURL() + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
+                imagename = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
                 StorageReference imageref = storageRef.child(imagename);
 
                 UploadTask uploadTask = imageref.putFile(profileImageUri);
@@ -157,6 +164,7 @@ public class EditProfilePage extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             Toast.makeText(EditProfilePage.this, "Profile uploaded", Toast.LENGTH_SHORT).show();
+
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -175,17 +183,32 @@ public class EditProfilePage extends AppCompatActivity {
         }
     }
 
-ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-    @Override
-    public void onActivityResult(Uri result) {
-        if(result != null){
-            profileImage.setImageURI(result);
-            profileImageUri = result;
+    public void downloadimage(){
+        try {
+            // get the recipe document from the database
+            DocumentReference downloadRef = fstore.collection("profile").document(userID);
 
-            uploadImage();
+            downloadRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    String downloadUrl = documentSnapshot.getString("imageURL");
+
+                    // Glide makes it easy to load images into ImageViews
+                    if(downloadUrl != null) {
+                        Glide.with(EditProfilePage.this).load(downloadUrl).into(profileImage);
+                    }
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-});
 
     private String getExtension(Uri uri) {
         try {
@@ -200,9 +223,9 @@ ActivityResultLauncher<String> mGetContent = registerForActivityResult(new Activ
     }
 
 
-    private void addDatatoDatabase(String name, String bio, String favoritefood) {
+    private void addDatatoDatabase(String name, String bio, String favoritefood, String imagename) {
         DocumentReference dbProfile = fstore.collection("profile").document(userID);
-        Profile profile = new Profile(name, bio, favoritefood);
+        Profile profile = new Profile(name, bio, favoritefood, imagename);
         dbProfile.set(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

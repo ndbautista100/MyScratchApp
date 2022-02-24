@@ -124,13 +124,11 @@ public class ProfilePage extends AppCompatActivity {
             downloadRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    String downloadUrl = documentSnapshot.getString("imageurl");
+                    String downloadUrl = documentSnapshot.getString("imageURL");
 
                     // Glide makes it easy to load images into ImageViews
                     if(downloadUrl != null) {
-                        Glide.with(ProfilePage.this)
-                                .load(downloadUrl)
-                                .into(profileImage);
+                        Glide.with(ProfilePage.this).load(downloadUrl).into(profileImage);
                     }
 
                 }
