@@ -1,14 +1,29 @@
 
 package com.example.scratchappfeature;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import classes.Recipe;
 
@@ -19,11 +34,15 @@ import classes.Recipe;
  */
 public class LayoutFragment extends Fragment {
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    String docId;
     Recipe recipe;
 
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
+    public void setDocumentID(String docId) {
+        this.docId = docId;
     }
+    public void setRecipe (Recipe recipe) { this.recipe = recipe; }
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,12 +89,26 @@ public class LayoutFragment extends Fragment {
         TextView recipeTools = view.findViewById(R.id.toolsTextView);
         TextView recipeIngredients = view.findViewById(R.id.ingredientsTextView);
         TextView recipeInstructions = view.findViewById(R.id.instructionsTextView);
-
         recipeName.setText(recipe.getName());
         recipeTools.setText(recipe.getTools());
         recipeIngredients.setText(recipe.getIngredients());
         recipeInstructions.setText(recipe.getDescription());
+
+        initRecyclerView(view);
         // Inflate the layout for this fragment
         return view;
     }
+
+
+
+    private void initRecyclerView(View view){
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        RecyclerView recyclerView = view.findViewById(R.id.photosRecyclerView);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        LayoutRVAdapter adapter = new LayoutRVAdapter(getContext(),recipe.getImage_URL());
+        recyclerView.setAdapter(adapter);
+
+    }
+
 }

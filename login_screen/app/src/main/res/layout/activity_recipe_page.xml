@@ -42,11 +42,11 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_below="@id/appBarLayoutRecipePage"
-        android:layout_marginBottom="5dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:background="@color/gray"
         android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/backgrounds/scenic"
-        android:background="@color/gray"/>
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
     <TextView
         android:id="@+id/recipePageDescriptionTextView"

@@ -2,13 +2,28 @@ package com.example.scratchappfeature;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.common.io.LineReader;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.w3c.dom.Text;
 
@@ -16,6 +31,7 @@ import classes.Recipe;
 
 public class CustomizeRecipeFeature extends AppCompatActivity {
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button fontBtn;
     private Button colorBtn;
     private Button backgroundBtn;
@@ -23,6 +39,8 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
     private Button saveBtn;
 
     private HorizontalScrollView layoutScrollView;
+    private RecyclerView photosRecyclerView;
+    private LayoutRVAdapter adapter;
 
     private Button layoutOneBtn;
     private Button layoutTwoBtn;
@@ -41,11 +59,24 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         //If recipe is getting passed through activities
         Intent intent = getIntent();
         if (intent.hasExtra("customize_recipe")) {
-            recipe = (Recipe) intent.getSerializableExtra("customize_recipe");
-            populateRecipe(recipe);
+            String docId = (String) intent.getStringExtra("customize_recipe");
+            DocumentReference docRef = db.collection("recipes").document(docId);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d("Success", "Found document!");
+
+                            recipe = document.toObject(Recipe.class);
+                            Toast.makeText(CustomizeRecipeFeature.this, recipe.getName(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }
+            });
         }
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customize_recipe_features);
 
@@ -54,14 +85,18 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         backgroundBtn = findViewById(R.id.backgroundButton);
         layoutBtn = findViewById(R.id.layoutButton);
         layoutOneBtn = findViewById(R.id.layoutOneButton);
+        layoutTwoBtn = findViewById(R.id.layoutTwoButton);
+        layoutThreeBtn = findViewById(R.id.layoutThreeButton);
         layoutScrollView = findViewById(R.id.layoutHorizontalScrollBar);
         saveBtn = findViewById(R.id.layoutSaveButton);
-
+        photosRecyclerView = findViewById(R.id.photosRecyclerView);
 
         //Finished picking the customized options
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Save Recipe
                 startActivity(new Intent(getApplicationContext(), ScratchNotesActivity.class));
                 finish();
             }
@@ -98,15 +133,31 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         layoutOneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inflateFragment(fragmentManager, R.layout.fragment_layout_one);
+                inflateFragment(fragmentManager, 2131427384);
             }
         });
+
+        layoutTwoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inflateFragment(fragmentManager, R.layout.fragment_layout_two);
+            }
+        });
+
+        layoutThreeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inflateFragment(fragmentManager, R.layout.fragment_layout_three);
+            }
+        });
+
 
     }
 
     //Inflate the fragments with the layout we want
     private void inflateFragment(FragmentManager fragmentManager, int layoutId) {
         LayoutFragment layout = LayoutFragment.newInstance(layoutId);
+        layout.setDocumentID(recipe.getDocument_ID());
         layout.setRecipe(recipe);
 
         fragmentManager.beginTransaction()
@@ -116,16 +167,4 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
                 .commit();
     }
 
-    //Set recipe values for fragments
-    private void populateRecipe(Recipe recipe) {
-        this.recipe.setName(recipe.getName());
-        this.recipe.setDescription(recipe.getDescription());
-        this.recipe.setIngredients(recipe.getIngredients());
-        this.recipe.setTools(recipe.getTools());
-        this.recipe.setUser_ID(recipe.getUser_ID());
-        this.recipe.setDocument_ID(recipe.getDocument_ID());
-        this.recipe.setLayoutChoice(recipe.getLayoutChoice());
-        this.recipe.setImage_URL(recipe.getImage_URL());
-
-    }
 }

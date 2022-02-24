@@ -239,7 +239,7 @@ public class RecipePageActivity extends AppCompatActivity {
                             .load(downloadUrl)
                             .into(recipeImageView);
                     }
-
+                        recipe.setImage_URL(downloadUrl);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -250,6 +250,7 @@ public class RecipePageActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(RecipePageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public void openEditRecipeActivity() {
@@ -292,7 +293,7 @@ public class RecipePageActivity extends AppCompatActivity {
         Map<String, Object> recipeMap = oMapper.convertValue(recipe, Map.class);
 
         Intent intent = new Intent(getApplicationContext(), CustomizeRecipeFeature.class);
-        intent.putExtra("customize_recipe", recipe);
+        intent.putExtra("customize_recipe", recipe.getDocument_ID());
         startActivity(intent);
 
     }
