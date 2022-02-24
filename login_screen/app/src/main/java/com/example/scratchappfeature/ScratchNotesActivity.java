@@ -50,8 +50,6 @@ import classes.Recipe;
 
 public class ScratchNotesActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private TextView recipesTextView;
-    private String recipesList = "";
     private RecyclerView recipesRV;
     private RecipeRVAdapter adapter;
 

@@ -58,7 +58,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
             recipeNameTextView = itemView.findViewById(R.id.recipeNameTextView);
             recipeDescriptionTextView = itemView.findViewById(R.id.recipeDescriptionTextView);
             recipeImageView = itemView.findViewById(R.id.cardRecipeImageView);
-            removeBtn = itemView.findViewById(R.id.imageButton);
+            removeBtn = itemView.findViewById(R.id.deleteRecipeImageButton);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

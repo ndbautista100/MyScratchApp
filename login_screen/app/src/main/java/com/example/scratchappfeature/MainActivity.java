@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "myTag";
     private Button logoutButton;
     private RecyclerView userRecipesRV;
+    private FeedRecipeRVAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +40,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
 
-        userRecipesRV = findViewById(R.id.userRecipesRecyclerView);
-        userRecipesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        // create an ArrayList to store all of the users' recipes
-        ArrayList<Recipe> recipes_feed = new ArrayList<Recipe>();
-
+        // temporary - find somewhere else to place the logout option
         logoutButton = (Button) findViewById(R.id.btn_logout);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
                 logout();
             }
         });
+
+        // create a RecyclerView to store the main feed
+        userRecipesRV = findViewById(R.id.userRecipesRecyclerView);
+        userRecipesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        // create an ArrayList to store all of the users' recipes
+        ArrayList<Recipe> recipes_feed = new ArrayList<Recipe>();
 
         db.collection("recipes")
             //.whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -64,23 +67,28 @@ public class MainActivity extends AppCompatActivity {
                             Recipe userRecipe = document.toObject(Recipe.class);
                             recipes_feed.add(userRecipe);
                         }
-                        // TODO: implement RVadapter for UserRecipes
-//                        adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
-//                        // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
-//                        recipesRV.setAdapter(adapter);
-//                        // this is called when a recipe is clicked
-//                        adapter.setOnItemClickListener(new RecipeRVAdapter.OnItemClickListener() {
-//                            @Override
-//                            public void onItemClick(int position) {
-//                                Recipe clickedRecipe = user_recipes.get(position);
-//                                openRecipePageActivity(clickedRecipe.getDocument_ID());
-//                            }
-//                        });
+                        adapter = new FeedRecipeRVAdapter(recipes_feed, getApplicationContext());
+                        // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
+                        userRecipesRV.setAdapter(adapter);
+                        // this is called when a recipe is clicked
+                        adapter.setOnItemClickListener(new FeedRecipeRVAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(int position) {
+                                Recipe clickedRecipe = recipes_feed.get(position);
+                                openRecipePageActivity(clickedRecipe.getDocument_ID());
+                            }
+                        });
                     } else {
                         Log.d("err", "Error getting documents: ", task.getException());
                     }
                 }
             });
+    }
+
+    public void openRecipePageActivity(String recipe_ID) {
+        Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
+        intent.putExtra("open_recipe_from_id", recipe_ID);
+        startActivity(intent);
     }
 
     public void openScratchNotesActivity() {
