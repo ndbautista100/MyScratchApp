@@ -5,54 +5,60 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 public class LayoutRVAdapter extends RecyclerView.Adapter<LayoutRVAdapter.ViewHolder> {
 
 
-    private ArrayList<String> mImagesUrls = new ArrayList<>();
+    private String mImageUrls;
     private Context mContext;
-    private int layoutId;
 
-    public LayoutRVAdapter(Context context, ArrayList<String> imageUrls, int layoutId) {
-        this.mImagesUrls = imageUrls;
+    public LayoutRVAdapter(Context context, String imageUrl) {
+        this.mImageUrls = imageUrl;
         this.mContext = context;
-        this.layoutId = layoutId;
-    }
-
-    public LayoutRVAdapter(View inflate) {
     }
 
     @NonNull
     @Override
-    public LayoutRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recipe_rv_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LayoutRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        if (mImageUrls != null){
+            Picasso.with(mContext.getApplicationContext())
+                    .load(mImageUrls)
+                    .into(holder.imageView);
+        }
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "Clicked Picture", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return mImagesUrls.size();
+        return 1; //mImageUrls.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        ImageView imageView;
 
-        ImageView recipeImage;
-
-        public ViewHolder(View itemView) {
+        public ViewHolder (View itemView){
             super(itemView);
+            imageView = itemView.findViewById(R.id.photoImageView);
         }
     }
 }

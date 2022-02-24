@@ -10,9 +10,9 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String tools;
     private String user_ID;
     private String document_ID;
-    private int layoutChoice;
-    private String image_URL;
+    private int layoutChoice = 2131427384;
     private String imageName;
+    private String image_URL;
 
     public Recipe(String name, String description, String ingredients, String tools) {
         this.name = name;
@@ -27,7 +27,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.ingredients = ingredients;
         this.tools = tools;
         this.user_ID = userID;
-        this.layoutChoice = 1;
+        this.layoutChoice = 2131427384;
     }
 
     public Recipe() {
@@ -102,6 +102,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", ingredients='" + ingredients + '\'' +
+                ", image_URL='" + image_URL + '\'' +
                 ", tools='" + tools + '\'' +
                 ", user_ID='" + user_ID + '\'' +
                 '}';
