@@ -29,7 +29,6 @@ import classes.Recipe;
 public class MainActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "myTag";
-    private Button logoutButton;
     private RecyclerView userRecipesRV;
     private FeedRecipeRVAdapter adapter;
 
@@ -39,15 +38,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
-
-        // temporary - find somewhere else to place the logout option
-        logoutButton = (Button) findViewById(R.id.btn_logout);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logout();
-            }
-        });
 
         // create a RecyclerView to store the main feed
         userRecipesRV = findViewById(R.id.userRecipesRecyclerView);
@@ -112,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_logout:
+                logout();
+                return true;
             case R.id.action_settings:
                 return true;
             case R.id.action_create:

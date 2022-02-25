@@ -31,11 +31,13 @@ import java.util.Locale;
 import classes.Recipe;
 
 public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapter.FeedRecipeViewHolder> implements Filterable {
-    private ArrayList<Recipe> dataModalArrayList;
-    private ArrayList<Recipe> dataModalArrayListFull;
+    private ArrayList<Recipe> recipeArrayList;
+    private ArrayList<Recipe> recipeArrayListFull;
     private Context context;
     private OnItemClickListener mListener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final int VIEW_TYPE_LOADING = 0;
+    private final int VIEW_TYPE_ITEM = 1;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -49,6 +51,7 @@ public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapte
         // creating variables for our views of recycler items.
         private TextView recipeNameTextView;
         private TextView recipeDescriptionTextView;
+        private TextView userTextView;
         private ImageView recipeImageView;
 
         public FeedRecipeViewHolder(@NonNull View itemView, OnItemClickListener listener) {
@@ -56,7 +59,9 @@ public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapte
             // initializing the views of the RecyclerView
             recipeNameTextView = itemView.findViewById(R.id.feedRecipeNameTextView);
             recipeDescriptionTextView = itemView.findViewById(R.id.feedRecipeDescriptionTextView);
+            userTextView = itemView.findViewById(R.id.feedUserTextView);
             recipeImageView = itemView.findViewById(R.id.feedCardRecipeImageView);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -71,29 +76,10 @@ public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapte
         }
     }
 
-    private void removeAt(int position) {
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, dataModalArrayList.size());
-        String docID = dataModalArrayList.get(position).getDocument_ID();
-        db.collection("recipes").document(docID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("DeleteTag", "DocumentSnapshot successfully deleted!");
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("DeleteTag", "Error deleting document", e);
-                    }
-                });
-        dataModalArrayList.remove(position);
-    }
-
     // constructor class for our Adapter
-    public FeedRecipeRVAdapter(ArrayList<Recipe> dataModalArrayList, Context context) {
-        this.dataModalArrayList = dataModalArrayList;
-        dataModalArrayListFull = new ArrayList<>(dataModalArrayList); // create a copy that doesn't point to the same ArrayList
+    public FeedRecipeRVAdapter(ArrayList<Recipe> recipeArrayList, Context context) {
+        this.recipeArrayList = recipeArrayList;
+        recipeArrayListFull = new ArrayList<>(recipeArrayList); // create a copy that doesn't point to the same ArrayList
         this.context = context;
     }
 
@@ -105,32 +91,40 @@ public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapte
     @Override
     public FeedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // passing our layout file for displaying our card item
-        View v = LayoutInflater.from(context).inflate(R.layout.feed_rv_item, parent, false);
-        FeedRecipeViewHolder recipeViewHolder = new FeedRecipeViewHolder(v, mListener);
+        View view = LayoutInflater.from(context).inflate(R.layout.feed_rv_item, parent, false);
+        FeedRecipeViewHolder recipeViewHolder = new FeedRecipeViewHolder(view, mListener);
         return recipeViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull FeedRecipeRVAdapter.FeedRecipeViewHolder holder, @SuppressLint("RecyclerView") int position) {
         // setting data to our views in RecyclerView items
-        Recipe modal = dataModalArrayList.get(position);
-        holder.recipeNameTextView.setText(modal.getName());
-        holder.recipeDescriptionTextView.setText(modal.getDescription());
+        Recipe recipe = recipeArrayList.get(position);
+        holder.recipeNameTextView.setText(recipe.getName());
+        holder.recipeDescriptionTextView.setText(recipe.getDescription());
+        holder.userTextView.setText(recipe.getUser_ID()); // TEMPORARY - replace with username later
 
         // we are using Picasso to load images from URLs into an ImageView
-        if(modal.getImage_URL() != null) {
+        if(recipe.getImage_URL() != null) {
             Picasso.with(context.getApplicationContext())
-                    .load(modal.getImage_URL())
-                    .into(holder.recipeImageView);
+                .load(recipe.getImage_URL())
+                .into(holder.recipeImageView);
         }
     }
 
     @Override
     public int getItemCount() {
         // returning the size of array list.
-        return dataModalArrayList.size();
+        return recipeArrayList.size();
     }
 
+//    @Override
+//    public int getItemViewType(int position) {
+//        // if the user reaches the bottom of the feed by getting a null item, return the loading int
+//        return recipeArrayList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+//    }
+
+    // Search for recipe
     @Override
     public Filter getFilter() {
         return exampleFilter;
@@ -142,11 +136,11 @@ public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapte
             ArrayList<Recipe> filteredList = new ArrayList<>();
 
             if(charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(dataModalArrayListFull);
+                filteredList.addAll(recipeArrayListFull);
             } else {
                 String filterPattern = charSequence.toString().toLowerCase(Locale.ROOT).trim();
 
-                for(Recipe recipe : dataModalArrayListFull) {
+                for(Recipe recipe : recipeArrayListFull) {
                     if(recipe.getName().toLowerCase().contains(filterPattern)) {
                         filteredList.add(recipe);
                     }
@@ -161,8 +155,8 @@ public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapte
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            dataModalArrayList.clear();
-            dataModalArrayList.addAll((List) filterResults.values);
+            recipeArrayList.clear();
+            recipeArrayList.addAll((List) filterResults.values);
             notifyDataSetChanged();
         }
     };

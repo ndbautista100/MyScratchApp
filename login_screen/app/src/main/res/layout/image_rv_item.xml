@@ -17,7 +17,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_recipe_image" />
+
 
         <TextView
             android:id="@+id/recipeNameTextView"
@@ -26,7 +28,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/cardRecipeImageView"
-            android:text="Recipe Name"
+            android:hint="Recipe Name"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -38,7 +40,7 @@
             android:layout_below="@+id/recipeNameTextView"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/cardRecipeImageView"
-            android:text="Description"
+            android:hint="Description"
             android:textSize="15sp" />
 
         <ImageButton
