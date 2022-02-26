@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "myTag";
     private RecyclerView userRecipesRV;
     private FeedRecipeRVAdapter adapter;
+    private boolean isLoading = false;
+    ArrayList<Recipe> recipes_feed = new ArrayList<Recipe>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
         // create a RecyclerView to store the main feed
         userRecipesRV = findViewById(R.id.userRecipesRecyclerView);
         userRecipesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        // create an ArrayList to store all of the users' recipes
-        ArrayList<Recipe> recipes_feed = new ArrayList<Recipe>();
 
         db.collection("recipes")
             //.whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -58,14 +57,27 @@ public class MainActivity extends AppCompatActivity {
                             recipes_feed.add(userRecipe);
                         }
                         adapter = new FeedRecipeRVAdapter(recipes_feed, getApplicationContext());
-                        // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
-                        userRecipesRV.setAdapter(adapter);
-                        // this is called when a recipe is clicked
-                        adapter.setOnItemClickListener(new FeedRecipeRVAdapter.OnItemClickListener() {
+                        userRecipesRV.setAdapter(adapter); // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
+                        adapter.setOnItemClickListener(new FeedRecipeRVAdapter.OnItemClickListener() { // this is called when a recipe is clicked
                             @Override
                             public void onItemClick(int position) {
                                 Recipe clickedRecipe = recipes_feed.get(position);
                                 openRecipePageActivity(clickedRecipe.getDocument_ID());
+                            }
+                        });
+
+                        userRecipesRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                            @Override
+                            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                                super.onScrolled(recyclerView, dx, dy);
+
+                                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) userRecipesRV.getLayoutManager();
+                                if(!isLoading) {
+                                    if(linearLayoutManager != null & linearLayoutManager.findLastCompletelyVisibleItemPosition() == recipes_feed.size() - 1) {
+                                        isLoading = true;
+                                        getMoreData();
+                                    }
+                                }
                             }
                         });
                     } else {
@@ -73,6 +85,22 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+    }
+
+    private void getMoreData() {
+        recipes_feed.add(null);
+        adapter.notifyItemInserted(recipes_feed.size() - 1);
+        recipes_feed.remove(recipes_feed.size() - 1);
+
+        int currentSize = recipes_feed.size();
+        int nextSize = currentSize + 10;
+        while(currentSize < nextSize) {
+            // add more data - try to do this with database
+            recipes_feed.add(new Recipe("new recipe #" + currentSize));
+            currentSize++;
+        }
+        adapter.notifyDataSetChanged();
+        isLoading = false;
     }
 
     public void openRecipePageActivity(String recipe_ID) {
