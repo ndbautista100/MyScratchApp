@@ -64,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_search:
                 return true;
-            case R.id.action_profile:
+
+
+                case R.id.action_profile:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
