@@ -33,12 +33,13 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.layoutChoice = 1;
     }
 
-    public Recipe(String name) {
-        this.name = name;
-    }
-
     public Recipe() {
 
+    }
+
+
+    public Recipe(String name) {
+        this.name = name;
     }
 
     public String getName() {

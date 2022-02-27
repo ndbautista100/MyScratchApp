@@ -49,10 +49,10 @@ public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapte
 
     public static class FeedRecipeViewHolder extends RecyclerView.ViewHolder {
         // creating variables for our views of recycler items.
-        protected TextView recipeNameTextView;
-        protected TextView recipeDescriptionTextView;
-        protected TextView userTextView;
-        protected ImageView recipeImageView;
+        private TextView recipeNameTextView;
+        private TextView recipeDescriptionTextView;
+        private TextView userTextView;
+        private ImageView recipeImageView;
 
         public FeedRecipeViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -91,51 +91,13 @@ public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapte
     @Override
     public FeedRecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // passing our layout file for displaying our card item
-
-        if(viewType == VIEW_TYPE_ITEM) {
-            View view = LayoutInflater.from(context).inflate(R.layout.feed_rv_item, parent, false);
-            return new ItemViewHolder(view, mListener);
-        } else {
-            View view = LayoutInflater.from(context).inflate(R.layout.items_loading, parent, false);
-            return new LoadingHolder(view, mListener);
-        }
-
+        View view = LayoutInflater.from(context).inflate(R.layout.feed_rv_item, parent, false);
+        FeedRecipeViewHolder recipeViewHolder = new FeedRecipeViewHolder(view, mListener);
+        return recipeViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull FeedRecipeRVAdapter.FeedRecipeViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        if(holder instanceof ItemViewHolder) {
-            populateItemRows((ItemViewHolder) holder, position);
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        // returning the size of array list.
-        return recipeArrayList.size();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        // if the user reaches the bottom of the feed by getting a null item, return the loading int
-        return recipeArrayList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
-    }
-
-    private class ItemViewHolder extends FeedRecipeViewHolder {
-
-        public ItemViewHolder(@NonNull View itemView, OnItemClickListener listener) {
-            super(itemView, listener);
-        }
-    }
-
-    private class LoadingHolder extends FeedRecipeViewHolder {
-
-        public LoadingHolder(@NonNull View itemView, OnItemClickListener listener) {
-            super(itemView, listener);
-        }
-    }
-
-    private void populateItemRows(ItemViewHolder holder, int position) {
         // setting data to our views in RecyclerView items
         Recipe recipe = recipeArrayList.get(position);
         holder.recipeNameTextView.setText(recipe.getName());
@@ -145,10 +107,22 @@ public class FeedRecipeRVAdapter extends RecyclerView.Adapter<FeedRecipeRVAdapte
         // we are using Picasso to load images from URLs into an ImageView
         if(recipe.getImage_URL() != null) {
             Picasso.with(context.getApplicationContext())
-                    .load(recipe.getImage_URL())
-                    .into(holder.recipeImageView);
+                .load(recipe.getImage_URL())
+                .into(holder.recipeImageView);
         }
     }
+
+    @Override
+    public int getItemCount() {
+        // returning the size of array list.
+        return recipeArrayList.size();
+    }
+
+//    @Override
+//    public int getItemViewType(int position) {
+//        // if the user reaches the bottom of the feed by getting a null item, return the loading int
+//        return recipeArrayList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+//    }
 
     // Search for recipe
     @Override

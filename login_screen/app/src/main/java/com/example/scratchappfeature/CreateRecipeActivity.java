@@ -131,6 +131,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
         ObjectMapper oMapper = new ObjectMapper();
         Map<String, Object> recipeMap = oMapper.convertValue(recipe, Map.class);
 
+
         // add recipe to database
         db.collection("recipes")
             .add(recipeMap)
