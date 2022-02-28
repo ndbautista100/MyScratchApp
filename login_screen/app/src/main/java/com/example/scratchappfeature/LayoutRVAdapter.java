@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 public class LayoutRVAdapter extends RecyclerView.Adapter<LayoutRVAdapter.ViewHolder> {

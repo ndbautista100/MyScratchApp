@@ -135,6 +135,7 @@ public class RecipePageActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                downloadImage();
                 openCustomizeRecipeFeatureActivity(recipe);
             }
         });

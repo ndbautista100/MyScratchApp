@@ -1,6 +1,7 @@
 package com.example.scratchappfeature;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.google.firebase.firestore.Query;
 import org.w3c.dom.Text;
 
 import classes.Recipe;
+import top.defaults.colorpicker.ColorPickerPopup;
 
 public class CustomizeRecipeFeature extends AppCompatActivity {
 
@@ -48,6 +50,9 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
     private Button layoutFourBtn;
     private Button layoutFiveBtn;
     private Button layoutSixBtn;
+
+    private int textBoxColor;
+    private int backgroundColor;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
     private Recipe recipe;
@@ -87,6 +92,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         layoutOneBtn = findViewById(R.id.layoutOneButton);
         layoutTwoBtn = findViewById(R.id.layoutTwoButton);
         layoutThreeBtn = findViewById(R.id.layoutThreeButton);
+        layoutFourBtn = findViewById(R.id.layoutFourButton);
         layoutScrollView = findViewById(R.id.layoutHorizontalScrollBar);
         saveBtn = findViewById(R.id.layoutSaveButton);
         photosRecyclerView = findViewById(R.id.photosRecyclerView);
@@ -133,7 +139,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         layoutOneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inflateFragment(fragmentManager, 2131427384);
+                inflateFragment(fragmentManager, R.layout.fragment_layout_one);
             }
         });
 
@@ -148,6 +154,58 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 inflateFragment(fragmentManager, R.layout.fragment_layout_three);
+            }
+        });
+
+        layoutFourBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inflateFragment(fragmentManager, R.layout.fragment_layout_four);
+            }
+        });
+
+
+        colorBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                new ColorPickerPopup.Builder(CustomizeRecipeFeature.this)
+                        .initialColor(Color.RED)
+                        .enableBrightness(true)
+                        .enableAlpha(true)
+                        .okTitle("Select")
+                        .cancelTitle("Cancel")
+                        .showIndicator(true)
+                        .showValue(true)
+                        .build()
+                        .show(v, new ColorPickerPopup.ColorPickerObserver(){
+                            @Override
+                            public void
+                            onColorPicked(int color){
+                                recipe.setTextBoxColor(color);
+                            }
+                        });
+            }
+        });
+
+        backgroundBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                new ColorPickerPopup.Builder(CustomizeRecipeFeature.this)
+                        .initialColor(Color.RED)
+                        .enableBrightness(true)
+                        .enableAlpha(true)
+                        .okTitle("Select")
+                        .cancelTitle("Cancel")
+                        .showIndicator(true)
+                        .showValue(true)
+                        .build()
+                        .show(v, new ColorPickerPopup.ColorPickerObserver(){
+                            @Override
+                            public void
+                            onColorPicked(int color){
+                                recipe.setBackgroundColor(color);
+                            }
+                        });
             }
         });
 

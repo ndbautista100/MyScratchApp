@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -18,7 +17,6 @@
             android:layout_height="wrap_content"
             android:text="Title"
             android:background="@drawable/black_border"
-            android:backgroundTint="#F2F2F2"
             android:gravity="center"
             android:padding="8dp"
             android:textSize="28sp"
@@ -40,17 +38,30 @@
         </androidx.recyclerview.widget.RecyclerView>
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolsTitleTextView"
+            android:text="Tools"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toTopOf="@id/toolsScrollView"
+            app:layout_constraintTop_toBottomOf="@id/photosRecyclerView"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
         <ScrollView
             android:id="@+id/toolsScrollView"
             android:layout_width="156dp"
             android:layout_height="124dp"
-            app:layout_constraintTop_toBottomOf="@id/photosRecyclerView"
+            app:layout_constraintTop_toBottomOf="@id/toolsTitleTextView"
             app:layout_constraintStart_toEndOf="@id/instructionsScrollView"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="16dp"
             android:padding="16dp"
             android:background="@drawable/black_border"
-            android:backgroundTint="#F2F2F2"
             >
 
             <TextView
@@ -61,17 +72,29 @@
                 />
         </ScrollView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ingredientsTitleTextView"
+            android:text="Ingredients"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:layout_marginHorizontal="32dp"
+            app:layout_constraintBottom_toTopOf="@id/ingredientsScrollView"
+            app:layout_constraintTop_toBottomOf="@id/toolsScrollView"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
         <ScrollView
             android:id="@+id/ingredientsScrollView"
             android:layout_width="156dp"
             android:layout_height="124dp"
-            app:layout_constraintTop_toBottomOf="@id/toolsScrollView"
+            app:layout_constraintTop_toBottomOf="@id/ingredientsTitleTextView"
             app:layout_constraintStart_toEndOf="@id/instructionsScrollView"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="16dp"
             android:padding="16dp"
             android:background="@drawable/black_border"
-            android:backgroundTint="#F2F2F2"
 
             >
 
@@ -84,15 +107,28 @@
 
         </ScrollView>
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/instructionsTitleTextView"
+            android:text="Instructions"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:layout_marginHorizontal="32dp"
+            app:layout_constraintTop_toBottomOf="@id/photosRecyclerView"
+            app:layout_constraintBottom_toTopOf="@id/instructionsScrollView"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
         <ScrollView
             android:id="@+id/instructionsScrollView"
             android:layout_width="156dp"
             android:layout_height="264dp"
             android:padding="16dp"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="16dp"
             android:background="@drawable/black_border"
-            android:backgroundTint="#F2F2F2"
-            app:layout_constraintTop_toBottomOf="@id/photosRecyclerView"
+            app:layout_constraintTop_toBottomOf="@id/instructionsTitleTextView"
             app:layout_constraintEnd_toStartOf="@id/toolsScrollView"
             app:layout_constraintStart_toStartOf="parent"
             >
