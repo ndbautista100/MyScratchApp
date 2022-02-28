@@ -27,53 +27,50 @@ import java.util.ArrayList;
 import classes.Recipe;
 
 public class ScratchNotesActivity extends AppCompatActivity {
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final String TAG = "ScratchNotesActivity";
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView recipesRV;
     private RecipeRVAdapter adapter;
+    private ArrayList<Recipe> user_recipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scratch_notes);
-        Toolbar toolbarScratchNotes = (Toolbar) findViewById(R.id.toolbarScratchNotes);
-        setSupportActionBar(toolbarScratchNotes);
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+
+        setToolbar();
 
         // create a RecyclerView to store the recipe name TextViews
         recipesRV = findViewById(R.id.recipesRecyclerView);
         recipesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        // create an ArrayList to store all of the user's recipes
-        ArrayList<Recipe> user_recipes = new ArrayList<Recipe>();
+        showRecipes();
+    }
+
+    public void showRecipes() {
+        user_recipes = new ArrayList<>();
 
         db.collection("recipes")
             .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
             .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Log.d("Success", FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
 
-                            Recipe recipe = document.toObject(Recipe.class);
-                            user_recipes.add(recipe);
-                        }
-                        adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
-                        // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
-                        recipesRV.setAdapter(adapter);
-                        // this is called when a recipe is clicked
-                        adapter.setOnItemClickListener(new RecipeRVAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(int position) {
-                                Recipe clickedRecipe = user_recipes.get(position);
-                                openRecipePageActivity(clickedRecipe.getDocument_ID());
-                            }
-                        });
-                    } else {
-                        Log.d("err", "Error getting documents: ", task.getException());
+                        Recipe recipe = document.toObject(Recipe.class);
+                        user_recipes.add(recipe);
                     }
+                    adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
+                    // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
+                    recipesRV.setAdapter(adapter);
+                    // this is called when a recipe is clicked
+                    adapter.setOnItemClickListener(position -> {
+                        Recipe clickedRecipe = user_recipes.get(position);
+                        openRecipePageActivity(clickedRecipe.getDocument_ID());
+                    });
+                } else {
+                    Log.e(TAG, "Error getting documents: ", task.getException());
                 }
             });
     }
@@ -107,6 +104,13 @@ public class ScratchNotesActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void setToolbar() {
+        Toolbar toolbarScratchNotes = (Toolbar) findViewById(R.id.toolbarScratchNotes);
+        setSupportActionBar(toolbarScratchNotes);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     // Opens the tool bar for the Scratch Notes page

@@ -19,7 +19,7 @@
             android:layout_height="250dp"
             android:padding="2dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/no_recipe_image" />
+            android:src="@drawable/no_recipe_image"/>
 
         <TextView
             android:id="@+id/feedRecipeNameTextView"

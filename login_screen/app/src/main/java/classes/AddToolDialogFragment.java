@@ -32,10 +32,11 @@ public class AddToolDialogFragment extends AppCompatDialogFragment {
         try {
             listener = (AddToolDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement AddToolDialogListener");
+            throw new ClassCastException(context + " must implement AddToolDialogListener");
         }
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -43,19 +44,13 @@ public class AddToolDialogFragment extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.activity_add_tool, null);
 
         builder.setView(view)
-                .setPositiveButton(R.string.add_tool, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // add the tool
-                        String toolName = toolNameEditText.getText().toString();
-                        listener.applyToolName(toolName);
-                    }
+                .setPositiveButton(R.string.add_tool, (dialogInterface, i) -> {
+                    // add the tool
+                    String toolName = toolNameEditText.getText().toString();
+                    listener.applyToolName(toolName);
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // cancel adding tool
-                    }
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    // cancel adding tool
                 });
 
         toolNameEditText = view.findViewById(R.id.addToolNameEditText);
