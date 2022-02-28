@@ -1,29 +1,22 @@
 
 package com.example.scratchappfeature;
 
-import android.content.Context;
+
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import classes.Recipe;
 
@@ -85,14 +78,33 @@ public class LayoutFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(layoutId, container, false);
+        ConstraintLayout mainBackground = view.findViewById(R.id.layoutConstraint);
+        mainBackground.setBackgroundColor(recipe.getBackgroundColor());
+
         TextView recipeName = view.findViewById(R.id.titleTextView);
+
         TextView recipeTools = view.findViewById(R.id.toolsTextView);
+        ScrollView toolsScrollView = view.findViewById(R.id.toolsScrollView);
+
         TextView recipeIngredients = view.findViewById(R.id.ingredientsTextView);
+        ScrollView ingredientsScrollView = view.findViewById(R.id.ingredientsScrollView);
+
         TextView recipeInstructions = view.findViewById(R.id.instructionsTextView);
+        ScrollView instructionsScrollView = view.findViewById(R.id.instructionsScrollView);
+
         recipeName.setText(recipe.getName());
+        recipeName.setBackgroundColor(recipe.getTextBoxColor());
+
         recipeTools.setText(recipe.getTools());
+        toolsScrollView.setBackgroundColor(recipe.getTextBoxColor());
+
         recipeIngredients.setText(recipe.getIngredients());
+        ingredientsScrollView.setBackgroundColor(recipe.getTextBoxColor());
+
         recipeInstructions.setText(recipe.getDescription());
+        instructionsScrollView.setBackgroundColor(recipe.getTextBoxColor());
+
+
 
         initRecyclerView(view);
         // Inflate the layout for this fragment

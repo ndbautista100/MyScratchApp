@@ -152,6 +152,7 @@ public class RecipePageActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                downloadImage();
                 openCustomizeRecipeFeatureActivity(recipe);
             }
         });
@@ -160,7 +161,7 @@ public class RecipePageActivity extends AppCompatActivity {
         addImageButton = (Button) findViewById(R.id.addImageButton);
         addImageButton.setOnClickListener(view -> mGetContent.launch("image/*"));
 
-        downloadImage();
+
     }
 
     public void uploadImage() {

@@ -14,7 +14,9 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String tools;
     private String user_ID;
     private String document_ID;
-    private int layoutChoice = 2131427384;
+    private int layoutChoice = 2131427384; //Layout One
+    private int textBoxColor = 0xF2F2F2; //Gray
+    private int backgroundColor = 0xFFFFFF; //White
     String image_URL;
 
     public Recipe(String name, String description, String ingredients, String tools) {
@@ -98,6 +100,14 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     public void setImage_URL(String image_URL) {
         this.image_URL = image_URL;
     }
+
+    public void setTextBoxColor (int color) {this.textBoxColor = color;}
+
+    public int getTextBoxColor() {return this.textBoxColor;}
+
+    public int getBackgroundColor() {return this.backgroundColor;}
+
+    public void setBackgroundColor(int color) {this.backgroundColor = color;}
 
     @Override
     public String toString() {
