@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             .build();
 
         adapter.updateOptions(newPagingOptions);
-
+        // userRecipesRV.setLayoutManager(new LinearLayoutManager(this));
         // adapterMethods(adapter);
     }
 
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         });
 
-        userRecipesRV.setHasFixedSize(true);
+        userRecipesRV.setHasFixedSize(true); //
         userRecipesRV.setLayoutManager(new LinearLayoutManager(this));
         userRecipesRV.setAdapter(adapter);
     }

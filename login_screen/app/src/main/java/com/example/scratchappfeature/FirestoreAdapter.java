@@ -12,7 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 import android.content.Context;
 
@@ -20,6 +25,7 @@ import classes.Recipe;
 
 public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAdapter.RecipeViewHolder> {
     private static final String TAG = "FirestoreAdapter";
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final Context context;
     private OnItemClickListener mListener;
 
@@ -41,7 +47,22 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
     protected void onBindViewHolder(@NonNull RecipeViewHolder holder, int position, @NonNull Recipe model) {
         holder.recipeNameTextView.setText(model.getName());
         holder.recipeDescriptionTextView.setText(model.getDescription());
-        holder.userTextView.setText(model.getUser_ID()); // TEMPORARY - replace with username later
+
+        String userName = "";
+        db.collection("profile")
+            .document(model.getUser_ID())
+            .get()
+            .addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()) {
+                        userName += document.getString("pname");
+                    }
+                }
+            })
+            .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+
+        holder.userTextView.setText(userName); // TEMPORARY - replace with username later
 
         // we are using Picasso to load images from URLs into an ImageView
         if(model.getImage_URL() != null) {
