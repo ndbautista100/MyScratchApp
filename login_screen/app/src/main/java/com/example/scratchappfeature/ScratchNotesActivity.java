@@ -15,12 +15,9 @@ import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -94,12 +91,12 @@ public class ScratchNotesActivity extends AppCompatActivity {
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
+            public boolean onQueryTextSubmit(String s) { // called when search is submitted
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String s) {
+            public boolean onQueryTextChange(String s) { // called when a character is typed
                 adapter.getFilter().filter(s);
                 return false;
             }
@@ -107,7 +104,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
     }
 
     public void setToolbar() {
-        Toolbar toolbarScratchNotes = (Toolbar) findViewById(R.id.toolbarScratchNotes);
+        Toolbar toolbarScratchNotes = findViewById(R.id.toolbarScratchNotes);
         setSupportActionBar(toolbarScratchNotes);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);

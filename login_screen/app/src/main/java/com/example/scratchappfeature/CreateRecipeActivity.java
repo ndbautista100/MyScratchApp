@@ -102,6 +102,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
         ObjectMapper oMapper = new ObjectMapper();
         Map<String, Object> recipeMap = oMapper.convertValue(recipe, Map.class);
 
+        recipeMap.put("search", recipe.getName().toLowerCase()); // currently needed for searching the database to ignore case
 
         // add recipe to database
         db.collection("recipes")
@@ -123,7 +124,7 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
     }
 
     public void setToolbar() {
-        Toolbar toolbarCreateRecipe = (Toolbar) findViewById(R.id.toolbarCreateRecipe);
+        Toolbar toolbarCreateRecipe = findViewById(R.id.toolbarCreateRecipe);
         setSupportActionBar(toolbarCreateRecipe);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);

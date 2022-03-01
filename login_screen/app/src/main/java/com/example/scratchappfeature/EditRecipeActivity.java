@@ -82,7 +82,8 @@ public class EditRecipeActivity extends AppCompatActivity {
                                 "description", editDescriptionEditText.getText().toString(),
                                 "ingredients", editIngredientsEditText.getText().toString(),
                                 "name", editRecipeNameEditText.getText().toString(),
-                                "tools", editToolsEditText.getText().toString()
+                                "tools", editToolsEditText.getText().toString(),
+                                "search", editRecipeNameEditText.getText().toString().toLowerCase() // currently needed for searching the database to ignore case
                         ).addOnSuccessListener(unused -> {
                             Log.i(TAG, "DocumentSnapshot successfully updated!");
                             openRecipePageActivity();
@@ -106,7 +107,7 @@ public class EditRecipeActivity extends AppCompatActivity {
     }
 
     public void setToolbar() {
-        Toolbar toolbarCreateRecipe = (Toolbar) findViewById(R.id.toolbarEditRecipe);
+        Toolbar toolbarCreateRecipe = findViewById(R.id.toolbarEditRecipe);
         setSupportActionBar(toolbarCreateRecipe);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);

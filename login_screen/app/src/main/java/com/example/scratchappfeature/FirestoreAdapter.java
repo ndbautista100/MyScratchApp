@@ -54,7 +54,7 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreate!");
+        Log.d(TAG, "Method onCreateViewHolder called.");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.feed_rv_item, parent, false);
         return new RecipeViewHolder(view, mListener);
     }
@@ -76,9 +76,9 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
             recipeImageView = itemView.findViewById(R.id.feedCardRecipeImageView);
 
             itemView.setOnClickListener(view -> {
-                int position = getAdapterPosition();
+                int position = getAbsoluteAdapterPosition();
                 if(position != RecyclerView.NO_POSITION && listener != null) {
-                    listener.onItemClick(getItem(getAdapterPosition()), position);
+                    listener.onItemClick(getItem(getAbsoluteAdapterPosition()), position);
                 }
             });
         }

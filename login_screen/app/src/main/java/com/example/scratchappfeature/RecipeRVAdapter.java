@@ -58,7 +58,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
             removeBtn = itemView.findViewById(R.id.deleteRecipeImageButton);
             itemView.setOnClickListener(view -> {
                 if(listener != null) {
-                    int position = getAdapterPosition();
+                    int position = getAbsoluteAdapterPosition();
                     if(position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(position);
                     }

@@ -202,7 +202,7 @@ public class RecipePageActivity extends AppCompatActivity {
     }
 
     public void setToolbar() {
-        toolbarScratchNotes = (Toolbar) findViewById(R.id.toolbarRecipePage);
+        toolbarScratchNotes = findViewById(R.id.toolbarRecipePage);
         setSupportActionBar(toolbarScratchNotes);
         ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
