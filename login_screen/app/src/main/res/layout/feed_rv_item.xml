@@ -42,8 +42,17 @@
             android:hint="Description"
             android:textSize="15sp" />
 
+        <ImageView
+            android:id="@+id/feedUserAvatarImageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/feedRecipeNameTextView"
+            android:layout_toStartOf="@id/feedUserNameTextView"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/ic_baseline_account_circle_24" />
+
         <TextView
-            android:id="@+id/feedUserTextView"
+            android:id="@+id/feedUserNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/feedRecipeNameTextView"

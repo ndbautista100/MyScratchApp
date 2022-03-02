@@ -335,7 +335,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/no_food/baseline_no_food_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/account_circle/baseline_account_circle_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -346,7 +346,7 @@
                         <option name="values">
                           <map>
                             <entry key="autoMirrored" value="true" />
-                            <entry key="outputName" value="no_recipe_image" />
+                            <entry key="outputName" value="ic_baseline_account_circle_24" />
                             <entry key="sourceFile" value="C:\Users\giosa\Documents\School\Fall 2021\CECS 491A\MyScratchApp\home_screen_prototype" />
                           </map>
                         </option>

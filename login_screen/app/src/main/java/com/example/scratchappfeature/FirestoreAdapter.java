@@ -1,5 +1,6 @@
 package com.example.scratchappfeature;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
-import android.content.Context;
 
 import classes.Recipe;
 
@@ -48,7 +44,7 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
         holder.recipeNameTextView.setText(model.getName());
         holder.recipeDescriptionTextView.setText(model.getDescription());
 
-        String userName = "";
+        // get user avatar + name
         db.collection("profile")
             .document(model.getUser_ID())
             .get()
@@ -56,13 +52,18 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
                 if(task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if(document.exists()) {
-                        userName += document.getString("pname");
+                        holder.userNameTextView.setText(document.getString("pname"));
+
+                        // we are using Picasso to load images from URLs into an ImageView
+                        if(document.getString("imageURL") != null) {
+                            Picasso.with(context)
+                                .load(document.getString("imageURL"))
+                                .into(holder.userAvatarImageView);
+                        }
                     }
                 }
             })
             .addOnFailureListener(e -> Log.e(TAG, e.toString()));
-
-        holder.userTextView.setText(userName); // TEMPORARY - replace with username later
 
         // we are using Picasso to load images from URLs into an ImageView
         if(model.getImage_URL() != null) {
@@ -84,7 +85,8 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
         // creating variables for our views of recycler items.
         private final TextView recipeNameTextView;
         private final TextView recipeDescriptionTextView;
-        private final TextView userTextView;
+        private final TextView userNameTextView;
+        private final ImageView userAvatarImageView;
         private final ImageView recipeImageView;
 
         public RecipeViewHolder(@NonNull View itemView, OnItemClickListener listener) {
@@ -93,7 +95,8 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
             // initializing the views of the RecyclerView
             recipeNameTextView = itemView.findViewById(R.id.feedRecipeNameTextView);
             recipeDescriptionTextView = itemView.findViewById(R.id.feedRecipeDescriptionTextView);
-            userTextView = itemView.findViewById(R.id.feedUserTextView);
+            userNameTextView = itemView.findViewById(R.id.feedUserNameTextView);
+            userAvatarImageView = itemView.findViewById(R.id.feedUserAvatarImageView);
             recipeImageView = itemView.findViewById(R.id.feedCardRecipeImageView);
 
             itemView.setOnClickListener(view -> {
