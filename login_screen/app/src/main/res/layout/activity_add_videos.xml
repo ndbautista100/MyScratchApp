@@ -7,7 +7,7 @@
         android:id="@+id/titleEt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Enter Title"/>
+        android:hint="Enter Title" />
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="match_parent"

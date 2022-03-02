@@ -64,8 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_search:
                 return true;
-
-
+            case R.id.action_explore:
+                Intent intent = new Intent(this, ExploreActivity.class);
+                startActivity((intent));
                 case R.id.action_profile:
                 return true;
             default:
