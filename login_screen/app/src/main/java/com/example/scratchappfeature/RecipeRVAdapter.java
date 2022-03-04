@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
     private Context context;
     private OnItemClickListener mListener;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final StorageReference storageReference = storage.getReference("images/");
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -70,9 +74,21 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
     private void removeAt(int position) {
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, recipeArrayList.size());
-        String docID = recipeArrayList.get(position).getDocument_ID();
-        db.collection("recipes").document(docID).delete().addOnSuccessListener(aVoid -> Log.i(TAG, "DocumentSnapshot successfully deleted!"))
-                .addOnFailureListener(e -> Log.e(TAG, "Error deleting document", e));
+
+        Recipe recipeToDelete = recipeArrayList.get(position);
+        String docID = recipeToDelete.getDocument_ID();
+
+        db.collection("recipes").document(docID).delete()
+            .addOnSuccessListener(unused -> {
+                Log.i(TAG, "DocumentSnapshot successfully deleted!");
+                // Delete the image file as well after deleting the recipe
+                StorageReference recipeRef = storageReference.child(recipeToDelete.getImageName());
+                Log.d(TAG, "Deleting image: " + recipeToDelete.getImageName());
+                recipeRef.delete()
+                    .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipeToDelete.getImageName()))
+                    .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+            })
+            .addOnFailureListener(e -> Log.e(TAG, "Error deleting document", e));
         recipeArrayList.remove(position);
     }
 

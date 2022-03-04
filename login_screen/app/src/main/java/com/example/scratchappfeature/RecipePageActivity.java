@@ -146,9 +146,11 @@ public class RecipePageActivity extends AppCompatActivity {
                     if(task.isSuccessful()) {
                         //store image
                         recipe.setImage_URL(task.getResult().toString());
+                        recipe.setImageName(imageName);
                         db.collection("recipes")
                             .document(recipe.getDocument_ID())
-                            .update("image_URL", recipe.getImage_URL())
+                            .update("image_URL", recipe.getImage_URL(),
+                                    "imageName", imageName)
                             .addOnCompleteListener(task1 -> Toast.makeText(RecipePageActivity.this, "Recipe image uploaded!", Toast.LENGTH_SHORT).show())
                         .addOnFailureListener(e -> Toast.makeText(RecipePageActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show());
 

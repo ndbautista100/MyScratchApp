@@ -53,7 +53,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
+//                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
 
                         Recipe recipe = document.toObject(Recipe.class);
                         user_recipes.add(recipe);

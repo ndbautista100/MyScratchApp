@@ -12,7 +12,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String document_ID;
     private int layoutChoice;
     private String image_URL;
-    private String search;
+    private String imageName;
 
     public Recipe(String name, String description, String ingredients, String tools) {
         this.name = name;
@@ -115,11 +115,11 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.layoutChoice = layoutChoice;
     }
 
-    public String getSearch() {
-        return search;
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setSearch(String search) {
-        this.search = search;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }
