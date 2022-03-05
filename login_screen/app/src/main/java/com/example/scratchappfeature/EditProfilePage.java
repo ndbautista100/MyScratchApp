@@ -6,11 +6,16 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -18,21 +23,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.util.ArrayList;
 import java.util.UUID;
 import classes.Profile;
 import java.util.Map;
@@ -57,19 +65,6 @@ public class EditProfilePage extends AppCompatActivity {
     private StorageReference storageRef;
     private String userID;
     private Profile profile;
-    
-
-    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-        @Override
-        public void onActivityResult(Uri result) {
-            if(result != null){
-                profileImage.setImageURI(result);
-                profileImageUri = result;
-
-                uploadImage();
-            }
-        }
-    });
 
 
 
@@ -80,13 +75,6 @@ public class EditProfilePage extends AppCompatActivity {
         nameInput = (EditText) findViewById(R.id.nameInput);
         bioInput = (EditText) findViewById(R.id.bioInput);
         favoritefoodInput = (EditText) findViewById(R.id.favoritefoodInput);
-
-        fstorage = FirebaseStorage.getInstance();
-        storageRef = fstorage.getReference("images/");
-
-        profileImage = (ImageView) findViewById(R.id.profilepicture);
-        uploadbutton = (Button) findViewById(R.id.uploadbutton);
-        uploadbutton.setOnClickListener(view -> mGetContent.launch("image/*"));
 
         fstore = FirebaseFirestore.getInstance();
         fauth = FirebaseAuth.getInstance();
@@ -103,8 +91,14 @@ public class EditProfilePage extends AppCompatActivity {
                         name = doc.getString("pname");
                         bio = doc.getString("bio");
                         favoritefood = doc.getString("favoritefood");
+<<<<<<< HEAD
 
                         downloadimage();
+=======
+                        nameInput.setText(name);
+                        bioInput.setText(bio);
+                        favoritefoodInput.setText(favoritefood);
+>>>>>>> parent of f45fe75 (Trouble with glide)
                     }
                     else{
                         Log.d("docv", "No such info");
@@ -116,6 +110,15 @@ public class EditProfilePage extends AppCompatActivity {
             }
         });
 
+        profileImage = (ImageView) findViewById(R.id.profilepicture);
+        profileImage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mGetContent.launch("image/");
+            }
+        });
+
+
         finishbutton = (Button) findViewById(R.id.finishbutton);
         finishbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,21 +128,35 @@ public class EditProfilePage extends AppCompatActivity {
                 bio = bioInput.getText().toString();
                 favoritefood = favoritefoodInput.getText().toString();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of f45fe75 (Trouble with glide)
                 addDatatoDatabase(name, bio, favoritefood);
 
                 //Change this to submitting the the information, picture, and everything.
                 returnToProfileActivity();
             }
         });
-    }
 
+<<<<<<< HEAD
     private void uploadImage(){
         try {
             if (profileImageUri != null) {
                 String imagename = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
                 StorageReference imageReference = storageRef.child(imagename);
                 String imagerefstring = storageRef.child(imagename).toString();
+=======
+        uploadbutton = (Button) findViewById(R.id.uploadbutton);
+        uploadbutton.setOnClickListener(view -> mGetContent.launch("image/"));
+    }
+
+    private void uploadImage(){
+        try {
+            if (profileImageUri != null) {
+                String imagename = profile.getImageURL() + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
+                StorageReference imageref = storageRef.child(imagename);
+>>>>>>> parent of f45fe75 (Trouble with glide)
 
                 UploadTask uploadTask = imageReference.putFile(profileImageUri);
                 String uploadtaskstring = imageReference.getDownloadUrl().toString();
@@ -163,7 +180,6 @@ public class EditProfilePage extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             Toast.makeText(EditProfilePage.this, "Profile uploaded", Toast.LENGTH_SHORT).show();
-
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -183,6 +199,7 @@ public class EditProfilePage extends AppCompatActivity {
         }
     }
 
+<<<<<<< HEAD
     public void downloadimage(){
         try {
             // get the recipe document from the database
@@ -208,8 +225,19 @@ public class EditProfilePage extends AppCompatActivity {
             });
         } catch (Exception e) {
             Toast.makeText(EditProfilePage.this, e.getMessage()+"in download image2", Toast.LENGTH_SHORT).show();
+=======
+ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+    @Override
+    public void onActivityResult(Uri result) {
+        if(result != null){
+            profileImage.setImageURI(result);
+            profileImageUri = result;
+
+            uploadImage();
+>>>>>>> parent of f45fe75 (Trouble with glide)
         }
     }
+});
 
     private String getExtension(Uri uri) {
         try {

@@ -125,11 +125,17 @@ public class ProfilePage extends AppCompatActivity {
             downloadRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    String downloadUrl = documentSnapshot.getString("imageURL");
+                    String downloadUrl = documentSnapshot.getString("imageurl");
 
                     // Glide makes it easy to load images into ImageViews
                     if(downloadUrl != null) {
+<<<<<<< HEAD
                         Glide.with(ProfilePage.this).load("https://firebasestorage.googleapis.com/v0/b/scratchapp-a5e20.appspot.com/o/images%2FiEXX8kigIFYuTrnUNT82ieqNeMB2_a98f31de-51a5-432f-a226-b4d258f07e14.jpg").into(profileImage);
+=======
+                        Glide.with(ProfilePage.this)
+                                .load(downloadUrl)
+                                .into(profileImage);
+>>>>>>> parent of f45fe75 (Trouble with glide)
                     }
 
                 }
