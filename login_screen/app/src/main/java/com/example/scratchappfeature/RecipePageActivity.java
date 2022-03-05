@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.UUID;
 
+import classes.LoadingDialog;
 import classes.Recipe;
 
 public class RecipePageActivity extends AppCompatActivity {
@@ -133,12 +135,16 @@ public class RecipePageActivity extends AppCompatActivity {
     public void uploadImage() {
         try {
             if(imageLocationUri != null) {
+                LoadingDialog loadingDialog = new LoadingDialog(RecipePageActivity.this);
+                loadingDialog.startLoadingDialog();
+
                 String imageName = recipe.getName() + "_" + UUID.randomUUID().toString() + "." + getExtension(imageLocationUri);
                 StorageReference imageReference = storageReference.child(imageName);
 
                 UploadTask uploadTask = imageReference.putFile(imageLocationUri);
                 uploadTask.continueWithTask(task -> {
                     if(!task.isSuccessful()) {
+                        loadingDialog.dismissDialog();
                         throw task.getException();
                     }
                     return imageReference.getDownloadUrl();
@@ -151,10 +157,17 @@ public class RecipePageActivity extends AppCompatActivity {
                             .document(recipe.getDocument_ID())
                             .update("image_URL", recipe.getImage_URL(),
                                     "imageName", imageName)
-                            .addOnCompleteListener(task1 -> Toast.makeText(RecipePageActivity.this, "Recipe image uploaded!", Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e -> Toast.makeText(RecipePageActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show());
+                            .addOnCompleteListener(task1 -> {
+                                loadingDialog.dismissDialog();
+                                Toast.makeText(RecipePageActivity.this, "Recipe image uploaded!", Toast.LENGTH_SHORT).show();
+                            })
+                        .addOnFailureListener(e -> {
+                            loadingDialog.dismissDialog();
+                            Toast.makeText(RecipePageActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
+                        });
 
                     } else if(!task.isSuccessful()) {
+                        loadingDialog.dismissDialog();
                         Toast.makeText(RecipePageActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
