@@ -82,9 +82,9 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
             .addOnSuccessListener(unused -> {
                 Log.i(TAG, "DocumentSnapshot successfully deleted!");
                 // Delete the image file as well after deleting the recipe
-                StorageReference recipeRef = storageReference.child(recipeToDelete.getImageName());
+                StorageReference recipeImageRef = storageReference.child(recipeToDelete.getImageName());
                 Log.d(TAG, "Deleting image: " + recipeToDelete.getImageName());
-                recipeRef.delete()
+                recipeImageRef.delete()
                     .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipeToDelete.getImageName()))
                     .addOnFailureListener(e -> Log.e(TAG, e.toString()));
             })

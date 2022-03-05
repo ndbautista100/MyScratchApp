@@ -133,7 +133,17 @@ public class RecipePageActivity extends AppCompatActivity {
     }
 
     public void uploadImage() {
-        try {
+        Log.d(TAG, "Recipe has an image: " + recipe.getImageName());
+        if(recipe.getImageName() != null) { // if recipe already has an image
+            // delete that image from Firebase Storage
+            StorageReference recipeImageRef = storageReference.child(recipe.getImageName());
+            Log.d(TAG, "Deleting image: " + recipe.getImageName());
+            recipeImageRef.delete()
+                .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipe.getImageName()))
+                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+        }
+
+        try { // uploading the new image
             if(imageLocationUri != null) {
                 LoadingDialog loadingDialog = new LoadingDialog(RecipePageActivity.this);
                 loadingDialog.startLoadingDialog();
