@@ -2,9 +2,15 @@
 package com.example.scratchappfeature;
 
 
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -92,28 +98,33 @@ public class LayoutFragment extends Fragment {
         TextView recipeInstructions = view.findViewById(R.id.instructionsTextView);
         ScrollView instructionsScrollView = view.findViewById(R.id.instructionsScrollView);
 
+
+        Typeface recipeFont = Typeface.create(recipe.getFontFamily(),Typeface.NORMAL);
+
         recipeName.setText(recipe.getName());
+        recipeName.setTypeface(recipeFont);
         recipeName.setBackgroundColor(recipe.getTextBoxColor());
 
         recipeTools.setText(recipe.getTools());
+        recipeTools.setTypeface(recipeFont);
         toolsScrollView.setBackgroundColor(recipe.getTextBoxColor());
 
         recipeIngredients.setText(recipe.getIngredients());
+        recipeIngredients.setTypeface(recipeFont);
         ingredientsScrollView.setBackgroundColor(recipe.getTextBoxColor());
 
         recipeInstructions.setText(recipe.getDescription());
+        recipeInstructions.setTypeface(recipeFont);
         instructionsScrollView.setBackgroundColor(recipe.getTextBoxColor());
 
-
-
-        initRecyclerView(view);
+        populateRecyclerView(view);
         // Inflate the layout for this fragment
         return view;
     }
 
 
 
-    private void initRecyclerView(View view){
+    private void populateRecyclerView(View view){
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = view.findViewById(R.id.photosRecyclerView);

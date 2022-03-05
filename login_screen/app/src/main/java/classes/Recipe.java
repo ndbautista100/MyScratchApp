@@ -17,6 +17,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private int layoutChoice = 2131427384; //Layout One
     private int textBoxColor = 0xF2F2F2; //Gray
     private int backgroundColor = 0xFFFFFF; //White
+    private String fontFamily = "sans-serif"; //default font
     String image_URL;
 
     public Recipe(String name, String description, String ingredients, String tools) {
@@ -108,6 +109,11 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     public int getBackgroundColor() {return this.backgroundColor;}
 
     public void setBackgroundColor(int color) {this.backgroundColor = color;}
+
+    public void setFontFamily(String font) {this.fontFamily = font;}
+
+    public String getFontFamily() {return this.fontFamily;}
+
 
     @Override
     public String toString() {

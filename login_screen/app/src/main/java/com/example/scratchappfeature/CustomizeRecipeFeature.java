@@ -13,7 +13,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +30,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 import classes.Recipe;
 import top.defaults.colorpicker.ColorPickerPopup;
@@ -53,6 +58,9 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
 
     private int textBoxColor;
     private int backgroundColor;
+    private String fontSelection;
+
+    private ItemViewModel viewModel;
 
     FragmentManager fragmentManager = getSupportFragmentManager();
     private Recipe recipe;
@@ -112,33 +120,35 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 layoutScrollView.setVisibility(View.INVISIBLE);
+                FontFragment fontFragment = FontFragment.newInstance(fontSelection);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.layoutFragmentView,  fontFragment)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("name")
+                        .commit();
             }
         });
 
-        colorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layoutScrollView.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        backgroundBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layoutScrollView.setVisibility(View.INVISIBLE);
-            }
+        viewModel =new ViewModelProvider(this).get(ItemViewModel.class);
+        viewModel.getSelectedItem().observe(this, item ->{
+            fontSelection = item;
+            recipe.setFontFamily(fontSelection);
+            Toast.makeText(this, fontSelection, Toast.LENGTH_SHORT).show();
         });
 
         layoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layoutScrollView.setVisibility(View.VISIBLE);
+                inflateFragment(fragmentManager, recipe.getLayoutChoice());
+
             }
         });
 
         layoutOneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                recipe.setLayoutChoice(R.layout.fragment_layout_one);
                 inflateFragment(fragmentManager, R.layout.fragment_layout_one);
             }
         });
@@ -146,6 +156,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         layoutTwoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                recipe.setLayoutChoice(R.layout.fragment_layout_two);
                 inflateFragment(fragmentManager, R.layout.fragment_layout_two);
             }
         });
@@ -153,6 +164,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         layoutThreeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                recipe.setLayoutChoice(R.layout.fragment_layout_three);
                 inflateFragment(fragmentManager, R.layout.fragment_layout_three);
             }
         });
@@ -160,16 +172,18 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         layoutFourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                recipe.setLayoutChoice(R.layout.fragment_layout_four);
                 inflateFragment(fragmentManager, R.layout.fragment_layout_four);
             }
         });
 
 
-        colorBtn.setOnClickListener(new View.OnClickListener(){
+        colorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                layoutScrollView.setVisibility(View.INVISIBLE);
                 new ColorPickerPopup.Builder(CustomizeRecipeFeature.this)
-                        .initialColor(Color.RED)
+                        .initialColor(Color.WHITE)
                         .enableBrightness(true)
                         .enableAlpha(true)
                         .okTitle("Select")
@@ -177,21 +191,22 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
                         .showIndicator(true)
                         .showValue(true)
                         .build()
-                        .show(v, new ColorPickerPopup.ColorPickerObserver(){
+                        .show(v, new ColorPickerPopup.ColorPickerObserver() {
                             @Override
                             public void
-                            onColorPicked(int color){
+                            onColorPicked(int color) {
                                 recipe.setTextBoxColor(color);
                             }
                         });
             }
         });
 
-        backgroundBtn.setOnClickListener(new View.OnClickListener(){
+        backgroundBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                layoutScrollView.setVisibility(View.INVISIBLE);
                 new ColorPickerPopup.Builder(CustomizeRecipeFeature.this)
-                        .initialColor(Color.RED)
+                        .initialColor(Color.WHITE)
                         .enableBrightness(true)
                         .enableAlpha(true)
                         .okTitle("Select")
@@ -199,10 +214,10 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
                         .showIndicator(true)
                         .showValue(true)
                         .build()
-                        .show(v, new ColorPickerPopup.ColorPickerObserver(){
+                        .show(v, new ColorPickerPopup.ColorPickerObserver() {
                             @Override
                             public void
-                            onColorPicked(int color){
+                            onColorPicked(int color) {
                                 recipe.setBackgroundColor(color);
                             }
                         });
@@ -224,5 +239,8 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
                 .addToBackStack("name")
                 .commit();
     }
+
+
+
 
 }
