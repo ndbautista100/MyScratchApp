@@ -34,16 +34,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.util.UUID;
-
 import classes.Profile;
+import java.util.Map;
 
 public class EditProfilePage extends AppCompatActivity {
 
     private String name;
+    String randostring;
     private String bio;
     private String favoritefood;
     private String id;
-    private String imagename;
     private EditText nameInput;
     private EditText bioInput;
     private EditText favoritefoodInput;
@@ -93,19 +93,16 @@ public class EditProfilePage extends AppCompatActivity {
         userID = fauth.getCurrentUser().getUid();
 
         id = fstore.collection("profile").document().getId();
-        fstore.collection("profile").document(userID).get();
         fstore.collection("profile").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
                     if(doc.exists()){
+                        profile = doc.toObject(Profile.class);
                         name = doc.getString("pname");
                         bio = doc.getString("bio");
                         favoritefood = doc.getString("favoritefood");
-                        nameInput.setText(name);
-                        bioInput.setText(bio);
-                        favoritefoodInput.setText(favoritefood);
 
                         downloadimage();
                     }
@@ -123,12 +120,13 @@ public class EditProfilePage extends AppCompatActivity {
         finishbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                profile = new Profile();
                 name = nameInput.getText().toString();
                 bio = bioInput.getText().toString();
                 favoritefood = favoritefoodInput.getText().toString();
 
 
-                addDatatoDatabase(name, bio, favoritefood, imagename);
+                addDatatoDatabase(name, bio, favoritefood);
 
                 //Change this to submitting the the information, picture, and everything.
                 returnToProfileActivity();
@@ -136,30 +134,31 @@ public class EditProfilePage extends AppCompatActivity {
         });
     }
 
-    //error with string imagename, saying im setting a name to a null object. so something in there is
-    //pointing to a null value.
-
     private void uploadImage(){
         try {
             if (profileImageUri != null) {
-                imagename = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
-                StorageReference imageref = storageRef.child(imagename);
+                String imagename = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
+                StorageReference imageReference = storageRef.child(imagename);
+                String imagerefstring = storageRef.child(imagename).toString();
 
-                UploadTask uploadTask = imageref.putFile(profileImageUri);
+                UploadTask uploadTask = imageReference.putFile(profileImageUri);
+                String uploadtaskstring = imageReference.getDownloadUrl().toString();
                 uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                         if (task.isSuccessful()) {
                             throw task.getException();
                         }
-                        return imageref.getDownloadUrl();
+                        return imageReference.getDownloadUrl(); // im guessing this is where it fucks up
                     }
                 }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
                             profile.setImageURL(task.getResult().toString());
-                            fstore.collection("profile").document(userID).update("imageurl", profile.getImageURL())
+                            fstore.collection("profile")
+                                    .document(userID)
+                                    .update("imageURL", profile.getImageURL())
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -172,14 +171,15 @@ public class EditProfilePage extends AppCompatActivity {
                                     Toast.makeText(EditProfilePage.this, "Profile image failed to upload!", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        } else if (!task.isSuccessful()) {
+                        } // Something with the code is giving the error that the task was not successufl.
+                        else if (!task.isSuccessful()) {
                             Toast.makeText(EditProfilePage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
             }
         }catch (Exception e) {
-            Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditProfilePage.this, e.getMessage() +"in upload image2", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -191,6 +191,7 @@ public class EditProfilePage extends AppCompatActivity {
             downloadRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    //this is giving null value, but why?
                     String downloadUrl = documentSnapshot.getString("imageURL");
 
                     // Glide makes it easy to load images into ImageViews
@@ -202,11 +203,11 @@ public class EditProfilePage extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfilePage.this, e.getMessage()+"indownloadimage1", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditProfilePage.this, e.getMessage()+"in download image2", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -223,9 +224,9 @@ public class EditProfilePage extends AppCompatActivity {
     }
 
 
-    private void addDatatoDatabase(String name, String bio, String favoritefood, String imagename) {
+    private void addDatatoDatabase(String name, String bio, String favoritefood) {
         DocumentReference dbProfile = fstore.collection("profile").document(userID);
-        Profile profile = new Profile(name, bio, favoritefood, imagename);
+        Profile profile = new Profile(name, bio, favoritefood);
         dbProfile.set(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

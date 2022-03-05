@@ -85,7 +85,7 @@ public class ProfilePage extends AppCompatActivity {
                         displaybio.setText(biostr);
                         displayfavoritefood.setText(favoritefoodstr);
 
-                        downloadimage();
+                        //downloadimage();
                     }
                     else{
                         Log.d("docv", "No such info");
@@ -97,23 +97,24 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
-        finishbutton = (Button) findViewById(R.id.finishbutton);
-        finishbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                returnToMainActivity();
-            }
+//        finishbutton = (Button) findViewById(R.id.finishbutton);
+//        finishbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                returnToMainActivity();
+//            }
+//
+//        });
 
-        });
-
-        editbutton = (Button) findViewById(R.id.editbutton);
-        editbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openEditActivity();
-            }
-
-        });
+//        editbutton = (Button) findViewById(R.id.editbutton);
+//        editbutton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openEditActivity();
+//            }
+//
+//        });
+//
     }
 
     public void downloadimage(){
@@ -128,7 +129,7 @@ public class ProfilePage extends AppCompatActivity {
 
                     // Glide makes it easy to load images into ImageViews
                     if(downloadUrl != null) {
-                        Glide.with(ProfilePage.this).load(downloadUrl).into(profileImage);
+                        Glide.with(ProfilePage.this).load("https://firebasestorage.googleapis.com/v0/b/scratchapp-a5e20.appspot.com/o/images%2FiEXX8kigIFYuTrnUNT82ieqNeMB2_a98f31de-51a5-432f-a226-b4d258f07e14.jpg").into(profileImage);
                     }
 
                 }

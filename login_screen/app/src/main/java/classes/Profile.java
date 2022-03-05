@@ -1,7 +1,8 @@
 package classes;
 
 public class Profile {
-    private String pname, pbio, pfavoritefood, pimageURL;
+    private String pname, pbio, pfavoritefood;
+    String pimageURL;
 
     public Profile() {
         // empty constructor
@@ -9,11 +10,10 @@ public class Profile {
     }
 
     // Constructor for all variables.
-    public Profile(String name, String bio, String favoritefood, String imageURL) {
+    public Profile(String name, String bio, String favoritefood) {
         pname = name;
         pbio = bio;
         pfavoritefood = favoritefood;
-        pimageURL = imageURL;
     }
 
     // getter methods for all variables.
@@ -44,5 +44,5 @@ public class Profile {
 
     public String getImageURL(){return pimageURL;}
 
-    public void setImageURL(String imageURL){pimageURL =imageURL;}
+    public void setImageURL(String imageURL){this.pimageURL = imageURL;}
 }

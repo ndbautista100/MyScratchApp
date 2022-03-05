@@ -165,6 +165,7 @@ public class RecipePageActivity extends AppCompatActivity {
                         if(!task.isSuccessful()) {
                             throw task.getException();
                         }
+
                         return imageReference.getDownloadUrl();
                     }
                 }).addOnCompleteListener(new OnCompleteListener<Uri>() {
