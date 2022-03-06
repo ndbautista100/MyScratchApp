@@ -20,7 +20,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.io.LineReader;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +35,7 @@ import com.google.firebase.firestore.Query;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import classes.Recipe;
 import top.defaults.colorpicker.ColorPickerPopup;
@@ -46,8 +50,6 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
     private Button saveBtn;
 
     private HorizontalScrollView layoutScrollView;
-    private RecyclerView photosRecyclerView;
-    private LayoutRVAdapter adapter;
 
     private Button layoutOneBtn;
     private Button layoutTwoBtn;
@@ -56,8 +58,6 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
     private Button layoutFiveBtn;
     private Button layoutSixBtn;
 
-    private int textBoxColor;
-    private int backgroundColor;
     private String fontSelection;
 
     private ItemViewModel viewModel;
@@ -103,14 +103,15 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         layoutFourBtn = findViewById(R.id.layoutFourButton);
         layoutScrollView = findViewById(R.id.layoutHorizontalScrollBar);
         saveBtn = findViewById(R.id.layoutSaveButton);
-        photosRecyclerView = findViewById(R.id.photosRecyclerView);
 
         //Finished picking the customized options
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //Save Recipe
+                //Update recipe before moving on
+                updateRecipe(recipe);
+                //Move to Scratch notes
                 startActivity(new Intent(getApplicationContext(), ScratchNotesActivity.class));
                 finish();
             }
@@ -122,15 +123,16 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
                 layoutScrollView.setVisibility(View.INVISIBLE);
                 FontFragment fontFragment = FontFragment.newInstance(fontSelection);
                 fragmentManager.beginTransaction()
-                        .replace(R.id.layoutFragmentView,  fontFragment)
+                        .replace(R.id.layoutFragmentView, fontFragment)
                         .setReorderingAllowed(true)
                         .addToBackStack("name")
                         .commit();
             }
         });
 
-        viewModel =new ViewModelProvider(this).get(ItemViewModel.class);
-        viewModel.getSelectedItem().observe(this, item ->{
+        //Font selection is being passed from fragment to the activity
+        viewModel = new ViewModelProvider(this).get(ItemViewModel.class);
+        viewModel.getSelectedItem().observe(this, item -> {
             fontSelection = item;
             recipe.setFontFamily(fontSelection);
             Toast.makeText(this, fontSelection, Toast.LENGTH_SHORT).show();
@@ -178,6 +180,8 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         });
 
 
+        //Color wheel for color
+        //We still might want to blank the fragment in the back to make it look a little cleaner
         colorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,7 +244,40 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
                 .commit();
     }
 
+    public void updateRecipe(Recipe recipe) {
+        DocumentReference docRef = db.collection("recipe").document(recipe.getDocument_ID());
+        Log.d("Found document", docRef.getId());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("Success", "Found Document");
+                        docRef.update("backgroundColor", recipe.getBackgroundColor(),
+                                "fontFamily", recipe.getFontFamily(),
+                                "layoutChoice", recipe.getLayoutChoice(),
+                                "textBoxColor", recipe.getTextBoxColor()
+                        ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("Success", "DocumentSnapshot successfully updated");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w("Fail", "Error updating documnet", e);
+                            }
+                        });
 
-
+                    } else {
+                        Log.d("Fail", "No such document");
+                    }
+                } else {
+                    Log.d("Fail", "failed with " + task.getException());
+                }
+            }
+        });
+    }
 
 }
