@@ -105,16 +105,16 @@ public class ProfilePage extends AppCompatActivity {
 //            }
 //
 //        });
+//
+        editbutton = (Button) findViewById(R.id.editbutton);
+        editbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEditActivity();
+            }
 
-//        editbutton = (Button) findViewById(R.id.editbutton);
-//        editbutton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openEditActivity();
-//            }
-//
-//        });
-//
+        });
+
     }
 
     public void downloadimage(){

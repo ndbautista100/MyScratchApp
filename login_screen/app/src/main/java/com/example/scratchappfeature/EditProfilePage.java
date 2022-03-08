@@ -50,6 +50,7 @@ public class EditProfilePage extends AppCompatActivity {
     private Button finishbutton;
     private Button uploadbutton;
     private ImageView profileImage;
+    private ImageView bannerImage;
     private Uri profileImageUri;
     private FirebaseAuth fauth;
     private FirebaseFirestore fstore;
@@ -85,7 +86,7 @@ public class EditProfilePage extends AppCompatActivity {
         storageRef = fstorage.getReference("images/");
 
         profileImage = (ImageView) findViewById(R.id.profilepicture);
-        uploadbutton = (Button) findViewById(R.id.uploadbutton);
+        uploadbutton = (Button) findViewById(R.id.uploadprofilepic);
         uploadbutton.setOnClickListener(view -> mGetContent.launch("image/*"));
 
         fstore = FirebaseFirestore.getInstance();
@@ -103,6 +104,7 @@ public class EditProfilePage extends AppCompatActivity {
                         name = doc.getString("pname");
                         bio = doc.getString("bio");
                         favoritefood = doc.getString("favoritefood");
+
 
                         downloadimage();
                     }
@@ -134,6 +136,7 @@ public class EditProfilePage extends AppCompatActivity {
         });
     }
 
+
     private void uploadImage(){
         try {
             if (profileImageUri != null) {
@@ -142,14 +145,13 @@ public class EditProfilePage extends AppCompatActivity {
                 String imagerefstring = storageRef.child(imagename).toString();
 
                 UploadTask uploadTask = imageReference.putFile(profileImageUri);
-                String uploadtaskstring = imageReference.getDownloadUrl().toString();
                 uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                         if (task.isSuccessful()) {
                             throw task.getException();
                         }
-                        return imageReference.getDownloadUrl(); // im guessing this is where it fucks up
+                        return imageReference.getDownloadUrl(); // im guessing this is where it messes up
                     }
                 }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
@@ -173,7 +175,7 @@ public class EditProfilePage extends AppCompatActivity {
                             });
                         } // Something with the code is giving the error that the task was not successufl.
                         else if (!task.isSuccessful()) {
-                            Toast.makeText(EditProfilePage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfilePage.this, task.getException().toString()+imagerefstring, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
