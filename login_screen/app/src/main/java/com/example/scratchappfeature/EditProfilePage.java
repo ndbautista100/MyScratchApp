@@ -104,6 +104,9 @@ public class EditProfilePage extends AppCompatActivity {
                         name = doc.getString("pname");
                         bio = doc.getString("bio");
                         favoritefood = doc.getString("favoritefood");
+                        nameInput.setText(name);
+                        bioInput.setText(bio);
+                        favoritefoodInput.setText(favoritefood);
 
 
                         downloadimage();
@@ -142,7 +145,6 @@ public class EditProfilePage extends AppCompatActivity {
             if (profileImageUri != null) {
                 String imagename = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
                 StorageReference imageReference = storageRef.child(imagename);
-                String imagerefstring = storageRef.child(imagename).toString();
 
                 UploadTask uploadTask = imageReference.putFile(profileImageUri);
                 uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -175,7 +177,7 @@ public class EditProfilePage extends AppCompatActivity {
                             });
                         } // Something with the code is giving the error that the task was not successufl.
                         else if (!task.isSuccessful()) {
-                            Toast.makeText(EditProfilePage.this, task.getException().toString()+imagerefstring, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProfilePage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
