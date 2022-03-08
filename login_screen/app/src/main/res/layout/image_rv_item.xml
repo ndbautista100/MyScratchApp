@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
@@ -18,7 +17,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_recipe_image" />
+
 
         <TextView
             android:id="@+id/recipeNameTextView"
@@ -27,7 +28,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/cardRecipeImageView"
-            android:text="Recipe Name"
+            android:hint="Recipe Name"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -39,11 +40,11 @@
             android:layout_below="@+id/recipeNameTextView"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/cardRecipeImageView"
-            android:text="Description"
+            android:hint="Description"
             android:textSize="15sp" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/deleteRecipeImageButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentTop="true"

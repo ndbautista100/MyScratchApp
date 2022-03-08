@@ -1,11 +1,7 @@
 package classes;
 
-import android.graphics.Bitmap;
-
-import com.google.firebase.auth.FirebaseAuth;
-
+import androidx.annotation.NonNull;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Recipe implements Serializable { // Serializable allows classes to be transferred between Activities
     private String name;
@@ -15,7 +11,8 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String user_ID;
     private String document_ID;
     private int layoutChoice;
-    String image_URL;
+    private String image_URL;
+    private String imageName;
 
     public Recipe(String name, String description, String ingredients, String tools) {
         this.name = name;
@@ -36,7 +33,6 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     public Recipe() {
 
     }
-
 
     public Recipe(String name) {
         this.name = name;
@@ -99,6 +95,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.image_URL = image_URL;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Recipe{" +
@@ -116,5 +113,13 @@ public class Recipe implements Serializable { // Serializable allows classes to 
 
     public void setLayoutChoice(int layoutChoice) {
         this.layoutChoice = layoutChoice;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }
