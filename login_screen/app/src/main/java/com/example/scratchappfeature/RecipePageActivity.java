@@ -49,7 +49,7 @@ public class RecipePageActivity extends AppCompatActivity {
         // getting recipe sent from CreateRecipeActivity
         Intent intent = getIntent();
         recipe = (Recipe) intent.getSerializableExtra("recipe");
-        ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
+        ab.setTitle(recipe.getName());// set toolbar title using the recipe name
 
         toolsTextView = (TextView) findViewById(R.id.toolsTextViewRecipePage);
         toolsTextView.setText(recipe.getTools());

@@ -11,28 +11,29 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
+        android:layout_marginTop="156dp"
         android:contentDescription="Rate Recipe"
         android:numStars="5"
         android:progressBackgroundTint="#CC9999"
         android:progressTint="#A15F5F"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="127dp"
         android:layout_marginTop="28dp"
         android:text="Rate Recipe"
         android:textAlignment="center"
         android:textColor="@color/login_text_back"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="127dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_getRating"
@@ -40,11 +41,28 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
         android:layout_marginEnd="85dp"
-        android:layout_marginBottom="340dp"
-        android:background="#4A0E0E"
+        android:layout_marginBottom="100dp"
+        android:background="@color/login_text_back"
         android:text="SUBMIT RATING!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/EdtRatingComment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/EdtRatingComment"
+        android:layout_margin="10dp"
+        android:layout_marginTop="235dp"
+        android:layout_marginBottom="66dp"
+        android:hint="How did you enjoy this recipe? Leave a comment here."
+        android:importantForAutofill="no"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toTopOf="@+id/btn_getRating"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+        tools:layout_editor_absoluteX="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
