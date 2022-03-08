@@ -34,7 +34,6 @@
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/image_lv_item.xml" value="0.5744791666666667" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/image_rv_item.xml" value="0.5" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/items_loading.xml" value="0.39266304347826086" />
-        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/loading_dialog.xml" value="0.5471014492753623" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/tool_bar.xml" value="0.28125" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_create_recipe.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_login.xml" value="0.1" />
@@ -48,6 +47,8 @@
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/menu.xml" value="0.432518115942029" />
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/tool_bar.xml" value="0.30052083333333335" />
         <entry key="..\:/scratchappfeature/app/src/main/res/menu/menu_main.xml" value="0.30104166666666665" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/tool_bar.xml" value="0.15520833333333334" />
       </map>
     </option>
   </component>

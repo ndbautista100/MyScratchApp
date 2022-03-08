@@ -61,46 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
 
-        adapterMethods(adapter);
-    }
-
-//    public void searchAction(MenuItem item) {
-//        SearchView searchView = (SearchView) item.getActionView();
-//        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH); // keyboard
-//        searchView.setLayoutParams(new ActionBar.LayoutParams(Gravity.RIGHT));
-//        searchView.setQueryHint("Recipe name...");
-//        searchView.setIconified(false);
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String s) { // called when search is submitted
-//                searchDatabase(s);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String s) { // called when a character is typed
-//                return false;
-//            }
-//        });
-//    }
-//
-//    public void searchDatabase(String s) {
-//        Log.d(TAG, "Searching for" + s + "...");
-//
-//        Query searchQuery = recipesRef
-//            .whereEqualTo("search", s.toLowerCase())
-//            .orderBy("name", Query.Direction.ASCENDING); // order by rating once ratings are implemented
-//
-//        FirestorePagingOptions<Recipe> newPagingOptions = new FirestorePagingOptions.Builder<Recipe>()
-//            .setLifecycleOwner(this)
-//            .setQuery(searchQuery, pagingConfig, Recipe.class)
-//            .build();
-//
-//        adapter.updateOptions(newPagingOptions);
-//    }
-
-    public void adapterMethods(FirestoreAdapter adapter) {
         adapter.setOnItemClickListener((documentSnapshot, position) -> openRecipePageActivity(documentSnapshot.getId()));
 
         adapter.addLoadStateListener(combinedLoadStates -> {
@@ -158,6 +118,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openSearchActivity() {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
+
     public void logout(){
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(), Login.class));
@@ -187,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-//                searchAction(item);
+                openSearchActivity();
                 return true;
             case R.id.action_create:
                 openScratchNotesActivity();

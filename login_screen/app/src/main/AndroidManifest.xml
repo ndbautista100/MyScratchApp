@@ -11,6 +11,12 @@
         android:theme="@style/Theme.scratchappfeature"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".SearchActivity"
+            android:exported="true"
+            android:label="Search"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+        <activity
             android:name=".EditRecipeActivity"
             android:exported="false"
             android:label="Edit Recipe"
