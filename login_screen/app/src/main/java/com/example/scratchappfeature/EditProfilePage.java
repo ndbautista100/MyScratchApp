@@ -106,6 +106,7 @@ public class EditProfilePage extends AppCompatActivity {
                         favoritefood = doc.getString("favoritefood");
 
 
+
                         downloadimage();
                     }
                     else{
@@ -127,8 +128,8 @@ public class EditProfilePage extends AppCompatActivity {
                 bio = bioInput.getText().toString();
                 favoritefood = favoritefoodInput.getText().toString();
 
-
-                addDatatoDatabase(name, bio, favoritefood);
+                String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                addDatatoDatabase(name, bio, favoritefood, userID);
 
                 //Change this to submitting the the information, picture, and everything.
                 returnToProfileActivity();
@@ -226,9 +227,10 @@ public class EditProfilePage extends AppCompatActivity {
     }
 
 
-    private void addDatatoDatabase(String name, String bio, String favoritefood) {
+    private void addDatatoDatabase(String name, String bio, String favoritefood, String uID) {
         DocumentReference dbProfile = fstore.collection("profile").document(userID);
-        Profile profile = new Profile(name, bio, favoritefood);
+        Profile profile = new Profile(name, bio, favoritefood, uID);
+        profile.setUserID(uID);
         dbProfile.set(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

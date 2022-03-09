@@ -45,6 +45,7 @@ public class ProfilePage extends AppCompatActivity {
     private Button finishbutton;
     private Button editbutton;
     private ImageView profileImage;
+    private ImageButton followBtn;
 
     private FirebaseAuth fauth;
     private FirebaseFirestore fstore;
@@ -63,6 +64,7 @@ public class ProfilePage extends AppCompatActivity {
         displaybio =  findViewById(R.id.bio);
         displayfavoritefood =  findViewById(R.id.favoritefood);
         profileImage = (ImageView) findViewById(R.id.profilepicture);
+        followBtn =  findViewById(R.id.followButton);
         storageRef = FirebaseStorage.getInstance().getReference();
 
         fstore = FirebaseFirestore.getInstance();
@@ -113,6 +115,13 @@ public class ProfilePage extends AppCompatActivity {
                 openEditActivity();
             }
 
+        });
+
+        followBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
         });
 
     }

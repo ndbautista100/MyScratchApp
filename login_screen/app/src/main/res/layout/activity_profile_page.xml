@@ -45,17 +45,18 @@
                     />
 
                 <ImageButton
+                    android:id="@+id/followButton"
                     android:layout_width="75dp"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-                    android:gravity="right"
                     android:layout_marginTop="110dp"
                     android:layout_marginRight="20dp"
-                    android:scaleType="fitXY"
                     android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"
                     android:backgroundTint="@color/white"
-                    android:src="@drawable/follow"
-                    android:background="@android:color/transparent"/>
+                    android:gravity="right"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/follow" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -78,8 +79,8 @@
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
                         android:hint='John Smith'
-                        android:textStyle="bold"
-                        android:textSize="30dp" />
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/bioView"
@@ -88,18 +89,17 @@
                         android:layout_marginTop="10dp"
                         android:gravity="left"
                         android:text="Bio:"
-                        android:textStyle="bold"
-                        android:textSize="25dp" />
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/bio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:textSize="15dp"
                         android:layout_marginLeft="5dp"
+                        android:gravity="left"
                         android:hint='Age, hobbies, interest, etc...'
-                        />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/favoritefoodView"
@@ -107,18 +107,18 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:gravity="left"
-                        android:textStyle="bold"
                         android:text="Favorite foods:"
-                        android:textSize="25dp" />
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/favoritefood"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:textSize="15dp"
                         android:layout_marginLeft="5dp"
-                        android:hint='Pasta, Salad, Pizza, etc...' />
+                        android:gravity="left"
+                        android:hint='Pasta, Salad, Pizza, etc...'
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 
