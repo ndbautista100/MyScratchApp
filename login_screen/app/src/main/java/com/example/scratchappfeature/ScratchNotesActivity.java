@@ -1,12 +1,5 @@
 package com.example.scratchappfeature;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +7,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,20 +52,30 @@ public class ScratchNotesActivity extends AppCompatActivity {
             .get()
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
+                    if(task.getResult() == null || task.getResult().isEmpty()) {
+                        ArrayList<Recipe> noRecipes = new ArrayList<>();
+                        Recipe noRecipe = new Recipe();
+                        noRecipe.setName("No recipes found!");
+                        noRecipe.setDescription("Get started by tapping on the + icon");
+                        noRecipes.add(noRecipe);
 
-                        Recipe recipe = document.toObject(Recipe.class);
-                        user_recipes.add(recipe);
+                        adapter = new RecipeRVAdapter(noRecipes, getApplicationContext());
+                        recipesRV.setAdapter(adapter);
+                    } else {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
+                            Recipe recipe = document.toObject(Recipe.class);
+                            user_recipes.add(recipe);
+                        }
+                        adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
+                        // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
+                        recipesRV.setAdapter(adapter);
+                        // this is called when a recipe is clicked
+                        adapter.setOnItemClickListener(position -> {
+                            Recipe clickedRecipe = user_recipes.get(position);
+                            openRecipePageActivity(clickedRecipe.getDocument_ID());
+                        });
                     }
-                    adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
-                    // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
-                    recipesRV.setAdapter(adapter);
-                    // this is called when a recipe is clicked
-                    adapter.setOnItemClickListener(position -> {
-                        Recipe clickedRecipe = user_recipes.get(position);
-                        openRecipePageActivity(clickedRecipe.getDocument_ID());
-                    });
                 } else {
                     Log.e(TAG, "Error getting documents: ", task.getException());
                 }
