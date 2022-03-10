@@ -23,6 +23,12 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
+            android:name=".SearchActivity"
+            android:exported="false"
+            android:label="Search"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"/>
+        <activity
             android:name=".EditRecipeActivity"
             android:exported="false"
             android:label="Edit Recipe"
