@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class Profile {
     private String pname, pbio, pfavoritefood;
-    String pimageURL;
+    private String profileImageURL;
+    private String profileImageName;
     private String userID;
     private ArrayList<String> followers;
 
@@ -54,9 +55,17 @@ public class Profile {
         pfavoritefood = favoritefood;
     }
 
-    public String getImageURL(){return pimageURL;}
+    public String getProfileImageURL(){return profileImageURL;}
 
-    public void setImageURL(String imageURL){this.pimageURL = imageURL;}
+    public void setProfileImageURL(String profileImageURL){this.profileImageURL = profileImageURL;}
+
+    public String getProfileImageName() {
+        return profileImageName;
+    }
+
+    public void setProfileImageName(String profileImageName) {
+        this.profileImageName = profileImageName;
+    }
 
     public String getUserID() {
         return userID;

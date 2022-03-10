@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,130 +8,131 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout2"
+        android:id="@+id/appBarLayoutProfilePage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.scratchappfeature.AppBarOverlay">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarProfilePage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_collapseMode="pin" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white">
-
-                <ImageView
-                    android:id="@+id/banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/foodbanner" />
-
-                <Button
-                    android:id="@+id/editbutton"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/cog"
-                    android:backgroundTint="@color/black"
-                    android:layout_marginRight="10dp"
-                    />
-
-                <ImageButton
-                    android:id="@+id/followButton"
-                    android:layout_width="75dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="110dp"
-                    android:layout_marginRight="20dp"
-                    android:adjustViewBounds="true"
-                    android:background="@android:color/transparent"
-                    android:backgroundTint="@color/white"
-                    android:gravity="right"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/follow" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/profilepicture"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="50dp"
-                        android:src="@drawable/blankpicture" />
-
-                    <TextView
-                        android:id="@+id/name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true"
-                        android:hint='John Smith'
-                        android:textSize="30dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/bioView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="left"
-                        android:text="Bio:"
-                        android:textSize="25dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/bio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:gravity="left"
-                        android:hint='Age, hobbies, interest, etc...'
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/favoritefoodView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:gravity="left"
-                        android:text="Favorite foods:"
-                        android:textSize="25dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/favoritefood"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:gravity="left"
-                        android:hint='Pasta, Salad, Pizza, etc...'
-                        android:textSize="15dp" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            android:visibility="visible"
+            app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <RelativeLayout
+        android:id="@+id/profileRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_below="@id/appBarLayoutProfilePage">
+
+        <ImageView
+            android:id="@+id/bannerImageView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/foodbanner" />
+
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/cog"
+            android:backgroundTint="@color/black"
+            android:layout_marginEnd="10dp"
+            />
+
+        <ImageButton
+            android:id="@+id/followButton"
+            android:layout_width="75dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="110dp"
+            android:layout_marginEnd="20dp"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@color/white"
+            android:gravity="end"
+            android:scaleType="fitXY"
+            android:src="@drawable/follow" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="50dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/blankpicture" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:hint='John Smith'
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bioView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="start"
+                android:text="Bio:"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="start"
+                android:hint='Age, hobbies, interest, etc...'
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/favoritefoodView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="start"
+                android:text="Favorite foods:"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/favoriteFood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:gravity="start"
+                android:hint='Pasta, Salad, Pizza, etc...'
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
     <androidx.viewpager.widget.ViewPager
+        android:id="@+id/recipeViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/Recipeview"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:layout_below="@id/profileRelativeLayout"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

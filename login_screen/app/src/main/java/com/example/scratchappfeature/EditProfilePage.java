@@ -34,19 +34,21 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.util.UUID;
+
+import classes.LoadingDialog;
 import classes.Profile;
 import java.util.Map;
 
 public class EditProfilePage extends AppCompatActivity {
-
+    private static final String TAG = "EditProfilePage";
     private String name;
-    String randostring;
+    private String randomString;
     private String bio;
-    private String favoritefood;
+    private String favoriteFood;
     private String id;
     private EditText nameInput;
     private EditText bioInput;
-    private EditText favoritefoodInput;
+    private EditText favoriteFoodInput;
     private Button finishbutton;
     private Button uploadbutton;
     private ImageView profileImage;
@@ -58,7 +60,7 @@ public class EditProfilePage extends AppCompatActivity {
     private StorageReference storageRef;
     private String userID;
     private Profile profile;
-    
+    private DocumentReference docRef;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
         @Override
@@ -67,26 +69,26 @@ public class EditProfilePage extends AppCompatActivity {
                 profileImage.setImageURI(result);
                 profileImageUri = result;
 
+                Log.d(TAG, profileImageUri.toString());
+
                 uploadImage();
             }
         }
     });
-
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile_page2); // change to correct activity if needed
         nameInput = (EditText) findViewById(R.id.nameInput);
         bioInput = (EditText) findViewById(R.id.bioInput);
-        favoritefoodInput = (EditText) findViewById(R.id.favoritefoodInput);
+        favoriteFoodInput = (EditText) findViewById(R.id.favoritefoodInput);
 
         fstorage = FirebaseStorage.getInstance();
-        storageRef = fstorage.getReference("images/");
+        storageRef = fstorage.getReference("images/avatars");
 
-        profileImage = (ImageView) findViewById(R.id.profilepicture);
-        uploadbutton = (Button) findViewById(R.id.uploadprofilepic);
+        profileImage = (ImageView) findViewById(R.id.profilePicture);
+        uploadbutton = (Button) findViewById(R.id.uploadProfilePic);
         uploadbutton.setOnClickListener(view -> mGetContent.launch("image/*"));
 
         fstore = FirebaseFirestore.getInstance();
@@ -94,125 +96,105 @@ public class EditProfilePage extends AppCompatActivity {
         userID = fauth.getCurrentUser().getUid();
 
         id = fstore.collection("profile").document().getId();
-        fstore.collection("profile").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+        docRef = fstore.collection("profile").document(userID);
+
+        docRef.get()
+            .addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
                     if(doc.exists()){
                         profile = doc.toObject(Profile.class);
                         name = doc.getString("pname");
                         bio = doc.getString("bio");
-                        favoritefood = doc.getString("favoritefood");
+                        favoriteFood = doc.getString("favoriteFood");
                         nameInput.setText(name);
                         bioInput.setText(bio);
-                        favoritefoodInput.setText(favoritefood);
+                        favoriteFoodInput.setText(favoriteFood);
 
-
-
-                        downloadimage();
+                        downloadImage();
                     }
-                    else{
+                    else {
                         Log.d("docv", "No such info");
                     }
                 }
-                else{
+                else {
                     Log.d("docv", "failed to get with", task.getException());
                 }
-            }
-        });
+            });
 
         finishbutton = (Button) findViewById(R.id.finishbutton);
-        finishbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                profile = new Profile();
-                name = nameInput.getText().toString();
-                bio = bioInput.getText().toString();
-                favoritefood = favoritefoodInput.getText().toString();
+        finishbutton.setOnClickListener(v -> {
+            profile = new Profile();
+            name = nameInput.getText().toString();
+            bio = bioInput.getText().toString();
+            favoriteFood = favoriteFoodInput.getText().toString();
 
-                String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                addDatatoDatabase(name, bio, favoritefood, userID);
+            addDataToDatabase(name, bio, favoriteFood);
 
-                //Change this to submitting the the information, picture, and everything.
-                returnToProfileActivity();
-            }
+            // Change this to submitting the the information, picture, and everything.
+            returnToProfileActivity();
         });
     }
 
 
     private void uploadImage(){
-        try {
+        Log.d(TAG, "User has a profile image: " + profile.getProfileImageName());
+        if(profile.getProfileImageName() != null) { // if user already has a profile image
+            // delete that image from Firebase Storage
+            StorageReference recipeImageRef = storageRef.child(profile.getProfileImageName());
+            Log.d(TAG, "Deleting image: " + profile.getProfileImageName());
+            recipeImageRef.delete()
+                .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + profile.getProfileImageName()))
+                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+        }
+
+        try { // uploading the profile pic
             if (profileImageUri != null) {
-                String imagename = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
-                StorageReference imageReference = storageRef.child(imagename);
+                LoadingDialog loadingDialog = new LoadingDialog(EditProfilePage.this);
+                loadingDialog.startLoadingDialog();
+                
+                String imageName = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
+                StorageReference imageReference = storageRef.child(imageName);
 
-                UploadTask uploadTask = imageReference.putFile(profileImageUri);
-                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (task.isSuccessful()) {
-                            throw task.getException();
-                        }
-                        return imageReference.getDownloadUrl(); // im guessing this is where it messes up
+                Log.d(TAG, "Image name: " + imageName);
+
+                UploadTask uploadTask = imageReference.putFile(profileImageUri); // store image
+                uploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        loadingDialog.dismissDialog();
+                        throw task.getException();
                     }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-                            profile.setImageURL(task.getResult().toString());
-                            fstore.collection("profile")
-                                    .document(userID)
-                                    .update("imageURL", profile.getImageURL())
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            Toast.makeText(EditProfilePage.this, "Profile uploaded", Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(EditProfilePage.this, "Profile image failed to upload!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        } // Something with the code is giving the error that the task was not successufl.
-                        else if (!task.isSuccessful()) {
-                            Toast.makeText(EditProfilePage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                        }
+                    return imageReference.getDownloadUrl(); // im guessing this is where it messes up
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Task successful!!");
+                        // update profile document's profileImageURL field
+                        profile.setProfileImageURL(task.getResult().toString());
+                        profile.setProfileImageName(imageName);
+                        fstore.collection("profile")
+                            .document(userID)
+                            .update("profileImageURL", profile.getProfileImageURL(),
+                                    "profileImageName", profile.getProfileImageName())
+                            .addOnCompleteListener(task1 -> {
+                                loadingDialog.dismissDialog();
+                                Log.d(TAG, "Success!!!");
+                                Toast.makeText(EditProfilePage.this, "Profile image uploaded!", Toast.LENGTH_SHORT).show();
+                            }).addOnFailureListener(e -> {
+                                loadingDialog.dismissDialog();
+                                Log.d(TAG, "Failure in storing");
+                                Toast.makeText(EditProfilePage.this, "Profile image failed to upload.", Toast.LENGTH_SHORT).show();
+                        });
+                    } // Something with the code is giving the error that the task was not successful.
+                    else if (!task.isSuccessful()) {
+                        loadingDialog.dismissDialog();
+                        Log.d(TAG, "Task failed: " + task.getException().toString());
+                        Toast.makeText(EditProfilePage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
-        }catch (Exception e) {
-            Toast.makeText(EditProfilePage.this, e.getMessage() +"in upload image2", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void downloadimage(){
-        try {
-            // get the recipe document from the database
-            DocumentReference downloadRef = fstore.collection("profile").document(userID);
-
-            downloadRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    //this is giving null value, but why?
-                    String downloadUrl = documentSnapshot.getString("imageURL");
-
-                    // Glide makes it easy to load images into ImageViews
-                    if(downloadUrl != null) {
-                        Glide.with(EditProfilePage.this).load(downloadUrl).into(profileImage);
-                    }
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(EditProfilePage.this, e.getMessage()+"indownloadimage1", Toast.LENGTH_SHORT).show();
-                }
-            });
         } catch (Exception e) {
-            Toast.makeText(EditProfilePage.this, e.getMessage()+"in download image2", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditProfilePage.this, e.getMessage() +"in upload image2", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -228,26 +210,33 @@ public class EditProfilePage extends AppCompatActivity {
         }
     }
 
+    public void downloadImage(){
+        try {
+            // get the profile document from the database
+            DocumentReference downloadRef = fstore.collection("profile").document(userID);
 
-    private void addDatatoDatabase(String name, String bio, String favoritefood, String uID) {
-        DocumentReference dbProfile = fstore.collection("profile").document(userID);
-        Profile profile = new Profile(name, bio, favoritefood, uID);
-        profile.setUserID(uID);
-        dbProfile.set(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                // after the data addition is successful
-                // we are displaying a success toast message.
-                Toast.makeText(EditProfilePage.this, "Your profile has been saved", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // this method is called when the data addition process is failed.
-                // displaying a toast message when data addition is failed.
-                Toast.makeText(EditProfilePage.this, "Fail to add profile \n" + e, Toast.LENGTH_SHORT).show();
-            }
-        });
+            downloadRef.get().addOnSuccessListener(documentSnapshot -> {
+                String downloadUrl = documentSnapshot.getString("profileImageURL");
+
+                // Glide makes it easy to load images into ImageViews
+                if(downloadUrl != null) {
+                    Glide.with(EditProfilePage.this)
+                        .load(downloadUrl)
+                        .into(profileImage);
+                }
+
+            }).addOnFailureListener(e -> Toast.makeText(EditProfilePage.this, e.getMessage()+"in downloadImage1", Toast.LENGTH_SHORT).show());
+        } catch (Exception e) {
+            Toast.makeText(EditProfilePage.this, e.getMessage() + "in downloadImage2", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addDataToDatabase(String name, String bio, String favoriteFood) {
+        docRef.update("pname", name,
+                "bio", bio,
+                "favoritefood", favoriteFood)
+                .addOnSuccessListener(unused -> Log.i(TAG, "DocumentSnapshot successfully updated!"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error updating document", e));
     }
 
     public void returnToProfileActivity () {

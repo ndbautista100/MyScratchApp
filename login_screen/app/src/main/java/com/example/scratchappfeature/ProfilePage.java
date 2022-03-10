@@ -2,6 +2,7 @@ package com.example.scratchappfeature;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -30,11 +31,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import classes.Profile;
 
 public class ProfilePage extends AppCompatActivity {
+    private static final String TAG = "ProfilePage";
     private String namestr;
     private String biostr;
     private String favoritefoodstr;
@@ -42,7 +46,7 @@ public class ProfilePage extends AppCompatActivity {
     private TextView displayname;
     private TextView displaybio;
     private TextView displayfavoritefood;
-    private Button finishbutton;
+    private Button finishButton;
     private Button editbutton;
     private ImageView profileImage;
     private ImageButton followBtn;
@@ -53,17 +57,20 @@ public class ProfilePage extends AppCompatActivity {
     private StorageReference storageRef;
     private String userID;
 
-
-
+    private Toolbar toolbarProfilePage;
+    private ActionBar ab;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page); // change to correct activity if needed
 
+        setToolbar();
+
         displayname = findViewById(R.id.name);
         displaybio =  findViewById(R.id.bio);
-        displayfavoritefood =  findViewById(R.id.favoritefood);
-        profileImage = (ImageView) findViewById(R.id.profilepicture);
+        displayfavoritefood =  findViewById(R.id.favoriteFood);
+        profileImage = (ImageView) findViewById(R.id.profilePicture);
         followBtn =  findViewById(R.id.followButton);
         storageRef = FirebaseStorage.getInstance().getReference();
 
@@ -87,7 +94,7 @@ public class ProfilePage extends AppCompatActivity {
                         displaybio.setText(biostr);
                         displayfavoritefood.setText(favoritefoodstr);
 
-                        //downloadimage();
+                        downloadImage();
                     }
                     else{
                         Log.d("docv", "No such info");
@@ -99,8 +106,8 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
-//        finishbutton = (Button) findViewById(R.id.finishbutton);
-//        finishbutton.setOnClickListener(new View.OnClickListener() {
+//        finishButton = (Button) findViewById(R.id.finishButton);
+//        finishButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                returnToMainActivity();
@@ -108,7 +115,7 @@ public class ProfilePage extends AppCompatActivity {
 //
 //        });
 //
-        editbutton = (Button) findViewById(R.id.editbutton);
+        editbutton = (Button) findViewById(R.id.editButton);
         editbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,31 +130,25 @@ public class ProfilePage extends AppCompatActivity {
                 
             }
         });
-
     }
 
-    public void downloadimage(){
+    public void downloadImage(){
         try {
             // get the recipe document from the database
             DocumentReference downloadRef = fstore.collection("profile").document(userID);
 
-            downloadRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    String downloadUrl = documentSnapshot.getString("imageURL");
+            downloadRef.get().addOnSuccessListener(documentSnapshot -> {
+                String downloadUrl = documentSnapshot.getString("profileImageURL");
+                Log.d(TAG, "downloadURL: " + downloadUrl);
 
-                    // Glide makes it easy to load images into ImageViews
-                    if(downloadUrl != null) {
-                        Glide.with(ProfilePage.this).load("https://firebasestorage.googleapis.com/v0/b/scratchapp-a5e20.appspot.com/o/images%2FiEXX8kigIFYuTrnUNT82ieqNeMB2_a98f31de-51a5-432f-a226-b4d258f07e14.jpg").into(profileImage);
-                    }
+                // Glide makes it easy to load images into ImageViews
+                if(downloadUrl != null) {
+                    Glide.with(ProfilePage.this)
+                        .load(downloadUrl)
+                        .into(profileImage);
+                }
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(ProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            }).addOnFailureListener(e -> Toast.makeText(ProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show());
         } catch (Exception e) {
             Toast.makeText(ProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -161,5 +162,12 @@ public class ProfilePage extends AppCompatActivity {
     public void returnToMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void setToolbar() {
+        toolbarProfilePage = findViewById(R.id.toolbarProfilePage);
+        setSupportActionBar(toolbarProfilePage);
+        ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 }

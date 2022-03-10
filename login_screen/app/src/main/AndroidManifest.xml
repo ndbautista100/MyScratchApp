@@ -12,10 +12,16 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".EditProfilePage"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Edit Profile"
+            android:parentActivityName=".ProfilePage"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
             android:name=".ProfilePage"
-            android:exported="false" />
+            android:exported="false"
+            android:label="My Profile"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
             android:name=".EditRecipeActivity"
             android:exported="false"
