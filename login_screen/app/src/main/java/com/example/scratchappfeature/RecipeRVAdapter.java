@@ -78,15 +78,18 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         Recipe recipeToDelete = recipeArrayList.get(position);
         String docID = recipeToDelete.getDocument_ID();
 
-        db.collection("recipes").document(docID).delete()
+        db.collection("recipes").document(docID)
+            .delete()
             .addOnSuccessListener(unused -> {
                 Log.i(TAG, "DocumentSnapshot successfully deleted!");
                 // Delete the image file as well after deleting the recipe
-                StorageReference recipeImageRef = storageReference.child(recipeToDelete.getImageName());
-                Log.d(TAG, "Deleting image: " + recipeToDelete.getImageName());
-                recipeImageRef.delete()
-                    .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipeToDelete.getImageName()))
-                    .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+                if(recipeToDelete.getImageName() != null) { // first check if the recipe has an image
+                    StorageReference recipeImageRef = storageReference.child(recipeToDelete.getImageName());
+                    Log.d(TAG, "Deleting image: " + recipeToDelete.getImageName());
+                    recipeImageRef.delete()
+                        .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipeToDelete.getImageName()))
+                        .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+                }
             })
             .addOnFailureListener(e -> Log.e(TAG, "Error deleting document", e));
         recipeArrayList.remove(position);

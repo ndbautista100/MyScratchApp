@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_below="@id/feedCardRecipeImageView"
-            android:hint="Recipe Name"
+            android:hint="@string/recipe_name"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -39,7 +39,7 @@
             android:layout_below="@id/feedRecipeNameTextView"
             android:layout_marginStart="8dp"
             android:gravity="start"
-            android:hint="Description"
+            android:hint="@string/description"
             android:textSize="15sp" />
 
         <ImageView
@@ -48,7 +48,7 @@
             android:layout_height="20dp"
             android:layout_below="@id/feedRecipeNameTextView"
             android:layout_toStartOf="@id/feedUserNameTextView"
-            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:src="@drawable/ic_baseline_account_circle_24" />
 
         <TextView
@@ -59,9 +59,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"
             android:gravity="end"
-            android:hint="User"
+            android:hint="@string/user"
             android:textSize="15sp" />
-
 
     </RelativeLayout>
 

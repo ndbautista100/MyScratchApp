@@ -37,11 +37,11 @@ public class Login extends AppCompatActivity {
             String password = userPass.getText().toString();
 
             if(TextUtils.isEmpty(email)){
-                userEmail.setError("Email is Required.");
+                userEmail.setError("Email is required.");
                 return;
             }
             if(TextUtils.isEmpty(password)){
-                userEmail.setError("Password is Required.");
+                userEmail.setError("Password is required.");
                 return;
             }
             if(password.length() < 6){
@@ -62,8 +62,8 @@ public class Login extends AppCompatActivity {
         forgot.setOnClickListener(v -> {
             EditText resetMail =  new EditText(v.getContext());
             AlertDialog.Builder passwordReset = new AlertDialog.Builder(v.getContext());
-            passwordReset.setTitle("Reset Password?");
-            passwordReset.setMessage("Enter Your Email to receive a reset link.");
+            passwordReset.setTitle("Reset password?");
+            passwordReset.setMessage("Enter your email to receive a reset link.");
             passwordReset.setView(resetMail);
 
             passwordReset.setPositiveButton("Yes", (dialogInterface, i) -> {

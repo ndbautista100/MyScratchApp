@@ -55,19 +55,19 @@ public class Register extends AppCompatActivity {
             String confirmPassword = mConfirmPassword.getText().toString().trim();
 
             if(TextUtils.isEmpty(email)){
-                mEmail.setError("Email is Required");
+                mEmail.setError("Email is required");
                 return;
             }
             if(TextUtils.isEmpty(password)){
-                mPassword.setError("Password is Required");
+                mPassword.setError("Password is required");
                 return;
             }
             if(!TextUtils.equals(password,confirmPassword)){
-                mConfirmPassword.setError("Passwords Must Match");
+                mConfirmPassword.setError("Passwords must match");
                 return;
             }
             if (password.length() < 6){
-                mPassword.setError("Password Must Be >= 6 Characters");
+                mPassword.setError("Password must be at least 6 characters");
                 return;
             }
 
