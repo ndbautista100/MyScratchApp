@@ -197,12 +197,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_create:
                 openScratchNotesActivity();
                 return true;
-            case R.id.action_search:
-                return true;
             case R.id.action_explore:
                 Intent intent = new Intent(this, ExploreActivity.class);
                 startActivity((intent));
-                case R.id.action_profile:
             case R.id.action_profile:
                 openProfilePageActivity();
                 return true;
