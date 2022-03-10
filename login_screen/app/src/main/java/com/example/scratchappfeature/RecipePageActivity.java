@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,11 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -80,7 +74,7 @@ public class RecipePageActivity extends AppCompatActivity {
 
         // get the Firebase storage reference
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference("images/");
+        storageReference = storage.getReference("images/recipes");
 
         // getting recipe sent from CreateRecipeActivity
         // create different scenarios for opening from CreateRecipe and EditRecipe
@@ -175,7 +169,6 @@ public class RecipePageActivity extends AppCompatActivity {
                             loadingDialog.dismissDialog();
                             Toast.makeText(RecipePageActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
                         });
-
                     } else if(!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
                         Toast.makeText(RecipePageActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -232,6 +225,7 @@ public class RecipePageActivity extends AppCompatActivity {
         ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
     }
+
     /*
         Opens the tool bar for the Recipe Page
      */

@@ -108,8 +108,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openRecipePageActivity(String recipe_ID) {
-        Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
+        Intent intent = new Intent(this, RecipePageActivity.class);
         intent.putExtra("open_recipe_from_id", recipe_ID);
+        startActivity(intent);
+    }
+    public void openProfilePageActivity() {
+        Intent intent = new Intent(this, ProfilePage.class);
+        startActivity(intent);
+    }
+
+
+    public void openSearchActivity() {
+        Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
 
@@ -144,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*
         Home Page action bar options:
-        - Search for a Recipe
+        - Search for a Recipe/User
         - Open Scratch Notes
         - Open Profile
     */
@@ -158,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 openScratchNotesActivity();
                 return true;
             case R.id.action_profile:
+                openProfilePageActivity();
                 return true;
             case R.id.action_settings:
                 return true;
