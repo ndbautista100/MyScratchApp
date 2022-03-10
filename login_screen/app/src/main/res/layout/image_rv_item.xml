@@ -20,7 +20,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/no_recipe_image" />
 
-
         <TextView
             android:id="@+id/recipeNameTextView"
             android:layout_width="wrap_content"
@@ -28,7 +27,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/cardRecipeImageView"
-            android:hint="Recipe Name"
+            android:hint="@string/recipe_name"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -40,7 +39,7 @@
             android:layout_below="@+id/recipeNameTextView"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/cardRecipeImageView"
-            android:hint="Description"
+            android:hint="@string/description"
             android:textSize="15sp" />
 
         <ImageButton
@@ -53,9 +52,7 @@
             android:layout_marginEnd="5dp"
             android:background="#FAF6F6"
             android:scaleType="centerCrop"
-            android:src="@drawable/delete_icon"
-            />
-
+            android:src="@drawable/delete_icon" />
 
     </RelativeLayout>
 
