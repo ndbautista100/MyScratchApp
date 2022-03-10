@@ -74,7 +74,7 @@ public class RecipePageActivity extends AppCompatActivity {
 
         // get the Firebase storage reference
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference("images/");
+        storageReference = storage.getReference("images/recipes");
 
         // getting recipe sent from CreateRecipeActivity
         // create different scenarios for opening from CreateRecipe and EditRecipe
@@ -169,7 +169,6 @@ public class RecipePageActivity extends AppCompatActivity {
                             loadingDialog.dismissDialog();
                             Toast.makeText(RecipePageActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
                         });
-
                     } else if(!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
                         Toast.makeText(RecipePageActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -226,6 +225,7 @@ public class RecipePageActivity extends AppCompatActivity {
         ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
     }
+
     /*
         Opens the tool bar for the Recipe Page
      */

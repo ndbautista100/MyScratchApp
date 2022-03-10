@@ -112,6 +112,11 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }
+    public void openProfilePageActivity() {
+        Intent intent = new Intent(this, ProfilePage.class);
+        startActivity(intent);
+    }
+
 
     public void openSearchActivity() {
         Intent intent = new Intent(this, SearchActivity.class);
@@ -158,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 openScratchNotesActivity();
                 return true;
             case R.id.action_profile:
+                openProfilePageActivity();
                 return true;
             case R.id.action_settings:
                 return true;

@@ -98,8 +98,8 @@ public class EditRecipeActivity extends AppCompatActivity {
     }
 
     public void setToolbar() {
-        Toolbar toolbarCreateRecipe = findViewById(R.id.toolbarEditRecipe);
-        setSupportActionBar(toolbarCreateRecipe);
+        Toolbar toolbarEditRecipe = findViewById(R.id.toolbarEditRecipe);
+        setSupportActionBar(toolbarEditRecipe);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
     }
