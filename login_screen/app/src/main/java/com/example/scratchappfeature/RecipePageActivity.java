@@ -1,30 +1,26 @@
 package com.example.scratchappfeature;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
@@ -32,32 +28,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.OnProgressListener;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import java.util.UUID;
 
+import classes.LoadingDialog;
 import classes.Recipe;
 
 public class RecipePageActivity extends AppCompatActivity {
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final String TAG = "RecipePageActivity";
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Recipe recipe;
     private ImageView recipeImageView;
     private Button addImageButton;
@@ -69,8 +54,8 @@ public class RecipePageActivity extends AppCompatActivity {
     private StorageReference storageReference;
     private Uri imageLocationUri;
 
-    // request code
-    private final int PICK_IMAGE_REQUEST = 22;
+    private Toolbar toolbarScratchNotes;
+    private ActionBar ab;
 
     // must be placed outside of onCreate
     // startActivityForResult is deprecated
@@ -90,10 +75,8 @@ public class RecipePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_page);
-        Toolbar toolbarScratchNotes = (Toolbar) findViewById(R.id.toolbarRecipePage);
-        setSupportActionBar(toolbarScratchNotes);
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+
+        setToolbar();
 
         // get the Firebase storage reference
         storage = FirebaseStorage.getInstance();
@@ -105,36 +88,33 @@ public class RecipePageActivity extends AppCompatActivity {
 
         if(intent.hasExtra("create_recipe")) {
             recipe = (Recipe) intent.getSerializableExtra("create_recipe");
-            populateRecipePage(ab);
+            populateRecipePage();
 
         } else if (intent.hasExtra("open_recipe_from_id")) {
             String recipe_ID = intent.getStringExtra("open_recipe_from_id");
 
             // with the recipe ID, find the document and create a Recipe object
             DocumentReference docRef = db.collection("recipes").document(recipe_ID);
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if(document.exists()) {
-                            Log.d("Success", "Found document!");
+            docRef.get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()) {
+                        Log.i(TAG, "Found document!");
 
-                            recipe = document.toObject(Recipe.class);
-                            populateRecipePage(ab);
+                        recipe = document.toObject(Recipe.class);
+                        populateRecipePage();
 
-                        } else {
-                            Log.d("Fail", "No such document.");
-                        }
                     } else {
-                        Log.d("Fail", "get failed with" + task.getException());
+                        Log.e(TAG, "No such document.");
                     }
+                } else {
+                    Log.e(TAG, "get failed with" + task.getException());
                 }
             });
         }
     }
 
-    public void populateRecipePage(ActionBar ab) {
+    public void populateRecipePage() {
         ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
 
         descriptionTextView = (TextView) findViewById(R.id.recipePageDescriptionTextView);
@@ -153,46 +133,52 @@ public class RecipePageActivity extends AppCompatActivity {
     }
 
     public void uploadImage() {
-        try {
+        Log.d(TAG, "Recipe has an image: " + recipe.getImageName());
+        if(recipe.getImageName() != null) { // if recipe already has an image
+            // delete that image from Firebase Storage
+            StorageReference recipeImageRef = storageReference.child(recipe.getImageName());
+            Log.d(TAG, "Deleting image: " + recipe.getImageName());
+            recipeImageRef.delete()
+                .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipe.getImageName()))
+                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+        }
+
+        try { // uploading the new image
             if(imageLocationUri != null) {
+                LoadingDialog loadingDialog = new LoadingDialog(RecipePageActivity.this);
+                loadingDialog.startLoadingDialog();
+
                 String imageName = recipe.getName() + "_" + UUID.randomUUID().toString() + "." + getExtension(imageLocationUri);
                 StorageReference imageReference = storageReference.child(imageName);
 
                 UploadTask uploadTask = imageReference.putFile(imageLocationUri);
-                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if(!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-
-                        return imageReference.getDownloadUrl();
+                uploadTask.continueWithTask(task -> {
+                    if(!task.isSuccessful()) {
+                        loadingDialog.dismissDialog();
+                        throw task.getException();
                     }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if(task.isSuccessful()) {
-                            //store image
-                            recipe.setImage_URL(task.getResult().toString());
-                            db.collection("recipes")
-                                .document(recipe.getDocument_ID())
-                                .update("image_URL", recipe.getImage_URL())
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(RecipePageActivity.this, "Recipe image uploaded!", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(RecipePageActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                    return imageReference.getDownloadUrl();
+                }).addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        //store image
+                        recipe.setImage_URL(task.getResult().toString());
+                        recipe.setImageName(imageName);
+                        db.collection("recipes")
+                            .document(recipe.getDocument_ID())
+                            .update("image_URL", recipe.getImage_URL(),
+                                    "imageName", imageName)
+                            .addOnCompleteListener(task1 -> {
+                                loadingDialog.dismissDialog();
+                                Toast.makeText(RecipePageActivity.this, "Recipe image uploaded!", Toast.LENGTH_SHORT).show();
+                            })
+                        .addOnFailureListener(e -> {
+                            loadingDialog.dismissDialog();
+                            Toast.makeText(RecipePageActivity.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
+                        });
 
-                        } else if(!task.isSuccessful()) {
-                            Toast.makeText(RecipePageActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                        }
+                    } else if(!task.isSuccessful()) {
+                        loadingDialog.dismissDialog();
+                        Toast.makeText(RecipePageActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -218,25 +204,17 @@ public class RecipePageActivity extends AppCompatActivity {
             // get the recipe document from the database
             DocumentReference downloadRef = db.collection("recipes").document(recipe.getDocument_ID());
 
-            downloadRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    String downloadUrl = documentSnapshot.getString("image_URL");
+            downloadRef.get().addOnSuccessListener(documentSnapshot -> {
+                String downloadUrl = documentSnapshot.getString("image_URL");
 
-                    // Glide makes it easy to load images into ImageViews
-                    if(downloadUrl != null) {
-                        Glide.with(RecipePageActivity.this)
-                            .load(downloadUrl)
-                            .into(recipeImageView);
-                    }
+                // Glide makes it easy to load images into ImageViews
+                if(downloadUrl != null) {
+                    Glide.with(RecipePageActivity.this)
+                        .load(downloadUrl)
+                        .into(recipeImageView);
+                }
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(RecipePageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            }).addOnFailureListener(e -> Toast.makeText(RecipePageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
         } catch (Exception e) {
             Toast.makeText(RecipePageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -248,6 +226,12 @@ public class RecipePageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void setToolbar() {
+        toolbarScratchNotes = findViewById(R.id.toolbarRecipePage);
+        setSupportActionBar(toolbarScratchNotes);
+        ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
     /*
         Opens the tool bar for the Recipe Page
      */
