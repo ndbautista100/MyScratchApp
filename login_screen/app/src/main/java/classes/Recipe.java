@@ -11,7 +11,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String user_ID;
     private String document_ID;
 
-    private int layoutChoice = 2131427384; //Layout One
+    private int layoutChoice = 2131427391; //Layout One
     private int textBoxColor = 0xF2F2F2; //Gray
     private int backgroundColor = 0xFFFFFF; //White
     private String fontFamily = "sans-serif"; //default font

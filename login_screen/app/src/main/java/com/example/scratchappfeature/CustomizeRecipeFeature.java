@@ -245,7 +245,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
     }
 
     public void updateRecipe(Recipe recipe) {
-        DocumentReference docRef = db.collection("recipe").document(recipe.getDocument_ID());
+        DocumentReference docRef = db.collection("recipes").document(recipe.getDocument_ID());
         Log.d("Found document", docRef.getId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -266,7 +266,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.w("Fail", "Error updating documnet", e);
+                                Log.w("Fail", "Error updating document", e);
                             }
                         });
 

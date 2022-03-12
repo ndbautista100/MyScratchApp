@@ -76,7 +76,11 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
 
     @Override
     public void applyToolName(String toolName) {
-        toolsTextView.append(" " + toolName);
+        if (toolsTextView.getText().toString() == ""){
+            toolsTextView.append(toolName);
+        } else {
+            toolsTextView.append(", " + toolName);
+        }
     }
 
     public void showAddIngredientDialog() {
@@ -86,7 +90,11 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
 
     @Override
     public void applyIngredientName(String ingredientName) {
-        ingredientsTextView.append(" " + ingredientName);
+        if (ingredientsTextView.getText().toString() == ""){
+            ingredientsTextView.append(ingredientName);
+        } else {
+            ingredientsTextView.append(", " + ingredientName);
+        }
     }
 
     public void openRecipePageActivity(Recipe recipe) {

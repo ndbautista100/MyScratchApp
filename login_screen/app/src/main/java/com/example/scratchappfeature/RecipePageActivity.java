@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,17 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Map;
 import java.util.UUID;
 
 import classes.LoadingDialog;
@@ -228,8 +220,22 @@ public class RecipePageActivity extends AppCompatActivity {
                             .load(downloadUrl)
                             .into(recipeImageView);
                     }
+
+                    recipe.setImage_URL(downloadUrl);
+                    /*
+                    //If we want to implement the photos as just a single string, or if we want
+                    //To do a subcollection
+
+                    //If recipe doesn't have a photo
+                    if (recipe.getImage_URL() == "") {
                         recipe.setImage_URL(downloadUrl);
-                }
+                    } else {
+                        //If the recipe already has a photo
+                        String imageUrl = recipe.getImage_URL();
+                        recipe.setImage_URL(imageUrl + " " + downloadUrl);
+                    }*/
+
+
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {

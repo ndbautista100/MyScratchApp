@@ -2,6 +2,8 @@
 package com.example.scratchappfeature;
 
 
+import static android.content.ContentValues.TAG;
+
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
@@ -16,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
@@ -41,7 +45,10 @@ public class LayoutFragment extends Fragment {
     public void setDocumentID(String docId) {
         this.docId = docId;
     }
-    public void setRecipe (Recipe recipe) { this.recipe = recipe; }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -86,7 +93,7 @@ public class LayoutFragment extends Fragment {
         View view = inflater.inflate(layoutId, container, false);
         ConstraintLayout mainBackground = view.findViewById(R.id.layoutConstraint);
         mainBackground.setBackgroundColor(recipe.getBackgroundColor());
-
+        ScrollView parentScrollView = view.findViewById(R.id.layoutBackground);
         TextView recipeName = view.findViewById(R.id.titleTextView);
 
         TextView recipeTools = view.findViewById(R.id.toolsTextView);
@@ -99,17 +106,72 @@ public class LayoutFragment extends Fragment {
         ScrollView instructionsScrollView = view.findViewById(R.id.instructionsScrollView);
 
 
-        Typeface recipeFont = Typeface.create(recipe.getFontFamily(),Typeface.NORMAL);
+        //This allows the user to scroll the parent scrollview
+        parentScrollView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.v(TAG, "PARENT TOUCH");
+
+                view.findViewById(R.id.toolsScrollView).getParent()
+                        .requestDisallowInterceptTouchEvent(false);
+                view.findViewById(R.id.ingredientsScrollView).getParent()
+                        .requestDisallowInterceptTouchEvent(false);
+                view.findViewById(R.id.instructionsScrollView).getParent()
+                        .requestDisallowInterceptTouchEvent(false);
+                return false;
+            }
+        });
+
+        //These allow the user to scroll the children scroll views within the parent
+        toolsScrollView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.v(TAG, "CHILD TOUCH");
+
+                // Disallow the touch request for parent scroll on touch of  child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        ingredientsScrollView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.v(TAG, "CHILD TOUCH");
+
+                // Disallow the touch request for parent scroll on touch of  child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        instructionsScrollView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.v(TAG, "CHILD TOUCH");
+
+                // Disallow the touch request for parent scroll on touch of  child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+
+        Typeface recipeFont = Typeface.create(recipe.getFontFamily(), Typeface.NORMAL);
 
         recipeName.setText(recipe.getName());
         recipeName.setTypeface(recipeFont);
         recipeName.setBackgroundColor(recipe.getTextBoxColor());
 
-        recipeTools.setText(recipe.getTools());
+        recipeTools.setText(makeList(recipe.getTools()));
         recipeTools.setTypeface(recipeFont);
         toolsScrollView.setBackgroundColor(recipe.getTextBoxColor());
 
-        recipeIngredients.setText(recipe.getIngredients());
+        recipeIngredients.setText(makeList(recipe.getIngredients()));
         recipeIngredients.setTypeface(recipeFont);
         ingredientsScrollView.setBackgroundColor(recipe.getTextBoxColor());
 
@@ -123,15 +185,23 @@ public class LayoutFragment extends Fragment {
     }
 
 
-
-    private void populateRecyclerView(View view){
+    private void populateRecyclerView(View view) {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         RecyclerView recyclerView = view.findViewById(R.id.photosRecyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
-        LayoutRVAdapter adapter = new LayoutRVAdapter(getContext(),recipe.getImage_URL());
+        LayoutRVAdapter adapter = new LayoutRVAdapter(getContext(), recipe.getImage_URL());
         recyclerView.setAdapter(adapter);
 
+    }
+
+    private String makeList(String listOfItems) {
+        String result = "";
+        String[] tokens = listOfItems.split(", ");
+        for (String token : tokens) {
+            result += "- " + token + "\n";
+        }
+        return result;
     }
 
 }
