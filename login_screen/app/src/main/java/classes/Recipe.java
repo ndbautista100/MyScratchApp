@@ -13,15 +13,11 @@ public class Recipe implements Serializable { // Serializable allows classes to 
 
     private String imageName;
     private String image_URL;
-    private int layoutChoice = 2131427384; //Layout One
+    private int layoutChoice = 2131427391; //Layout One
     private int textBoxColor = 0xF2F2F2; //Gray
     private int backgroundColor = 0xFFFFFF; //White
-<<<<<<< HEAD
 
-=======
     private String fontFamily = "sans-serif"; //default font
-    String image_URL;
->>>>>>> d799dfc (Created font fragment to work with generic fonts. Updates recipe for viewing in layout fragment.)
 
     public Recipe(String name, String description, String ingredients, String tools) {
         this.name = name;
