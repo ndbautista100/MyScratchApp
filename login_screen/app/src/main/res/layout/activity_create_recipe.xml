@@ -34,9 +34,9 @@
         android:layout_marginTop="80dp"
         android:layout_marginBottom="5dp"
         android:layout_below="@id/appBarLayoutCreateRecipe"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:inputType="text"
-        android:hint="Recipe name"/>
+        android:hint="@string/recipe_name"/>
 
     <EditText
         android:id="@+id/recipeDescriptionEditText"
@@ -47,9 +47,9 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_below="@id/recipeNameEditText"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:inputType="text"
-        android:hint="Recipe description"/>
+        android:hint="@string/recipe_description"/>
 
     <LinearLayout
         android:id="@+id/toolsLinearLayout"
@@ -84,7 +84,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:text="Tools:"
+            android:text="@string/tools"
             android:textColor="@color/black"
             android:textStyle="bold" />
     </LinearLayout>
@@ -96,9 +96,9 @@
         android:layout_below="@+id/toolsLinearLayout"
         android:layout_marginStart="25dp"
         android:layout_marginTop="5dp"
-        android:layout_marginRight="25dp"
+        android:layout_marginEnd="25dp"
         android:layout_marginBottom="5dp"
-        android:hint="Tools List" />
+        android:hint="@string/tools_used" />
 
     <LinearLayout
         android:id="@+id/ingredientsLinearLayout"
@@ -133,7 +133,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:text="Ingredients:"
+            android:text="@string/ingredients"
             android:textStyle="bold"
             android:textColor="@color/black"/>
     </LinearLayout>
@@ -142,10 +142,10 @@
         android:id="@+id/ingredientsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Ingredients List"
+        android:hint="@string/ingredients_used"
         android:layout_below="@+id/ingredientsLinearLayout"
         android:layout_marginStart="25dp"
-        android:layout_marginRight="25dp"
+        android:layout_marginEnd="25dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"/>
 
@@ -153,9 +153,9 @@
         android:id="@+id/doneButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Done"
+        android:text="@string/done"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginBottom="25dp"
         android:layout_marginEnd="25dp" />
 

@@ -1,10 +1,13 @@
 package com.example.scratchappfeature;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,92 +15,69 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Point;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.SearchView;
-import android.widget.TextView;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import classes.DataModal;
 import classes.Recipe;
 
 public class ScratchNotesActivity extends AppCompatActivity {
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private TextView recipesTextView;
-    private String recipesList = "";
+    private static final String TAG = "ScratchNotesActivity";
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView recipesRV;
     private RecipeRVAdapter adapter;
+    private ArrayList<Recipe> user_recipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scratch_notes);
-        Toolbar toolbarScratchNotes = (Toolbar) findViewById(R.id.toolbarScratchNotes);
-        setSupportActionBar(toolbarScratchNotes);
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+
+        setToolbar();
 
         // create a RecyclerView to store the recipe name TextViews
         recipesRV = findViewById(R.id.recipesRecyclerView);
         recipesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        // create an ArrayList to store all of the user's recipes
-        ArrayList<Recipe> user_recipes = new ArrayList<Recipe>();
+        showRecipes();
+    }
+
+    public void showRecipes() {
+        user_recipes = new ArrayList<>();
 
         db.collection("recipes")
             .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
             .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Log.d("Success", FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    if(task.getResult() == null || task.getResult().isEmpty()) {
+                        ArrayList<Recipe> noRecipes = new ArrayList<>();
+                        Recipe noRecipe = new Recipe();
+                        noRecipe.setName("No recipes found!");
+                        noRecipe.setDescription("Get started by tapping on the + icon");
+                        noRecipes.add(noRecipe);
 
-                            Recipe dataModal = document.toObject(Recipe.class);
-                            user_recipes.add(dataModal);
+                        adapter = new RecipeRVAdapter(noRecipes, getApplicationContext());
+                        recipesRV.setAdapter(adapter);
+                    } else {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
+                            Recipe recipe = document.toObject(Recipe.class);
+                            user_recipes.add(recipe);
                         }
                         adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
                         // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
                         recipesRV.setAdapter(adapter);
                         // this is called when a recipe is clicked
-                        adapter.setOnItemClickListener(new RecipeRVAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(int position) {
-                                Recipe clickedRecipe = user_recipes.get(position);
-                                openRecipePageActivity(clickedRecipe.getDocument_ID());
-                            }
+                        adapter.setOnItemClickListener(position -> {
+                            Recipe clickedRecipe = user_recipes.get(position);
+                            openRecipePageActivity(clickedRecipe.getDocument_ID());
                         });
-                    } else {
-                        Log.d("err", "Error getting documents: ", task.getException());
                     }
+                } else {
+                    Log.e(TAG, "Error getting documents: ", task.getException());
                 }
             });
     }
@@ -121,16 +101,23 @@ public class ScratchNotesActivity extends AppCompatActivity {
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
+            public boolean onQueryTextSubmit(String s) { // called when search is submitted
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String s) {
+            public boolean onQueryTextChange(String s) { // called when a character is typed
                 adapter.getFilter().filter(s);
                 return false;
             }
         });
+    }
+
+    public void setToolbar() {
+        Toolbar toolbarScratchNotes = findViewById(R.id.toolbarScratchNotes);
+        setSupportActionBar(toolbarScratchNotes);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     // Opens the tool bar for the Scratch Notes page

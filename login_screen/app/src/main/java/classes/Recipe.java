@@ -1,11 +1,7 @@
 package classes;
 
-import android.graphics.Bitmap;
-
-import com.google.firebase.auth.FirebaseAuth;
-
+import androidx.annotation.NonNull;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Recipe implements Serializable { // Serializable allows classes to be transferred between Activities
     private String name;
@@ -14,11 +10,13 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String tools;
     private String user_ID;
     private String document_ID;
+
     private int layoutChoice = 2131427384; //Layout One
     private int textBoxColor = 0xF2F2F2; //Gray
     private int backgroundColor = 0xFFFFFF; //White
     private String fontFamily = "sans-serif"; //default font
     String image_URL;
+    private String imageName;
 
     public Recipe(String name, String description, String ingredients, String tools) {
         this.name = name;
@@ -39,7 +37,6 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     public Recipe() {
 
     }
-
 
     public Recipe(String name) {
         this.name = name;
@@ -102,6 +99,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.image_URL = image_URL;
     }
 
+
     public void setTextBoxColor (int color) {this.textBoxColor = color;}
 
     public int getTextBoxColor() {return this.textBoxColor;}
@@ -115,6 +113,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     public String getFontFamily() {return this.fontFamily;}
 
 
+    @NonNull
     @Override
     public String toString() {
         return "Recipe{" +
@@ -133,5 +132,13 @@ public class Recipe implements Serializable { // Serializable allows classes to 
 
     public void setLayoutChoice(int layoutChoice) {
         this.layoutChoice = layoutChoice;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }

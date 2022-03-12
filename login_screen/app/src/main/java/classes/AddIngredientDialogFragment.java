@@ -3,7 +3,6 @@ package classes;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +31,11 @@ public class AddIngredientDialogFragment extends AppCompatDialogFragment {
         try {
             listener = (AddIngredientDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement AddIngredientDialogListener");
+            throw new ClassCastException(context + " must implement AddIngredientDialogListener");
         }
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -43,19 +43,13 @@ public class AddIngredientDialogFragment extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.activity_add_ingredient, null);
 
         builder.setView(view)
-                .setPositiveButton(R.string.add_ingredient, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // add the ingredient
-                        String ingredientName = ingredientNameEditText.getText().toString();
-                        listener.applyIngredientName(ingredientName);
-                    }
+                .setPositiveButton(R.string.add_ingredient, (dialogInterface, i) -> {
+                    // add the ingredient
+                    String ingredientName = ingredientNameEditText.getText().toString();
+                    listener.applyIngredientName(ingredientName);
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // cancel adding ingredient
-                    }
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    // cancel adding ingredient
                 });
 
         ingredientNameEditText = view.findViewById(R.id.addIngredientNameEditText);
