@@ -1,0 +1,173 @@
+package com.example.scratchappfeature;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import classes.Profile;
+import classes.Recipe;
+
+public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.ProfileViewHolder>{
+    private static final String TAG = "ProfileRVAdapter";
+    private ArrayList<Profile> profileArrayList;
+    private ArrayList<Profile> ProfileArrayListFull;
+    private Context context;
+    private ProfileRVAdapter.OnItemClickListener mListener;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final StorageReference storageReference = storage.getReference("images/");
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(ProfileRVAdapter.OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    public static class ProfileViewHolder extends RecyclerView.ViewHolder {
+        // creating variables for our views of recycler items.
+        private final TextView profileNameTextView;
+        private final TextView profileBioTextView;
+        private final ImageView profileImageView;
+        //private final ImageButton removeBtn;
+
+        public ProfileViewHolder(@NonNull View itemView, ProfileRVAdapter.OnItemClickListener listener) {
+            super(itemView);
+            // initializing the views of the RecyclerView
+            profileNameTextView = itemView.findViewById(R.id.profileNameTextView);
+            profileBioTextView = itemView.findViewById(R.id.profileBioTextView);
+            profileImageView = itemView.findViewById(R.id.profileImageView);
+            //removeBtn = itemView.findViewById(R.id.deleteRecipeImageButton);
+            itemView.setOnClickListener(view -> {
+                if(listener != null) {
+                    int position = getAbsoluteAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
+                    }
+                }
+            });
+        }
+    }
+    //leave this out for now
+    /*private void removeAt(int position) {
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, recipeArrayList.size());
+
+        Recipe recipeToDelete = ArrayList.get(position);
+        String docID = recipeToDelete.getDocument_ID();
+
+        db.collection("recipes").document(docID).delete()
+                .addOnSuccessListener(unused -> {
+                    Log.i(TAG, "DocumentSnapshot successfully deleted!");
+                    // Delete the image file as well after deleting the recipe
+                    StorageReference recipeImageRef = storageReference.child(recipeToDelete.getImageName());
+                    Log.d(TAG, "Deleting image: " + recipeToDelete.getImageName());
+                    recipeImageRef.delete()
+                            .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipeToDelete.getImageName()))
+                            .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error deleting document", e));
+        profileArrayList.remove(position);
+    }*/
+
+    // constructor class for our Adapter
+    public ProfileRVAdapter(ArrayList<Profile> profileArrayList, Context context) {
+        this.profileArrayList = profileArrayList;
+        ProfileArrayListFull = new ArrayList<>(profileArrayList); // create a copy that doesn't point to the same ArrayList
+        this.context = context;
+    }
+
+    public ProfileRVAdapter(View inflate) {
+
+    }
+
+    @NonNull
+    @Override
+    public ProfileRVAdapter.ProfileViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // passing our layout file for displaying our card item
+        View v = LayoutInflater.from(context).inflate(R.layout.profile_source_item, parent, false);
+        return new ProfileRVAdapter.ProfileViewHolder(v, mListener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ProfileRVAdapter.ProfileViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        // setting data to our views in RecyclerView items
+        Profile profile = profileArrayList.get(position);
+        holder.profileNameTextView.setText(profile.getpname());
+        holder.profileBioTextView.setText(profile.getbio());
+        /*holder.removeBtn.setOnClickListener(v -> {
+            removeAt(position);//i is your adapter position
+        });*/
+
+        // we are using Picasso to load images from URLs into an ImageView
+        if(profile.getProfileImageURL() != null) {
+            Picasso.with(context.getApplicationContext())
+                    .load(profile.getProfileImageURL())
+                    .into(holder.profileImageView);
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        // returning the size of array list.
+        return profileArrayList.size();
+    }
+
+    /*
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }*/
+
+    /*private final Filter exampleFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<Recipe> filteredList = new ArrayList<>();
+
+            if(charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(profileArrayListFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase(Locale.ROOT).trim();
+
+                for(Recipe recipe : recipeArrayListFull) {
+                    if(recipe.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(recipe);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            recipeArrayList.clear();
+            recipeArrayList.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+
+    };*/
+}
