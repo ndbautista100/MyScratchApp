@@ -52,7 +52,7 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
         private final TextView profileNameTextView;
         private Button followBTN;
         private final ImageView profileImageView;
-        private boolean followed = false;
+        private boolean followed;
         //private final ImageButton removeBtn;
 
         public ProfileViewHolder(@NonNull View itemView, ProfileRVAdapter.OnItemClickListener listener) {
@@ -113,18 +113,17 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
         // setting data to our views in RecyclerView items
         Profile profile = profileArrayList.get(position);
         holder.profileNameTextView.setText(profile.getpname());
-
         holder.followBTN.setOnClickListener(v -> {
             //removeAt(position);//i is your adapter position
             if(holder.followed == false){
                 holder.followBTN.setText("Following");
                 holder.followed = true;
-                updateAt(position);
+                //updateAt(position);
             }
             else{
                 holder.followBTN.setText("Follow");
-                holder.followed = true;
-                updateAt(position);
+                holder.followed = false;
+                //updateAt(position);
             }
 
         });
