@@ -54,12 +54,12 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
                 if(task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if(document.exists()) {
-                        holder.userNameTextView.setText(document.getString("pname"));
+                        holder.userNameTextView.setText(document.getString("pname")); // set user's name
 
-                        // we are using Picasso to load images from URLs into an ImageView
-                        if(document.getString("imageURL") != null) {
+                        // we are using Picasso to load profile images from URLs into an ImageView
+                        if(document.getString("profileImageURL") != null) {
                             Picasso.with(context)
-                                .load(document.getString("imageURL"))
+                                .load(document.getString("profileImageURL"))
                                 .into(holder.userAvatarImageView);
                         }
                     }
@@ -67,7 +67,7 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
             })
             .addOnFailureListener(e -> Log.e(TAG, e.toString()));
 
-        // we are using Picasso to load images from URLs into an ImageView
+        // we are using Picasso to load recipe images from URLs into an ImageView
         if(model.getImage_URL() != null) {
             Picasso.with(context)
                 .load(model.getImage_URL())

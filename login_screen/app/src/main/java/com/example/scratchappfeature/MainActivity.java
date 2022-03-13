@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             return null;
         });
 
-        userRecipesRV.setHasFixedSize(true); //
+        userRecipesRV.setHasFixedSize(true);
         userRecipesRV.setLayoutManager(new LinearLayoutManager(this));
         userRecipesRV.setAdapter(adapter);
     }
@@ -157,6 +157,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openSearchActivity() {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivity(intent);
+    }
 
     public void openScratchNotesActivity() {
         Intent intent = new Intent(this, ScratchNotesActivity.class);
