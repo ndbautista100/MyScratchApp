@@ -150,7 +150,7 @@ public class EditProfilePage extends AppCompatActivity {
         }
 
         try { // uploading the profile pic
-            if (profileImageUri == null) {
+            if (profileImageUri != null) {
                 LoadingDialog loadingDialog = new LoadingDialog(EditProfilePage.this);
                 loadingDialog.startLoadingDialog();
                 
