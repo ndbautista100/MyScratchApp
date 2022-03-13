@@ -7,13 +7,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Profile {
     private String pname, pbio, pfavoritefood;
     private String profileImageURL;
     private String profileImageName;
     private String userID;
-    private ArrayList<String> followers;
+    private HashMap<String, Integer> followers;
 
     public Profile() {
         // empty constructor
@@ -26,7 +27,7 @@ public class Profile {
         pbio = bio;
         pfavoritefood = favoritefood;
         userID = userid;
-        followers =  new ArrayList<String>();
+        followers =  new HashMap<String, Integer>();
     }
 
     // getter methods for all variables.
@@ -75,13 +76,18 @@ public class Profile {
         this.userID = userID;
     }
 
-    public ArrayList<String> getFollowers() {
+    public HashMap<String, Integer> getFollowers() {
+        return followers;
+    }
+    public HashMap<String, Integer> removeFollowers(String id) {
+        followers.remove(id);
         return followers;
     }
 
-    public void setFriends(String userID) {
-        if(!followers.contains(userID)) {
-            followers.add(userID);
-        }
+    public HashMap<String, Integer> addFollowers(String id) {
+        followers.put(id, 0);
+        return followers;
     }
+
+
 }

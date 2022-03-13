@@ -14,26 +14,15 @@ app:cardCornerRadius="4dp">
 
     <ImageView
         android:id="@+id/profileImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toStartOf="@+id/profileBioTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/blankpicture" />
+        app:srcCompat="@drawable/blankpicture"
+        android:scaleType="fitXY"/>
 
-
-    <TextView
-        android:id="@+id/profileBioTextView"
-        android:layout_width="170dp"
-        android:layout_height="63dp"
-        android:layout_below="@+id/profileNameTextView"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="22dp"
-        android:layout_toEndOf="@+id/profileImageView"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/profileNameTextView" />
 
     <TextView
         android:id="@+id/profileNameTextView"
@@ -41,11 +30,22 @@ app:cardCornerRadius="4dp">
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/profileImageView"
         android:text="TextView"
+        android:textSize="30sp"
         app:layout_constraintStart_toEndOf="@+id/profileImageView"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/exploreFollowBTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileNameTextView"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
+        android:layout_toEndOf="@+id/profileImageView"
+        android:text="Follow" />
 
 
 </RelativeLayout>

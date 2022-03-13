@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -31,6 +33,7 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
     private ArrayList<Profile> profileArrayList;
     private ArrayList<Profile> ProfileArrayListFull;
     private Context context;
+    private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private ProfileRVAdapter.OnItemClickListener mListener;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -47,15 +50,16 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
     public static class ProfileViewHolder extends RecyclerView.ViewHolder {
         // creating variables for our views of recycler items.
         private final TextView profileNameTextView;
-        private final TextView profileBioTextView;
+        private Button followBTN;
         private final ImageView profileImageView;
+        private boolean followed = false;
         //private final ImageButton removeBtn;
 
         public ProfileViewHolder(@NonNull View itemView, ProfileRVAdapter.OnItemClickListener listener) {
             super(itemView);
             // initializing the views of the RecyclerView
             profileNameTextView = itemView.findViewById(R.id.profileNameTextView);
-            profileBioTextView = itemView.findViewById(R.id.profileBioTextView);
+            followBTN = itemView.findViewById(R.id.exploreFollowBTN);
             profileImageView = itemView.findViewById(R.id.profileImageView);
             //removeBtn = itemView.findViewById(R.id.deleteRecipeImageButton);
             itemView.setOnClickListener(view -> {
@@ -69,26 +73,21 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
         }
     }
     //leave this out for now
-    /*private void removeAt(int position) {
+    private void updateAt(int position) {
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, recipeArrayList.size());
+        notifyItemRangeChanged(position, profileArrayList.size());
 
-        Recipe recipeToDelete = ArrayList.get(position);
-        String docID = recipeToDelete.getDocument_ID();
-
-        db.collection("recipes").document(docID).delete()
-                .addOnSuccessListener(unused -> {
-                    Log.i(TAG, "DocumentSnapshot successfully deleted!");
-                    // Delete the image file as well after deleting the recipe
-                    StorageReference recipeImageRef = storageReference.child(recipeToDelete.getImageName());
-                    Log.d(TAG, "Deleting image: " + recipeToDelete.getImageName());
-                    recipeImageRef.delete()
-                            .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipeToDelete.getImageName()))
-                            .addOnFailureListener(e -> Log.e(TAG, e.toString()));
-                })
-                .addOnFailureListener(e -> Log.e(TAG, "Error deleting document", e));
-        profileArrayList.remove(position);
-    }*/
+        Profile profileToFollow = profileArrayList.get(position);
+        String docID = profileToFollow.getUserID();
+        if(profileToFollow.getFollowers().containsKey(currentUser)){
+            profileToFollow.removeFollowers(currentUser);
+        }else{
+            profileToFollow.addFollowers(currentUser);
+            db.collection("profile").document(docID).update("followers", currentUser )
+                    .addOnSuccessListener(unused -> Log.i(TAG, "DocumentSnapshot successfully updated!"))
+                    .addOnFailureListener(e -> Log.e(TAG, "Error updating document", e));
+        }
+    }
 
     // constructor class for our Adapter
     public ProfileRVAdapter(ArrayList<Profile> profileArrayList, Context context) {
@@ -114,10 +113,21 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
         // setting data to our views in RecyclerView items
         Profile profile = profileArrayList.get(position);
         holder.profileNameTextView.setText(profile.getpname());
-        holder.profileBioTextView.setText(profile.getbio());
-        /*holder.removeBtn.setOnClickListener(v -> {
-            removeAt(position);//i is your adapter position
-        });*/
+
+        holder.followBTN.setOnClickListener(v -> {
+            //removeAt(position);//i is your adapter position
+            if(holder.followed == false){
+                holder.followBTN.setText("Following");
+                holder.followed = true;
+                updateAt(position);
+            }
+            else{
+                holder.followBTN.setText("Follow");
+                holder.followed = true;
+                updateAt(position);
+            }
+
+        });
 
         // we are using Picasso to load images from URLs into an ImageView
         if(profile.getProfileImageURL() != null) {
