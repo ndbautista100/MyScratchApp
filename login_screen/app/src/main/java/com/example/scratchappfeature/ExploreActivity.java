@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.paging.PagingConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +32,8 @@ public class ExploreActivity extends AppCompatActivity {
     private static final String TAG = "ProfileRVAdapter";
     private RecyclerView profiles_RV;
     private ArrayList<Profile> profiles;
+    private Toolbar toolbarExplorePage;
+    private ActionBar ab;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     protected void onCreate(Bundle savedInstanceState){
@@ -38,7 +42,7 @@ public class ExploreActivity extends AppCompatActivity {
         profiles_RV = findViewById(R.id.profilesRV);
         profiles_RV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-
+        setToolbar();
         //profiles_RV.setAdapter();
 
         //setTitle("Videos");
@@ -79,5 +83,12 @@ public class ExploreActivity extends AppCompatActivity {
                         Log.e(TAG, "Error getting documents: ", task.getException());
                     }
                 });
+    }
+
+    public void setToolbar() {
+        toolbarExplorePage = findViewById(R.id.toolbarExplorePage);
+        setSupportActionBar(toolbarExplorePage);
+        ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 }
