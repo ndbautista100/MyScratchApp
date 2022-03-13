@@ -15,6 +15,7 @@ public class Profile {
     private String profileImageName;
     private String userID;
     private HashMap<String, Integer> followers;
+    private String documentID;
 
     public Profile() {
         // empty constructor
@@ -41,6 +42,15 @@ public class Profile {
 
     public String getbio() {
         return pbio;
+    }
+
+    public String getDocument_ID()
+    {
+        return documentID;
+    }
+
+    public void setDocument_ID(String id) {
+        this.documentID = id;
     }
 
     // setter method for all variables.
