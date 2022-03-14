@@ -2,11 +2,13 @@ package com.example.scratchappfeature;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -35,6 +39,7 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
     private ArrayList<Profile> profileArrayList;
     private ArrayList<Profile> ProfileArrayListFull;
     private Context context;
+    private Profile loggedUser;
     private String currentUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private ProfileRVAdapter.OnItemClickListener mListener;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -81,8 +86,36 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
 
         Profile profileToFollow = profileArrayList.get(position);
         String docID = profileToFollow.getUserID();
+        String currentUSERID = currentUser;
         if(profileToFollow.getFollowers().containsKey(currentUser)){
+            //remove the follower
             profileToFollow.removeFollowers(currentUser);
+            // get ref to the user that is logged in
+            DocumentReference docRef = db.collection("profile").document(currentUSERID);
+
+            docRef.get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()) {
+                        loggedUser = document.toObject(Profile.class);
+                        loggedUser.removeFollowing(profileToFollow.getUserID());
+                        ObjectMapper oMapper = new ObjectMapper();
+                        Map<String, Object> profileMap = oMapper.convertValue(loggedUser, Map.class);
+                        db.collection("profile").document(currentUSERID).set(profileMap)
+                                .addOnSuccessListener(documentReference -> {
+                                    // update the newly added document to set its document ID - on the Java object and Firebase document reference
+
+
+
+                                });
+                    } else {
+                        Log.e(TAG, "No such document.");
+                    }
+                } else {
+                    Log.e(TAG, "get failed with" + task.getException());
+                }
+            });
+            // map profile to object
             ObjectMapper oMapper = new ObjectMapper();
             Map<String, Object> profileMap = oMapper.convertValue(profileToFollow, Map.class);
             db.collection("profile").document(docID).set(profileMap)
@@ -93,10 +126,34 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
 
                     });
         }else{
+            //add the follower
             profileToFollow.addFollowers(currentUser);
-            /*db.collection("profile").document(docID).update("followers", currentUser )
-                    .addOnSuccessListener(unused -> Log.i(TAG, "DocumentSnapshot successfully updated!"))
-                    .addOnFailureListener(e -> Log.e(TAG, "Error updating document", e));*/
+            // get ref to the user that is logged in
+            DocumentReference docRef = db.collection("profile").document(currentUSERID);
+
+            docRef.get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()) {
+                       loggedUser = document.toObject(Profile.class);
+                       loggedUser.addFollowing(profileToFollow.getUserID());
+                        ObjectMapper oMapper = new ObjectMapper();
+                        Map<String, Object> profileMap = oMapper.convertValue(loggedUser, Map.class);
+                        db.collection("profile").document(currentUSERID).set(profileMap)
+                                .addOnSuccessListener(documentReference -> {
+                                    // update the newly added document to set its document ID - on the Java object and Firebase document reference
+
+
+
+                                });
+                    } else {
+                        Log.e(TAG, "No such document.");
+                    }
+                } else {
+                    Log.e(TAG, "get failed with" + task.getException());
+                }
+            });
+            // map the profile class to an object
             ObjectMapper oMapper = new ObjectMapper();
             Map<String, Object> profileMap = oMapper.convertValue(profileToFollow, Map.class);
             db.collection("profile").document(docID).set(profileMap)
