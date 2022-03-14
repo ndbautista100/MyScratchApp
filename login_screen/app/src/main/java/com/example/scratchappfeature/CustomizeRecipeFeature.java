@@ -35,6 +35,7 @@ import com.google.firebase.firestore.Query;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import classes.Recipe;

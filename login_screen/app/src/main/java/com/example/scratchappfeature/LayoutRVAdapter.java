@@ -38,6 +38,8 @@ public class LayoutRVAdapter extends RecyclerView.Adapter<LayoutRVAdapter.ViewHo
         if (mImageUrls != null){
             Picasso.with(mContext.getApplicationContext())
                     .load(mImageUrls)
+                    .resize(1000,1000)
+                    .centerInside()
                     .into(holder.imageView);
         }
 
