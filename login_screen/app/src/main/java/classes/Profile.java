@@ -15,6 +15,7 @@ public class Profile {
     private String profileImageName;
     private String userID;
     private HashMap<String, Integer> followers;
+    private HashMap<String, Integer> following;
     private String documentID;
 
     public Profile() {
@@ -97,6 +98,19 @@ public class Profile {
     public HashMap<String, Integer> addFollowers(String id) {
         followers.put(id, 0);
         return followers;
+    }
+
+    public HashMap<String, Integer> getFollowing() {
+        return following;
+    }
+    public HashMap<String, Integer> removeFollowing(String id) {
+        following.remove(id);
+        return following;
+    }
+
+    public HashMap<String, Integer> addFollowing(String id) {
+        following.put(id, 0);
+        return following;
     }
 
 
