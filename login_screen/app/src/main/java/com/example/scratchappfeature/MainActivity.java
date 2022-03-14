@@ -1,6 +1,8 @@
 package com.example.scratchappfeature;
 
 import android.app.ActionBar;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openSearchActivity() {
-        Intent intent = new Intent(this, SearchActivity.class);
+    public void openSearchableActivity() {
+        Intent intent = new Intent(this, SearchableActivity.class);
         startActivity(intent);
     }
 
@@ -155,8 +157,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-                openSearchActivity();
+            case R.id.action_open_search:
+                openSearchableActivity();
                 return true;
             case R.id.action_create:
                 openScratchNotesActivity();
