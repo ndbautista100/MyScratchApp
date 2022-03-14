@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -24,6 +25,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import classes.Profile;
 import classes.Recipe;
@@ -74,18 +76,36 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
     }
     //leave this out for now
     private void updateAt(int position) {
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, profileArrayList.size());
+        //notifyItemRemoved(position);
+        //notifyItemRangeChanged(position, profileArrayList.size());
 
         Profile profileToFollow = profileArrayList.get(position);
         String docID = profileToFollow.getUserID();
         if(profileToFollow.getFollowers().containsKey(currentUser)){
             profileToFollow.removeFollowers(currentUser);
+            ObjectMapper oMapper = new ObjectMapper();
+            Map<String, Object> profileMap = oMapper.convertValue(profileToFollow, Map.class);
+            db.collection("profile").document(docID).set(profileMap)
+                    .addOnSuccessListener(documentReference -> {
+                        // update the newly added document to set its document ID - on the Java object and Firebase document reference
+
+
+
+                    });
         }else{
             profileToFollow.addFollowers(currentUser);
-            db.collection("profile").document(docID).update("followers", currentUser )
+            /*db.collection("profile").document(docID).update("followers", currentUser )
                     .addOnSuccessListener(unused -> Log.i(TAG, "DocumentSnapshot successfully updated!"))
-                    .addOnFailureListener(e -> Log.e(TAG, "Error updating document", e));
+                    .addOnFailureListener(e -> Log.e(TAG, "Error updating document", e));*/
+            ObjectMapper oMapper = new ObjectMapper();
+            Map<String, Object> profileMap = oMapper.convertValue(profileToFollow, Map.class);
+            db.collection("profile").document(docID).set(profileMap)
+                    .addOnSuccessListener(documentReference -> {
+                        // update the newly added document to set its document ID - on the Java object and Firebase document reference
+
+
+
+                    });
         }
     }
 
@@ -118,12 +138,12 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
             if(holder.followed == false){
                 holder.followBTN.setText("Following");
                 holder.followed = true;
-                //updateAt(position);
+                updateAt(position);
             }
             else{
                 holder.followBTN.setText("Follow");
                 holder.followed = false;
-                //updateAt(position);
+                updateAt(position);
             }
 
         });
