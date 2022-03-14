@@ -77,7 +77,7 @@ public class ExploreActivity extends AppCompatActivity {
                         // this is called when a recipe is clicked
                         adapter.setOnItemClickListener(position -> {
                             Profile clickedProfile = profiles.get(position);
-                            //openRecipePageActivity(clickedProfile.getDocument_ID());
+
                         });
                     } else {
                         Log.e(TAG, "Error getting documents: ", task.getException());
