@@ -19,26 +19,25 @@
         android:icon="@drawable/recipe_icon"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_profile"
-        android:orderInCategory="3"
-        android:title="User"
-        android:icon="@drawable/chef"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_explore"
-        android:orderInCategory="300"
+        android:orderInCategory="3"
         android:title="Explore"
         android:icon="@drawable/earth_yummy"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_profile"
         android:orderInCategory="4"
+        android:title="My Profile"
+        android:icon="@drawable/chef"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="5"
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
-        android:orderInCategory="5"
+        android:orderInCategory="6"
         android:title="Log out"
         app:showAsAction="never" />
 </menu>
