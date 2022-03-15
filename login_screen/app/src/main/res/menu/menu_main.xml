@@ -6,7 +6,7 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_open_search"
         android:orderInCategory="1"
         android:title="Search"
         android:icon="@drawable/searchimageicon"
