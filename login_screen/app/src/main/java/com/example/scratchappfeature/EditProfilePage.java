@@ -42,7 +42,6 @@ import java.util.Map;
 public class EditProfilePage extends AppCompatActivity {
     private static final String TAG = "EditProfilePage";
     private String name;
-    private String randomString;
     private String bio;
     private String favoriteFood;
     private String id;

@@ -1,20 +1,15 @@
 package com.example.scratchappfeature;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.paging.CombinedLoadStates;
 import androidx.paging.LoadState;
 import androidx.paging.PagingConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,13 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import classes.Recipe;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -37,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView userRecipesRV;
     private FirestoreAdapter adapter;
     private final CollectionReference recipesRef = db.collection("recipes");
-    private PagingConfig pagingConfig = new PagingConfig(6, 3, false);
+    private final PagingConfig pagingConfig = new PagingConfig(6, 3, false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,46 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
 
-        adapterMethods(adapter);
-    }
-
-//    public void searchAction(MenuItem item) {
-//        SearchView searchView = (SearchView) item.getActionView();
-//        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH); // keyboard
-//        searchView.setLayoutParams(new ActionBar.LayoutParams(Gravity.RIGHT));
-//        searchView.setQueryHint("Recipe name...");
-//        searchView.setIconified(false);
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String s) { // called when search is submitted
-//                searchDatabase(s);
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String s) { // called when a character is typed
-//                return false;
-//            }
-//        });
-//    }
-//
-//    public void searchDatabase(String s) {
-//        Log.d(TAG, "Searching for" + s + "...");
-//
-//        Query searchQuery = recipesRef
-//            .whereEqualTo("search", s.toLowerCase())
-//            .orderBy("name", Query.Direction.ASCENDING); // order by rating once ratings are implemented
-//
-//        FirestorePagingOptions<Recipe> newPagingOptions = new FirestorePagingOptions.Builder<Recipe>()
-//            .setLifecycleOwner(this)
-//            .setQuery(searchQuery, pagingConfig, Recipe.class)
-//            .build();
-//
-//        adapter.updateOptions(newPagingOptions);
-//    }
-
-    public void adapterMethods(FirestoreAdapter adapter) {
         adapter.setOnItemClickListener((documentSnapshot, position) -> openRecipePageActivity(documentSnapshot.getId()));
 
         adapter.addLoadStateListener(combinedLoadStates -> {
@@ -157,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openSearchActivity() {
-        Intent intent = new Intent(this, SearchActivity.class);
+    public void openSearchableActivity() {
+        Intent intent = new Intent(this, SearchableActivity.class);
         startActivity(intent);
     }
 
@@ -195,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-//                searchAction(item);
+            case R.id.action_open_search:
+                openSearchableActivity();
                 return true;
             case R.id.action_create:
                 openScratchNotesActivity();
