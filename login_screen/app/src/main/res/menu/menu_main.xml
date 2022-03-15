@@ -29,7 +29,7 @@
         android:id="@+id/action_explore"
         android:orderInCategory="300"
         android:title="Explore"
-        android:icon="@drawable/explore_icon"
+        android:icon="@drawable/earth_yummy"
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_settings"
