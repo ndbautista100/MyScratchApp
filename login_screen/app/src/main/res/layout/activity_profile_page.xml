@@ -31,7 +31,7 @@
         android:layout_below="@id/appBarLayoutProfilePage">
 
         <ImageView
-            android:id="@+id/bannerImageView"
+            android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:scaleType="centerCrop"
@@ -43,7 +43,7 @@
             android:layout_height="25dp"
             android:layout_alignParentEnd="true"
             android:background="@drawable/cog"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/white"
             android:layout_marginEnd="10dp"
             />
 
@@ -82,7 +82,9 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:gravity="center"
                 android:hint='John Smith'
+                android:textColor="@color/black"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -93,6 +95,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="start"
                 android:text="Bio:"
+                android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
@@ -103,6 +106,7 @@
                 android:layout_marginStart="5dp"
                 android:gravity="start"
                 android:hint='Age, hobbies, interest, etc...'
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
             <TextView
@@ -112,6 +116,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="start"
                 android:text="Favorite foods:"
+                android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
@@ -122,6 +127,7 @@
                 android:layout_marginStart="5dp"
                 android:gravity="start"
                 android:hint='Pasta, Salad, Pizza, etc...'
+                android:textColor="@color/black"
                 android:textSize="15sp" />
 
         </LinearLayout>
