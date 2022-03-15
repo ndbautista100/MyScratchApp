@@ -44,6 +44,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/appBarLayoutScratchNotes"
         android:padding="4dp"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:background="@color/gray"/>
 
 </RelativeLayout>

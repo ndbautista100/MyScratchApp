@@ -7,7 +7,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Profile {
     private String pname, pbio, pfavoritefood;
@@ -16,9 +15,7 @@ public class Profile {
     private String bannerImageURL;
     private String bannerImageName;
     private String userID;
-    private HashMap<String, Integer> followers;
-    private HashMap<String, Integer> following;
-    private String documentID;
+    private ArrayList<String> followers;
 
     public Profile() {
         // empty constructor
@@ -31,7 +28,7 @@ public class Profile {
         pbio = bio;
         pfavoritefood = favoritefood;
         userID = userid;
-        followers =  new HashMap<String, Integer>();
+        followers =  new ArrayList<String>();
     }
 
     // getter methods for all variables.
@@ -45,15 +42,6 @@ public class Profile {
 
     public String getbio() {
         return pbio;
-    }
-
-    public String getDocument_ID()
-    {
-        return documentID;
-    }
-
-    public void setDocument_ID(String id) {
-        this.documentID = id;
     }
 
     // setter method for all variables.
@@ -101,31 +89,13 @@ public class Profile {
         this.userID = userID;
     }
 
-    public HashMap<String, Integer> getFollowers() {
-        return followers;
-    }
-    public HashMap<String, Integer> removeFollowers(String id) {
-        followers.remove(id);
+    public ArrayList<String> getFollowers() {
         return followers;
     }
 
-    public HashMap<String, Integer> addFollowers(String id) {
-        followers.put(id, 0);
-        return followers;
+    public void setFriends(String userID) {
+        if(!followers.contains(userID)) {
+            followers.add(userID);
+        }
     }
-
-    public HashMap<String, Integer> getFollowing() {
-        return following;
-    }
-    public HashMap<String, Integer> removeFollowing(String id) {
-        following.remove(id);
-        return following;
-    }
-
-    public HashMap<String, Integer> addFollowing(String id) {
-        following.put(id, 0);
-        return following;
-    }
-
-
 }

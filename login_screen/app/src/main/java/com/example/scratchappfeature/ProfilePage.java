@@ -31,9 +31,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import java.util.ArrayList;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import classes.Profile;
-import classes.Recipe;
 
 public class ProfilePage extends AppCompatActivity {
     private static final String TAG = "ProfilePage";
@@ -49,7 +54,6 @@ public class ProfilePage extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference profilesCollection = db.collection("profile");
     private String userID;
-    private Profile profile;
 
     private RecyclerView recipeRV;
     private FirestoreAdapter adapter;
@@ -58,7 +62,6 @@ public class ProfilePage extends AppCompatActivity {
 
     private Toolbar toolbarProfilePage;
     private ActionBar ab;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
