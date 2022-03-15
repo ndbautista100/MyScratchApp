@@ -1,7 +1,7 @@
 <resources>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="app_name">My Scratch!</string>
-    <string name="settings">Settings</string>
+    <string name="action_settings">Settings</string>
     <string name="add_tool">Add Tool</string>
     <string name="add_ingredient">Add Ingredient</string>
     <string name="cancel">Cancel</string>
