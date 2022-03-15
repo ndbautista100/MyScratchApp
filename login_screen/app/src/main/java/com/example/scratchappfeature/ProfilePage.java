@@ -49,9 +49,9 @@ public class ProfilePage extends AppCompatActivity {
     private TextView displayname;
     private TextView displaybio;
     private TextView displayfavoritefood;
-    private Button finishButton;
     private Button editbutton;
     private ImageView profileImage;
+    private ImageView bannerImage;
     private ImageButton followBtn;
 
     private FirebaseAuth fauth;
@@ -76,6 +76,7 @@ public class ProfilePage extends AppCompatActivity {
         displaybio =  findViewById(R.id.bio);
         displayfavoritefood =  findViewById(R.id.favoriteFood);
         profileImage = (ImageView) findViewById(R.id.profilePicture);
+        bannerImage = (ImageView) findViewById(R.id.banner);
         followBtn =  findViewById(R.id.followButton);
         storageRef = FirebaseStorage.getInstance().getReference();
 
@@ -126,6 +127,7 @@ public class ProfilePage extends AppCompatActivity {
                     displayfavoritefood.setText(favoritefoodstr);
 
                     downloadImage();
+                    downloadBannerImage();
 
                 } else {
                     Log.e(TAG, "No such document.");
@@ -135,15 +137,6 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
-//        finishButton = (Button) findViewById(R.id.finishButton);
-//        finishButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                returnToMainActivity();
-//            }
-//
-//        });
-//
         editbutton = (Button) findViewById(R.id.editButton);
         editbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +168,27 @@ public class ProfilePage extends AppCompatActivity {
                     Glide.with(ProfilePage.this)
                         .load(downloadUrl)
                         .into(profileImage);
+                }
+
+            }).addOnFailureListener(e -> Toast.makeText(ProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+        } catch (Exception e) {
+            Toast.makeText(ProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void downloadBannerImage(){
+        try {
+            // get the profile document from the database
+            DocumentReference downloadRef = fstore.collection("profile").document(userID);
+
+            downloadRef.get().addOnSuccessListener(documentSnapshot -> {
+                String downloadUrl = documentSnapshot.getString("bannerImageURL");
+
+                // Glide makes it easy to load images into ImageViews
+                if(downloadUrl != null) {
+                    Glide.with(ProfilePage.this)
+                            .load(downloadUrl)
+                            .into(bannerImage);
                 }
 
             }).addOnFailureListener(e -> Toast.makeText(ProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show());

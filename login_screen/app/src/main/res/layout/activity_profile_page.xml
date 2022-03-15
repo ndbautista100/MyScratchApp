@@ -31,7 +31,7 @@
         android:layout_below="@id/appBarLayoutProfilePage">
 
         <ImageView
-            android:id="@+id/bannerImageView"
+            android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:scaleType="centerCrop"
@@ -43,7 +43,7 @@
             android:layout_height="25dp"
             android:layout_alignParentEnd="true"
             android:background="@drawable/cog"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/white"
             android:layout_marginEnd="10dp"
             />
 
@@ -83,7 +83,9 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:hint='John Smith'
+                android:gravity="center"
                 android:textSize="30sp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
@@ -94,6 +96,7 @@
                 android:gravity="start"
                 android:text="Bio:"
                 android:textSize="25sp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
@@ -102,6 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:gravity="start"
+                android:textColor="@color/black"
                 android:hint='Age, hobbies, interest, etc...'
                 android:textSize="15sp" />
 
@@ -112,6 +116,7 @@
                 android:layout_marginTop="20dp"
                 android:gravity="start"
                 android:text="Favorite foods:"
+                android:textColor="@color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
@@ -121,6 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:gravity="start"
+                android:textColor="@color/black"
                 android:hint='Pasta, Salad, Pizza, etc...'
                 android:textSize="15sp" />
 
