@@ -12,6 +12,8 @@ public class Profile {
     private String pname, pbio, pfavoritefood;
     private String profileImageURL;
     private String profileImageName;
+    private String bannerImageURL;
+    private String bannerImageName;
     private String userID;
     private ArrayList<String> followers;
 
@@ -65,6 +67,18 @@ public class Profile {
 
     public void setProfileImageName(String profileImageName) {
         this.profileImageName = profileImageName;
+    }
+
+    public String getBannerImageURL(){return bannerImageURL;}
+
+    public void setBannerImageURL(String bannerImageURL){this.bannerImageURL = bannerImageURL;}
+
+    public String getBannerImageName() {
+        return bannerImageName;
+    }
+
+    public void setBannerImageName(String bannerImageName) {
+        this.bannerImageName = bannerImageName;
     }
 
     public String getUserID() {

@@ -23,36 +23,25 @@
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/menu/menu_scrach_notes.xml" value="1.1" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/drawable-anydpi/no_recipe_image.xml" value="0.328" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/drawable/ic_search.xml" value="0.328" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_add_ingredient.xml" value="0.15932117527862208" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_add_tool.xml" value="0.5744791666666667" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_create_recipe.xml" value="0.47644927536231885" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_edit_profile_page2.xml" value="0.15932117527862208" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_edit_recipe.xml" value="0.2793819655521783" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_login.xml" value="0.5" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_main.xml" value="0.5744791666666667" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_main2.xml" value="0.5744791666666667" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_profile_page.xml" value="0.33" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_recipe_page.xml" value="0.5" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_register.xml" value="0.2793819655521783" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_scratch_notes.xml" value="0.5" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_search.xml" value="0.5471014492753623" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/feed_rv_item.xml" value="0.33" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/image_lv_item.xml" value="0.5744791666666667" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/image_rv_item.xml" value="0.5" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/items_loading.xml" value="0.39266304347826086" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/loading_dialog.xml" value="0.5471014492753623" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/tool_bar.xml" value="0.28125" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/drawable/black_border.xml" value="0.1965" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_create_recipe.xml" value="0.1" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_customize_recipe_features.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_edit_recipe.xml" value="0.13405797101449277" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_recipe_page.xml" value="0.1" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_register.xml" value="0.16458333333333333" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_scratch_notes.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/font_rv_item.xml" value="0.22" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/fragment_color_wheel.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/fragment_font.xml" value="0.1911231884057971" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/fragment_layout_five.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/fragment_layout_four.xml" value="0.1" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/fragment_layout_one.xml" value="0.1" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/fragment_layout_three.xml" value="0.1" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/fragment_layout_two.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/image_rv_item.xml" value="0.1" />
-        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/recipe_rv_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_create_recipe.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -60,13 +49,13 @@
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_scratch_notes.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/image_lv_item.xml" value="0.1" />
+        <entry key="..\:/Users/nwong/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_edit_profile_page2.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/nwong/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_profile_page.xml" value="0.22" />
         <entry key="..\:/scratchappfeature/app/src/main/res/drawable/ic_search.xml" value="0.525" />
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/activity_main.xml" value="0.4846014492753623" />
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/menu.xml" value="0.432518115942029" />
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/tool_bar.xml" value="0.30052083333333335" />
         <entry key="..\:/scratchappfeature/app/src/main/res/menu/menu_main.xml" value="0.30104166666666665" />
-        <entry key="app/src/main/res/layout/activity_search.xml" value="0.19293478260869565" />
-        <entry key="app/src/main/res/layout/feed_rv_item.xml" value="0.15070921985815602" />
       </map>
     </option>
   </component>
