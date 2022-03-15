@@ -28,8 +28,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
@@ -38,7 +36,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import classes.Profile;
-import classes.Recipe;
 
 public class ProfilePage extends AppCompatActivity {
     private static final String TAG = "ProfilePage";
@@ -59,11 +56,9 @@ public class ProfilePage extends AppCompatActivity {
     private CollectionReference fcollection;
     private StorageReference storageRef;
     private String userID;
-    private Profile profile;
 
     private Toolbar toolbarProfilePage;
     private ActionBar ab;
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +79,7 @@ public class ProfilePage extends AppCompatActivity {
         fauth = FirebaseAuth.getInstance();
         userID = fauth.getCurrentUser().getUid();
 
-        /*id = fstore.collection("profile").document().getId();
+        id = fstore.collection("profile").document().getId();
         fstore.collection("profile").document(userID).get();
         fstore.collection("profile").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -108,30 +103,6 @@ public class ProfilePage extends AppCompatActivity {
                 else{
                     Log.d("docv", "failed to get with", task.getException());
                 }
-            }
-        });*/
-        DocumentReference docRef = db.collection("profile").document(userID);
-        docRef.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if(document.exists()) {
-                    Log.i(TAG, "Found document!");
-
-                    profile = document.toObject(Profile.class);
-                    namestr = profile.getpname();
-                    biostr = profile.getbio();
-                    favoritefoodstr = profile.getfavoritefood();
-                    displayname.setText(namestr);
-                    displaybio.setText(biostr);
-                    displayfavoritefood.setText(favoritefoodstr);
-
-                    downloadImage();
-
-                } else {
-                    Log.e(TAG, "No such document.");
-                }
-            } else {
-                Log.e(TAG, "get failed with" + task.getException());
             }
         });
 

@@ -17,7 +17,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
-import classes.Profile;
 import classes.Recipe;
 
 public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAdapter.RecipeViewHolder> {
@@ -25,7 +24,6 @@ public class FirestoreAdapter extends FirestorePagingAdapter<Recipe, FirestoreAd
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final Context context;
     private OnItemClickListener mListener;
-
 
     public interface OnItemClickListener {
         void onItemClick(DocumentSnapshot documentSnapshot, int position);

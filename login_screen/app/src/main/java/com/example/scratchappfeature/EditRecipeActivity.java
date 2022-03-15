@@ -5,20 +5,14 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,11 +24,10 @@ public class EditRecipeActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Recipe recipe;
     private String recipe_ID;
-    private TextView editTextView;
-    EditText editRecipeNameEditText;
-    EditText editDescriptionEditText;
-    EditText editToolsEditText;
-    EditText editIngredientsEditText;
+    private EditText editRecipeNameEditText;
+    private EditText editDescriptionEditText;
+    private EditText editToolsEditText;
+    private EditText editIngredientsEditText;
     private Button doneButton;
 
     @Override
@@ -56,8 +49,6 @@ public class EditRecipeActivity extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 if(document.exists()) {
                     recipe = document.toObject(Recipe.class);
-
-                    editTextView = (TextView) findViewById(R.id.editRecipeNameTextView);
 
                     editRecipeNameEditText = (EditText) findViewById(R.id.editRecipeNameEditText);
                     editRecipeNameEditText.setText(recipe.getName());

@@ -4,25 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Map;
 
 import classes.AddIngredientDialogFragment;
 import classes.AddToolDialogFragment;
@@ -106,15 +98,9 @@ public class CreateRecipeActivity extends AppCompatActivity implements AddToolDi
     }
 
     public void openRecipePageActivity(Recipe recipe) {
-        // parse Recipe object to Map
-        ObjectMapper oMapper = new ObjectMapper();
-        Map<String, Object> recipeMap = oMapper.convertValue(recipe, Map.class);
-
-        recipeMap.put("search", recipe.getName().toLowerCase()); // currently needed for searching the database to ignore case
-
         // add recipe to database
         db.collection("recipes")
-            .add(recipeMap)
+            .add(recipe)
             .addOnSuccessListener(documentReference -> {
                 // update the newly added document to set its document ID - on the Java object and Firebase document reference
                 recipe.setDocument_ID(documentReference.getId());

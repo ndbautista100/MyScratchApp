@@ -8,37 +8,29 @@
     <item
         android:id="@+id/action_search"
         android:orderInCategory="1"
-        android:title="Search"
+        android:title="@string/search"
         android:icon="@drawable/searchimageicon"
-        app:showAsAction="always|collapseActionView"
-        app:actionViewClass="android.widget.SearchView"/>
+        app:showAsAction="always"/>
     <item
         android:id="@+id/action_create"
         android:orderInCategory="2"
-        android:title="Create"
+        android:title="@string/create"
         android:icon="@drawable/recipe_icon"
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_profile"
         android:orderInCategory="3"
-        android:title="User"
+        android:title="@string/user"
         android:icon="@drawable/chef"
         app:showAsAction="always" />
-
-    <item
-        android:id="@+id/action_explore"
-        android:orderInCategory="300"
-        android:title="Explore"
-        android:icon="@drawable/explore_icon"
-        app:showAsAction="always"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="4"
-        android:title="@string/action_settings"
+        android:title="@string/settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="5"
-        android:title="Log out"
+        android:title="@string/log_out"
         app:showAsAction="never" />
 </menu>
