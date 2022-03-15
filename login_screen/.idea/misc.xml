@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MyScratchApp/login_screen/app/src/main/res/layout/activity_explore.xml" value="0.2674772036474164" />
+        <entry key="..\:/MyScratchApp/login_screen/app/src/main/res/layout/activity_profile_page.xml" value="0.2674772036474164" />
+        <entry key="..\:/MyScratchApp/login_screen/app/src/main/res/layout/tool_bar.xml" value="0.2674772036474164" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.590625" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.590625" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.590625" />
@@ -42,12 +45,14 @@
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/tool_bar.xml" value="0.28125" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/menu/menu_search.xml" value="0.33611111111111114" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_create_recipe.xml" value="0.1" />
+        <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_explore.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_recipe_page.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_scratch_notes.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/image_lv_item.xml" value="0.1" />
+        <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/profile_source_item.xml" value="0.25" />
         <entry key="..\:/scratchappfeature/app/src/main/res/drawable/ic_search.xml" value="0.525" />
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/activity_main.xml" value="0.4846014492753623" />
         <entry key="..\:/scratchappfeature/app/src/main/res/layout/menu.xml" value="0.432518115942029" />

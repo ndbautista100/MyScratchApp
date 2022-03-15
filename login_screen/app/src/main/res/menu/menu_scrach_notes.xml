@@ -8,14 +8,14 @@
     <item
         android:id="@+id/action_search_recipe"
         android:orderInCategory="1"
-        android:title="@string/search"
+        android:title="Search for Recipe"
         android:icon="@drawable/searchimageicon"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.widget.SearchView"/>
     <item
         android:id="@+id/action_create_recipe"
         android:orderInCategory="2"
-        android:title="@string/create"
+        android:title="Create Recipe"
         android:icon="@drawable/ic_baseline_add_circle_24"
         app:showAsAction="always" />
 </menu>

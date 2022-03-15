@@ -12,10 +12,11 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:text="@string/add_ingredient"
+        android:text="Add ingredient"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:background="@color/colorPrimary" />
+        android:background="@color/colorPrimary"
+        />
 
 
     <EditText
@@ -27,6 +28,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="@string/ingredient_name" />
+        android:hint="Ingredient name"
+        />
 
 </LinearLayout>
