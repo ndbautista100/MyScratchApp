@@ -12,10 +12,11 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:text="@string/add_tool"
+        android:text="Add tool"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:background="@color/colorPrimary" />
+        android:background="@color/colorPrimary"
+        />
 
 
     <EditText
@@ -27,6 +28,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="@string/tool_name" />
+        android:hint="Tool name"
+        />
 
 </LinearLayout>
