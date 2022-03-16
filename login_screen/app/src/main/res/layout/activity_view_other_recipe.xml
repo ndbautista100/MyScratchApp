@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutViewRecipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/Theme.scratchappfeature.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarViewRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            android:visibility="visible"
+            app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/recipeFragmentView"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayoutViewRecipe"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/creatorProfilePicture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintTop_toBottomOf="@id/recipeFragmentView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/userNameTV"
+        android:layout_width="300dp"
+        android:layout_height="32dp"
+        android:text="@string/user"
+        app:layout_constraintStart_toEndOf="@id/creatorProfilePicture"
+        app:layout_constraintTop_toBottomOf="@id/recipeFragmentView"
+        android:background="@drawable/black_border"
+        android:paddingHorizontal="12dp"
+        />
+
+    <TextView
+        android:id="@+id/ratingBanner"
+        android:layout_width="300dp"
+        android:layout_height="32dp"
+        android:text="Rating Banner"
+        app:layout_constraintStart_toEndOf="@id/creatorProfilePicture"
+        app:layout_constraintTop_toBottomOf="@id/userNameTV"
+        android:background="@drawable/black_border"
+        android:gravity="center"
+        />
+
+    <Button
+        android:id="@+id/saveRecipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/creatorProfilePicture"
+        app:layout_constraintTop_toBottomOf="@id/ratingBanner"
+        app:layout_constraintEnd_toStartOf="@id/shareRecipeButton"
+        />
+
+    <Button
+        android:id="@+id/shareRecipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/saveRecipeButton"
+        app:layout_constraintTop_toBottomOf="@id/ratingBanner"
+        app:layout_constraintEnd_toStartOf="@id/commentRecipeButton"
+        />
+
+    <Button
+        android:id="@+id/commentRecipeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comment"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/ratingBanner"
+        app:layout_constraintStart_toEndOf="@id/shareRecipeButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

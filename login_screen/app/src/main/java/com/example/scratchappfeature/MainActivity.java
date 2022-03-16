@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
 
-        adapter.setOnItemClickListener((documentSnapshot, position) -> openRecipePageActivity(documentSnapshot.getId()));
+        adapter.setOnItemClickListener((documentSnapshot, position) -> openOtherUserRecipe(documentSnapshot.getId()));
 
         adapter.addLoadStateListener(combinedLoadStates -> {
             LoadState refresh = combinedLoadStates.getRefresh();
@@ -101,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void openRecipePageActivity(String recipe_ID) {
         Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
+        intent.putExtra("open_recipe_from_id", recipe_ID);
+        startActivity(intent);
+    }
+
+    public void openOtherUserRecipe(String recipe_ID){
+        Intent intent = new Intent(getApplicationContext(), ViewOtherRecipe.class);
         intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }

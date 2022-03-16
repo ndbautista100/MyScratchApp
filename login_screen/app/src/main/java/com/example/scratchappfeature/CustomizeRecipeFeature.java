@@ -148,38 +148,10 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
             }
         });
 
-        layoutOneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recipe.setLayoutChoice(R.layout.fragment_layout_one);
-                inflateFragment(fragmentManager, R.layout.fragment_layout_one);
-            }
-        });
-
-        layoutTwoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recipe.setLayoutChoice(R.layout.fragment_layout_two);
-                inflateFragment(fragmentManager, R.layout.fragment_layout_two);
-            }
-        });
-
-        layoutThreeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recipe.setLayoutChoice(R.layout.fragment_layout_three);
-                inflateFragment(fragmentManager, R.layout.fragment_layout_three);
-            }
-        });
-
-        layoutFourBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recipe.setLayoutChoice(R.layout.fragment_layout_four);
-                inflateFragment(fragmentManager, R.layout.fragment_layout_four);
-            }
-        });
-
+        layoutButtonOnClickListener(layoutOneBtn , R.layout.fragment_layout_one);
+        layoutButtonOnClickListener(layoutTwoBtn , R.layout.fragment_layout_two);
+        layoutButtonOnClickListener(layoutThreeBtn , R.layout.fragment_layout_three);
+        layoutButtonOnClickListener(layoutFourBtn , R.layout.fragment_layout_four);
 
         //Color wheel for color
         //We still might want to blank the fragment in the back to make it look a little cleaner
@@ -281,4 +253,15 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         });
     }
 
+
+    private void layoutButtonOnClickListener(Button button, int layoutId){
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recipe.setLayoutChoice(layoutId);
+                inflateFragment(fragmentManager, layoutId);
+            }
+        });
+
+    }
 }
