@@ -195,6 +195,12 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }
+
+    public void openOtherUserRecipe(String recipe_ID){
+        Intent intent = new Intent(getApplicationContext(), ViewOtherRecipe.class);
+        intent.putExtra("open_recipe_from_id", recipe_ID);
+        startActivity(intent);
+    }
     public void openProfilePageActivity() {
         Intent intent = new Intent(this, ProfilePage.class);
         startActivity(intent);

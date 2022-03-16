@@ -4,6 +4,11 @@
     <string name="add_tool">Add Tool</string>
     <string name="add_ingredient">Add Ingredient</string>
     <string name="cancel">Cancel</string>
+    <string name="search_hint">Recipes or users…</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete">Delete</string>
+    <string name="delete_account">Are you sure you want to delete your account?</string>
+    <string name="test">testtesttest\ntesttesttest\ntesttesttest\ntesttest</string>
     <string name="ingredient_name">Ingredient name</string>
     <string name="tool_name">Tool name</string>
     <string name="recipe_name">Recipe name</string>
@@ -33,10 +38,5 @@
     <string name="log_out">Log out</string>
     <string name="share_recipe">Share Recipe</string>
     <string name="edit_recipe">Edit Recipe</string>
-    <string name="search_hint">Recipes or users…</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="delete">Delete</string>
-    <string name="delete_account">Are you sure you want to delete your account?</string>
-    <string name="test">testtesttest\ntesttesttest\ntesttesttest\ntesttest</string>
-
+    <string name="action_settings">Action Setting</string>
 </resources>
