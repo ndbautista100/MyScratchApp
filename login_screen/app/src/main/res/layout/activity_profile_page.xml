@@ -130,15 +130,27 @@
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Recipes"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
     </RelativeLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/recipeViewPager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipeRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/profileRelativeLayout"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="200dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_below="@id/profileRelativeLayout"/>
 
 </RelativeLayout>
