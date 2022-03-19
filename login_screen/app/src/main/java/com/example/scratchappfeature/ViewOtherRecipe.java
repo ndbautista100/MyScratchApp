@@ -5,18 +5,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Source;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import classes.Profile;
 import classes.Recipe;
@@ -27,13 +38,15 @@ public class ViewOtherRecipe extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Toolbar toolbarViewRecipe;
     private ActionBar ab;
-    private Context context;
+    private FirebaseAuth fauth;
+    private String userID;
     TextView userTV;
     ImageView profilePic;
     Recipe recipe;
-    Profile profile;
-    String pName;
     FragmentManager fragmentManager = getSupportFragmentManager();
+    Button saveButton;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +54,11 @@ public class ViewOtherRecipe extends AppCompatActivity {
         setContentView(R.layout.activity_view_other_recipe);
         userTV = findViewById(R.id.userNameTV);
         profilePic = findViewById(R.id.creatorProfilePicture);
+        saveButton = findViewById(R.id.saveRecipeButton);
+
+        fauth = FirebaseAuth.getInstance();
+        userID = fauth.getCurrentUser().getUid();
+
         //setToolbar();
 
         Intent intent = getIntent();
@@ -64,6 +82,22 @@ public class ViewOtherRecipe extends AppCompatActivity {
 
             });
         }
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(recipe.getUser_ID() != userID) {
+                    Map<String, Object> savedRecipes = new HashMap<>();
+                    savedRecipes.put("savedRecipes", FieldValue.arrayUnion(recipe.getDocument_ID()));
+                    db.collection("profile").document(userID)
+                            .update(savedRecipes);
+                } else {
+                    Toast.makeText(ViewOtherRecipe.this, "You created this wonderful recipe!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 
 
