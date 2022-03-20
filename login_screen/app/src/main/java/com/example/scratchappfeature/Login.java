@@ -1,121 +1,87 @@
 package com.example.scratchappfeature;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
-    EditText userEmail, userPass;
-    Button logBtn;
-    TextView createAcc;
-    FirebaseAuth fAuth;
-    TextView forgot;
+    private EditText emailEditText, passwordEditText;
+    private Button loginButton;
+    private TextView createAccTextView, forgotPasswordTextView;
+    private FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userEmail = findViewById(R.id.editTextTextEmailAddress);
-        userPass = findViewById(R.id.editTextTextPassword);
         fAuth = FirebaseAuth.getInstance();
-        forgot = findViewById(R.id.textView2);
-        logBtn = (Button) findViewById(R.id.button2);
-        createAcc = (TextView) findViewById(R.id.create_acc);
-        logBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-                    public void onClick(View v){
-                String email = userEmail.getText().toString();
-                String password = userPass.getText().toString();
 
-                if(TextUtils.isEmpty(email)){
-                    userEmail.setError("Email is Required.");
-                    return;
-                }
-                if(TextUtils.isEmpty(password)){
-                    userEmail.setError("Password is Required.");
-                    return;
-                }
-                if(password.length() < 6){
-                    userPass.setError("Password must be more than 6 characters");
-                    return;
-                }
-                fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(Login.this, "Logged in Successfully.", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        }
-                        else{Toast.makeText(Login.this, "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+        emailEditText = findViewById(R.id.emailEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        loginButton = (Button) findViewById(R.id.loginButton);
+        createAccTextView = (TextView) findViewById(R.id.newHereTextView);
+        forgotPasswordTextView = findViewById(R.id.forgotPasswordTextView);
 
-                        }
-                    }
-                });
+        loginButton.setOnClickListener(v -> {
+            String email = emailEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
+
+            if(TextUtils.isEmpty(email)) {
+                emailEditText.setError("Email is required.");
+                return;
             }
+            if(TextUtils.isEmpty(password)) {
+                emailEditText.setError("Password is required.");
+                return;
+            }
+            if(password.length() < 6) {
+                passwordEditText.setError("Password must be more than 6 characters.");
+                return;
+            }
+            fAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    Toast.makeText(Login.this, "Logged in successfully!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } else {
+                    Toast.makeText(Login.this, "Login Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
-        forgot.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                EditText resetMail =  new EditText(v.getContext());
-                AlertDialog.Builder passwordReset = new AlertDialog.Builder(v.getContext());
-                passwordReset.setTitle("Reset Password?");
-                passwordReset.setMessage("Enter Your Email to receive a reset link.");
-                passwordReset.setView(resetMail);
+        createAccTextView.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), Register.class)));
 
-                passwordReset.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String mail = resetMail.getText().toString();
-                        fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(Login.this, "Reset link has been sent to your email", Toast.LENGTH_SHORT).show();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(Login.this, "Error! Reset link could not be sent." + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+        forgotPasswordTextView.setOnClickListener(v -> {
+            EditText resetMail =  new EditText(v.getContext());
+            AlertDialog.Builder passwordReset = new AlertDialog.Builder(v.getContext());
+            passwordReset.setTitle("Reset password?");
+            passwordReset.setMessage("Enter your email to receive a reset link.");
+            passwordReset.setView(resetMail);
+
+            passwordReset.setPositiveButton("Yes", (dialogInterface, i) -> {
+                String mail = resetMail.getText().toString();
+                fAuth.sendPasswordResetEmail(mail)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(Login.this, "Reset link has been sent to your email.", Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(Login.this, "Error! Reset link could not be sent." + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+            });
 
-                passwordReset.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // nothing so dialog closes
-                    }
-                });
+            passwordReset.setNegativeButton("No", (dialogInterface, i) -> {
+                // do nothing, so dialog closes
+            });
 
-                passwordReset.create().show();
-            }
-        });
-
-        createAcc.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Register.class));
-            }
+            passwordReset.create().show();
         });
     }
 }
