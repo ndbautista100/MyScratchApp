@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -52,6 +53,9 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         private final TextView recipeDescriptionTextView;
         private final ImageView recipeImageView;
         private final ImageButton removeBtn;
+        private final ImageView userProfilePicture;
+        private final TextView userProfileName;
+
 
         public RecipeViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -60,6 +64,8 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
             recipeDescriptionTextView = itemView.findViewById(R.id.recipeDescriptionTextView);
             recipeImageView = itemView.findViewById(R.id.cardRecipeImageView);
             removeBtn = itemView.findViewById(R.id.deleteRecipeImageButton);
+            userProfilePicture = itemView.findViewById(R.id.scratchNotesAvatarImageView);
+            userProfileName = itemView.findViewById(R.id.scratchNotesNameTextView);
             itemView.setOnClickListener(view -> {
                 if(listener != null) {
                     int position = getAbsoluteAdapterPosition();
@@ -118,6 +124,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
     public void onBindViewHolder(@NonNull RecipeRVAdapter.RecipeViewHolder holder, @SuppressLint("RecyclerView") int position) {
         // setting data to our views in RecyclerView items
         Recipe recipe = recipeArrayList.get(position);
+        setAvatar(holder, recipe.getUser_ID());
         holder.recipeNameTextView.setText(recipe.getName());
         holder.recipeDescriptionTextView.setText(recipe.getDescription());
         holder.removeBtn.setOnClickListener(v -> {
@@ -173,4 +180,27 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
             notifyDataSetChanged();
         }
     };
+
+    private void setAvatar(@NonNull RecipeRVAdapter.RecipeViewHolder holder, String user_Id){
+
+        db.collection("profile")
+                .document(user_Id)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if(document.exists()) {
+                            holder.userProfileName.setText(document.getString("pname")); // set user's name
+
+                            // we are using Picasso to load profile images from URLs into an ImageView
+                            if(document.getString("profileImageURL") != null) {
+                                Picasso.with(context)
+                                        .load(document.getString("profileImageURL"))
+                                        .into(holder.userProfilePicture);
+                            }
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+    }
 }

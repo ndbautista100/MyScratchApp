@@ -16,6 +16,7 @@ public class Profile {
     private String bannerImageName;
     private String userID;
     private ArrayList<String> followers;
+    private ArrayList<String> savedRecipes;
 
     public Profile() {
         // empty constructor
@@ -29,6 +30,7 @@ public class Profile {
         pfavoritefood = favoritefood;
         userID = userid;
         followers =  new ArrayList<String>();
+        savedRecipes = new ArrayList<String>();
     }
 
     // getter methods for all variables.
@@ -93,9 +95,17 @@ public class Profile {
         return followers;
     }
 
+    public ArrayList<String> getSavedRecipes() {return savedRecipes;}
+
     public void setFriends(String userID) {
         if(!followers.contains(userID)) {
             followers.add(userID);
+        }
+    }
+
+    public void setSavedRecipes(String documentID){
+        if (!savedRecipes.contains(documentID)){
+            savedRecipes.add(documentID);
         }
     }
 }

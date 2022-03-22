@@ -15,20 +15,31 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
+import classes.Profile;
 import classes.Recipe;
 
 public class ScratchNotesActivity extends AppCompatActivity {
     private static final String TAG = "ScratchNotesActivity";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth fauth;
     private RecyclerView recipesRV;
     private RecipeRVAdapter adapter;
     private ArrayList<Recipe> user_recipes;
+    private Profile mProfile;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +47,8 @@ public class ScratchNotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scratch_notes);
 
         setToolbar();
-
+        fauth = FirebaseAuth.getInstance();
+        userID = fauth.getCurrentUser().getUid();
         // create a RecyclerView to store the recipe name TextViews
         recipesRV = findViewById(R.id.recipesRecyclerView);
         recipesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -48,7 +60,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
         user_recipes = new ArrayList<>();
 
         db.collection("recipes")
-            .whereEqualTo("user_ID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+            .whereEqualTo("user_ID", userID)
             .get()
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -67,6 +79,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
                             Recipe recipe = document.toObject(Recipe.class);
                             user_recipes.add(recipe);
                         }
+                        getSavedRecipes(user_recipes);
                         adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
                         // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
                         recipesRV.setAdapter(adapter);
@@ -144,6 +157,41 @@ public class ScratchNotesActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void getSavedRecipes(ArrayList<Recipe> recipes){
+        db.collection("profile")
+                .document(userID)
+                .get()
+                .addOnCompleteListener(task -> {
+                   if(task.isSuccessful()){
+                       DocumentSnapshot document = task.getResult();
+                       if(document.exists()){
+                           Log.i(TAG,"Found Profile");
+                           mProfile = document.toObject(Profile.class);
+                       }
+                   }
+                }).addOnFailureListener(e -> Log.e(TAG, e.toString()));
+
+
+        ArrayList<String> savedRecipes = new ArrayList<>(mProfile.getSavedRecipes());
+        for (String documentID : savedRecipes){
+            db.collection("recipes").document(documentID)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()){
+                            Log.d("ScratchNotes", "Found Document");
+                            Recipe recipe = document.toObject(Recipe.class);
+                            recipes.add(recipe);
+                        }
+                    }
+                }
+            });
+
         }
     }
 }
