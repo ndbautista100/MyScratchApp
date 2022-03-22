@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -87,7 +88,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(recipe.getUser_ID() != userID) {
+                if(!recipe.getUser_ID().equals(userID)) {
                     Map<String, Object> savedRecipes = new HashMap<>();
                     savedRecipes.put("savedRecipes", FieldValue.arrayUnion(recipe.getDocument_ID()));
                     db.collection("profile").document(userID)
@@ -133,6 +134,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
     private void setBanner() {
         TextView userName = findViewById(R.id.userNameTV);
         ImageView profilePic = findViewById(R.id.creatorProfilePicture);
+        ConstraintLayout background = findViewById(R.id.viewOtherRecipeBackground);
 
         db.collection("profile")
                 .document(recipe.getUser_ID())
@@ -145,6 +147,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
                             Picasso.with(this)
                                     .load(document.getString("profileImageURL"))
                                     .into(profilePic);
+                            background.setBackgroundColor(recipe.getBackgroundColor());
                             Log.i(TAG, "Found Document");
                         } else {
                             Log.i(TAG, "No Such Document");
