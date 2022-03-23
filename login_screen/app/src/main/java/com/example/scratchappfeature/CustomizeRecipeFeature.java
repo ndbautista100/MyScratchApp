@@ -118,6 +118,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
             }
         });
 
+        //Show font fragment
         fontBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +140,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
             Toast.makeText(this, fontSelection, Toast.LENGTH_SHORT).show();
         });
 
+        //Show layout buttons to be selected from
         layoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,11 +156,11 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
         layoutButtonOnClickListener(layoutFourBtn , R.layout.fragment_layout_four);
 
         //Color wheel for color
-        //We still might want to blank the fragment in the back to make it look a little cleaner
         colorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layoutScrollView.setVisibility(View.INVISIBLE);
+                clearFragments();
                 new ColorPickerPopup.Builder(CustomizeRecipeFeature.this)
                         .initialColor(Color.WHITE)
                         .enableBrightness(true)
@@ -182,6 +184,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 layoutScrollView.setVisibility(View.INVISIBLE);
+                clearFragments();
                 new ColorPickerPopup.Builder(CustomizeRecipeFeature.this)
                         .initialColor(Color.WHITE)
                         .enableBrightness(true)
@@ -204,6 +207,13 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
 
     }
 
+    //Clear all the fragments in container to leave it blank
+    private void clearFragments() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
+    }
+
     //Inflate the fragments with the layout we want
     private void inflateFragment(FragmentManager fragmentManager, int layoutId) {
         LayoutFragment layout = LayoutFragment.newInstance(layoutId);
@@ -217,6 +227,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
                 .commit();
     }
 
+    //Saving the recipe details to the database
     public void updateRecipe(Recipe recipe) {
         DocumentReference docRef = db.collection("recipes").document(recipe.getDocument_ID());
         Log.d("Found document", docRef.getId());

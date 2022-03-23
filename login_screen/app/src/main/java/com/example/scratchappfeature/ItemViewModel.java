@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+//Using this class to pick up whenever the font is being changed
 public class ItemViewModel extends ViewModel {
 
     private final MutableLiveData<String> selectedItem = new MutableLiveData<String>();
