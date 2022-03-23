@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:background="@drawable/black_border"
+            android:background="@drawable/tv_border"
             android:gravity="center"
             android:padding="8dp"
             android:textSize="28sp"
@@ -61,7 +61,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginHorizontal="16dp"
             android:padding="16dp"
-            android:background="@drawable/black_border"
+            android:background="@drawable/tv_border"
             android:elevation="2dp"
             >
 
@@ -95,7 +95,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginHorizontal="16dp"
             android:padding="16dp"
-            android:background="@drawable/black_border"
+            android:background="@drawable/tv_border"
 
             >
 
@@ -127,7 +127,7 @@
             android:layout_height="264dp"
             android:padding="16dp"
             android:layout_marginHorizontal="16dp"
-            android:background="@drawable/black_border"
+            android:background="@drawable/tv_border"
             app:layout_constraintTop_toBottomOf="@id/instructionsTitleTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/toolsScrollView"

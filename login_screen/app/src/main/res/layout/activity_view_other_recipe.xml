@@ -47,7 +47,7 @@
         android:text="@string/user"
         app:layout_constraintStart_toEndOf="@id/creatorProfilePicture"
         app:layout_constraintTop_toBottomOf="@id/recipeFragmentView"
-        android:background="@drawable/black_border"
+        android:background="@drawable/tv_border"
         android:paddingHorizontal="12dp"
         />
 
@@ -58,7 +58,7 @@
         android:text="Rating Banner"
         app:layout_constraintStart_toEndOf="@id/creatorProfilePicture"
         app:layout_constraintTop_toBottomOf="@id/userNameTV"
-        android:background="@drawable/black_border"
+        android:background="@drawable/tv_border"
         android:gravity="center"
         />
 
