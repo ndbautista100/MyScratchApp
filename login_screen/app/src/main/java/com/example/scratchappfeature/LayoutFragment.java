@@ -7,8 +7,10 @@ import static android.content.ContentValues.TAG;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -160,24 +162,30 @@ public class LayoutFragment extends Fragment {
             }
         });
 
-
+        //To change the font for all textboxes
         Typeface recipeFont = Typeface.create(recipe.getFontFamily(), Typeface.NORMAL);
+
 
         recipeName.setText(recipe.getName());
         recipeName.setTypeface(recipeFont);
-        recipeName.setBackgroundColor(recipe.getTextBoxColor());
+        //This changes the background color of the scrollview with the background "black_border"
+        GradientDrawable gradientDrawable = (GradientDrawable) recipeName.getBackground().mutate();
+        gradientDrawable.setColor(recipe.getTextBoxColor());
 
         recipeTools.setText(makeList(recipe.getTools()));
         recipeTools.setTypeface(recipeFont);
-        toolsScrollView.setBackgroundColor(recipe.getTextBoxColor());
+        gradientDrawable = (GradientDrawable) toolsScrollView.getBackground().mutate();
+        gradientDrawable.setColor(recipe.getTextBoxColor());
 
         recipeIngredients.setText(makeList(recipe.getIngredients()));
         recipeIngredients.setTypeface(recipeFont);
-        ingredientsScrollView.setBackgroundColor(recipe.getTextBoxColor());
+        gradientDrawable = (GradientDrawable) ingredientsScrollView.getBackground().mutate();
+        gradientDrawable.setColor(recipe.getTextBoxColor());
 
         recipeInstructions.setText(recipe.getDescription());
         recipeInstructions.setTypeface(recipeFont);
-        instructionsScrollView.setBackgroundColor(recipe.getTextBoxColor());
+        gradientDrawable = (GradientDrawable) instructionsScrollView.getBackground().mutate();
+        gradientDrawable.setColor(recipe.getTextBoxColor());
 
         populateRecyclerView(view);
         // Inflate the layout for this fragment

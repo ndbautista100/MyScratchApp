@@ -87,7 +87,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //If its not their own recipe, the user can save it
                 if(!recipe.getUser_ID().equals(userID)) {
                     Map<String, Object> savedRecipes = new HashMap<>();
                     savedRecipes.put("savedRecipes", FieldValue.arrayUnion(recipe.getDocument_ID()));
@@ -130,7 +130,8 @@ public class ViewOtherRecipe extends AppCompatActivity {
                 .commit();
     }
 
-
+    //To fill out the banner at the bottom to show user, rating,
+    //avatar picture, save, share, comments
     private void setBanner() {
         TextView userName = findViewById(R.id.userNameTV);
         ImageView profilePic = findViewById(R.id.creatorProfilePicture);

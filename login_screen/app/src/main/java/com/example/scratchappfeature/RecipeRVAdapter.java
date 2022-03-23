@@ -93,6 +93,9 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         String docID = recipeToDelete.getDocument_ID();
         String userIDToDelete = recipeToDelete.getUser_ID();
 
+        //Determine if the recipe to be deleted is the user or another
+        //The user can only delete their own, trying to delete another
+        //will delete it from their saved recipes
         if (!userIDToDelete.equals(userID)){
             final Map<String, Object> savedRecipes = new HashMap<>();
             savedRecipes.put("savedRecipes", FieldValue.arrayRemove(docID));
@@ -144,6 +147,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         setAvatar(holder, recipe.getUser_ID());
         holder.recipeNameTextView.setText(recipe.getName());
         holder.recipeDescriptionTextView.setText(recipe.getDescription());
+        //Long click on a card item
         holder.cardItem.setOnLongClickListener(new View.OnLongClickListener(){
             public boolean onLongClick (View view){
                 showMenu(view, position);
