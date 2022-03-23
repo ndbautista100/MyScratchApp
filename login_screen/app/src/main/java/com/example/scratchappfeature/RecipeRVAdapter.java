@@ -4,15 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,9 +60,9 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         private final TextView recipeNameTextView;
         private final TextView recipeDescriptionTextView;
         private final ImageView recipeImageView;
-        private final ImageButton removeBtn;
         private final ImageView userProfilePicture;
         private final TextView userProfileName;
+        private final CardView cardItem;
 
 
         public RecipeViewHolder(@NonNull View itemView, OnItemClickListener listener) {
@@ -67,9 +71,9 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
             recipeNameTextView = itemView.findViewById(R.id.recipeNameTextView);
             recipeDescriptionTextView = itemView.findViewById(R.id.recipeDescriptionTextView);
             recipeImageView = itemView.findViewById(R.id.cardRecipeImageView);
-            removeBtn = itemView.findViewById(R.id.deleteRecipeImageButton);
             userProfilePicture = itemView.findViewById(R.id.scratchNotesAvatarImageView);
             userProfileName = itemView.findViewById(R.id.scratchNotesNameTextView);
+            cardItem = itemView.findViewById(R.id.imageRVItemLayout);
             itemView.setOnClickListener(view -> {
                 if(listener != null) {
                     int position = getAbsoluteAdapterPosition();
@@ -140,9 +144,14 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         setAvatar(holder, recipe.getUser_ID());
         holder.recipeNameTextView.setText(recipe.getName());
         holder.recipeDescriptionTextView.setText(recipe.getDescription());
-        holder.removeBtn.setOnClickListener(v -> {
-            removeAt(position);//i is your adapter position
+        holder.cardItem.setOnLongClickListener(new View.OnLongClickListener(){
+            public boolean onLongClick (View view){
+                showMenu(view, position);
+                return true;
+            }
         });
+
+
 
         // we are using Picasso to load images from URLs into an ImageView
         if(recipe.getImage_URL() != null) {
@@ -215,5 +224,21 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
                     }
                 })
                 .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+    }
+
+
+    private void showMenu(View v, int position){
+        PopupMenu popupMenu = new PopupMenu(context, v);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_popup_delete, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.deleteRecipe) {
+                    removeAt(position);
+                }
+                return true;
+            }
+        });
+        popupMenu.show();
     }
 }
