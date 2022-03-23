@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Document;
 
@@ -81,12 +83,17 @@ public class ScratchNotesActivity extends AppCompatActivity {
                         }
                         getSavedRecipes(user_recipes);
                         adapter = new RecipeRVAdapter(user_recipes, getApplicationContext());
+                        adapter.setProfileID(userID);
                         // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
                         recipesRV.setAdapter(adapter);
                         // this is called when a recipe is clicked
                         adapter.setOnItemClickListener(position -> {
                             Recipe clickedRecipe = user_recipes.get(position);
-                            openRecipePageActivity(clickedRecipe.getDocument_ID());
+                            if (clickedRecipe.getUser_ID().equals(userID)) {
+                                openRecipePageActivity(clickedRecipe.getDocument_ID());
+                            } else {
+                                openViewOtherRecipe(clickedRecipe.getDocument_ID());
+                            }
                         });
                     }
                 } else {
@@ -97,6 +104,12 @@ public class ScratchNotesActivity extends AppCompatActivity {
 
     public void openRecipePageActivity(String recipe_ID) {
         Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
+        intent.putExtra("open_recipe_from_id", recipe_ID);
+        startActivity(intent);
+    }
+
+    public void openViewOtherRecipe(String recipe_ID){
+        Intent intent = new Intent(getApplicationContext(), ViewOtherRecipe.class);
         intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }
@@ -160,38 +173,37 @@ public class ScratchNotesActivity extends AppCompatActivity {
         }
     }
 
-    private void getSavedRecipes(ArrayList<Recipe> recipes){
+    private void getSavedRecipes(ArrayList<Recipe> user_recipes) {
+
         db.collection("profile")
-                .document(userID)
+                .whereEqualTo("userID", userID)
                 .get()
                 .addOnCompleteListener(task -> {
-                   if(task.isSuccessful()){
-                       DocumentSnapshot document = task.getResult();
-                       if(document.exists()){
-                           Log.i(TAG,"Found Profile");
-                           mProfile = document.toObject(Profile.class);
-                       }
-                   }
-                }).addOnFailureListener(e -> Log.e(TAG, e.toString()));
-
-
-        ArrayList<String> savedRecipes = new ArrayList<>(mProfile.getSavedRecipes());
-        for (String documentID : savedRecipes){
-            db.collection("recipes").document(documentID)
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.isSuccessful()){
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()){
-                            Log.d("ScratchNotes", "Found Document");
-                            Recipe recipe = document.toObject(Recipe.class);
-                            recipes.add(recipe);
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            mProfile = document.toObject(Profile.class);
+                            for (String documentID: mProfile.getSavedRecipes()){
+                                db.collection("recipes")
+                                        .document(documentID)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()){
+                                                    DocumentSnapshot document = task.getResult();
+                                                    if (document.exists()){
+                                                        Log.d(TAG, "Found document");
+                                                        Recipe recipe = document.toObject(Recipe.class);
+                                                        user_recipes.add(recipe);
+                                                    }
+                                                }
+                                            }
+                                        });
+                            }
                         }
                     }
-                }
-            });
+                });
 
-        }
+
     }
 }

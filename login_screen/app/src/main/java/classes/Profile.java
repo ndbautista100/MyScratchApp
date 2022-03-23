@@ -7,6 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Profile {
     private String pname, pbio, pfavoritefood;
@@ -30,7 +32,7 @@ public class Profile {
         pfavoritefood = favoritefood;
         userID = userid;
         followers =  new ArrayList<String>();
-        savedRecipes = new ArrayList<String>();
+        savedRecipes = new ArrayList<>();
     }
 
     // getter methods for all variables.
@@ -95,7 +97,7 @@ public class Profile {
         return followers;
     }
 
-    public ArrayList<String> getSavedRecipes() {return savedRecipes;}
+    public ArrayList<String> getSavedRecipes() {return this.savedRecipes;}
 
     public void setFriends(String userID) {
         if(!followers.contains(userID)) {
@@ -103,9 +105,4 @@ public class Profile {
         }
     }
 
-    public void setSavedRecipes(String documentID){
-        if (!savedRecipes.contains(documentID)){
-            savedRecipes.add(documentID);
-        }
-    }
 }
