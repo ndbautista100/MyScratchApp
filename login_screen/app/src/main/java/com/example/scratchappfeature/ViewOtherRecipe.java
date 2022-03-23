@@ -53,6 +53,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_other_recipe);
+        setToolbar();
         userTV = findViewById(R.id.userNameTV);
         profilePic = findViewById(R.id.creatorProfilePicture);
         saveButton = findViewById(R.id.saveRecipeButton);
@@ -60,7 +61,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
         fauth = FirebaseAuth.getInstance();
         userID = fauth.getCurrentUser().getUid();
 
-        //setToolbar();
+
 
         Intent intent = getIntent();
         if (intent.hasExtra("open_recipe_from_id")) {
@@ -112,7 +113,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
 
 
     public void setToolbar() {
-        toolbarViewRecipe = findViewById(R.id.toolbarProfilePage);
+        toolbarViewRecipe = findViewById(R.id.toolbarViewRecipe);
         setSupportActionBar(toolbarViewRecipe);
         ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);

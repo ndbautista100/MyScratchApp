@@ -168,7 +168,7 @@ public class LayoutFragment extends Fragment {
 
         recipeName.setText(recipe.getName());
         recipeName.setTypeface(recipeFont);
-        //This changes the background color of the scrollview with the background "black_border"
+        //This changes the background color of the scrollview with the background "tv_border"
         GradientDrawable gradientDrawable = (GradientDrawable) recipeName.getBackground().mutate();
         gradientDrawable.setColor(recipe.getTextBoxColor());
 
