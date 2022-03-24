@@ -1,15 +1,20 @@
 package com.example.scratchappfeature;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.paging.CombinedLoadStates;
 import androidx.paging.LoadState;
 import androidx.paging.PagingConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,10 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import classes.Recipe;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -29,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView userRecipesRV;
     private FirestoreAdapter adapter;
     private final CollectionReference recipesRef = db.collection("recipes");
-    private final PagingConfig pagingConfig = new PagingConfig(6, 3, false);
+    private PagingConfig pagingConfig = new PagingConfig(6, 3, false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openRecipePageActivity(String recipe_ID) {
-        Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
+        Intent intent = new Intent(this, RecipePageActivity.class);
         intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }
@@ -115,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openSearchableActivity() {
-        Intent intent = new Intent(this, SearchableActivity.class);
+    public void openSearchActivity() {
+        Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
     }
 
@@ -146,22 +154,18 @@ public class MainActivity extends AppCompatActivity {
 
     /*
         Home Page action bar options:
-        - Search for a Recipe
+        - Search for a Recipe/User
         - Open Scratch Notes
         - Open Profile
     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_open_search:
-                openSearchableActivity();
+            case R.id.action_search:
+                openSearchActivity();
                 return true;
             case R.id.action_create:
                 openScratchNotesActivity();
-                return true;
-            case R.id.action_explore:
-                Intent intent = new Intent(getApplicationContext(), ExploreActivity.class);
-                startActivity(intent);
                 return true;
             case R.id.action_profile:
                 openProfilePageActivity();

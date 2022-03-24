@@ -42,6 +42,7 @@ import java.util.Map;
 public class EditProfilePage extends AppCompatActivity {
     private static final String TAG = "EditProfilePage";
     private String name;
+    private String randomString;
     private String bio;
     private String favoriteFood;
     private String id;
@@ -49,17 +50,14 @@ public class EditProfilePage extends AppCompatActivity {
     private EditText bioInput;
     private EditText favoriteFoodInput;
     private Button finishbutton;
-    private Button uploadProfile;
-    private Button uploadBanner;
+    private Button uploadbutton;
     private ImageView profileImage;
     private ImageView bannerImage;
     private Uri profileImageUri;
-    private Uri bannerImageUri;
     private FirebaseAuth fauth;
     private FirebaseFirestore fstore;
     private FirebaseStorage fstorage;
     private StorageReference storageRef;
-    private StorageReference bannerstorageRef;
     private String userID;
     private Profile profile;
     private DocumentReference docRef;
@@ -73,21 +71,7 @@ public class EditProfilePage extends AppCompatActivity {
 
                 Log.d(TAG, profileImageUri.toString());
 
-                uploadProfileImage();
-            }
-        }
-    });
-
-    ActivityResultLauncher<String> bGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-        @Override
-        public void onActivityResult(Uri result) {
-            if(result != null){
-                bannerImage.setImageURI(result);
-                bannerImageUri = result;
-
-                Log.d(TAG, bannerImageUri.toString());
-
-                uploadBannerImage();
+                uploadImage();
             }
         }
     });
@@ -102,17 +86,10 @@ public class EditProfilePage extends AppCompatActivity {
 
         fstorage = FirebaseStorage.getInstance();
         storageRef = fstorage.getReference("images/avatars");
-        bannerstorageRef = fstorage.getReference("images/banners");
 
         profileImage = (ImageView) findViewById(R.id.profilePicture);
-        uploadProfile = (Button) findViewById(R.id.uploadProfilePic);
-        uploadProfile.setOnClickListener(view -> mGetContent.launch("image/*"));
-
-        bannerImage = (ImageView) findViewById(R.id.banner);
-        uploadBanner = (Button) findViewById(R.id.uploadbanner);
-        uploadBanner.setOnClickListener(view -> bGetContent.launch("image/*"));
-
-
+        uploadbutton = (Button) findViewById(R.id.uploadProfilePic);
+        uploadbutton.setOnClickListener(view -> mGetContent.launch("image/*"));
 
         fstore = FirebaseFirestore.getInstance();
         fauth = FirebaseAuth.getInstance();
@@ -130,13 +107,12 @@ public class EditProfilePage extends AppCompatActivity {
                         profile = doc.toObject(Profile.class);
                         name = doc.getString("pname");
                         bio = doc.getString("bio");
-                        favoriteFood = doc.getString("favoritefood");
+                        favoriteFood = doc.getString("favoriteFood");
                         nameInput.setText(name);
                         bioInput.setText(bio);
                         favoriteFoodInput.setText(favoriteFood);
 
-                        downloadProfileImage();
-                        downloadBannerImage();
+                        downloadImage();
                     }
                     else {
                         Log.d("docv", "No such info");
@@ -162,7 +138,7 @@ public class EditProfilePage extends AppCompatActivity {
     }
 
 
-    private void uploadProfileImage(){
+    private void uploadImage(){
         Log.d(TAG, "User has a profile image: " + profile.getProfileImageName());
         if(profile.getProfileImageName() != null) { // if user already has a profile image
             // delete that image from Firebase Storage
@@ -222,7 +198,19 @@ public class EditProfilePage extends AppCompatActivity {
         }
     }
 
-    public void downloadProfileImage(){
+    private String getExtension(Uri uri) {
+        try {
+            ContentResolver contentResolver = getContentResolver();
+            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+            return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void downloadImage(){
         try {
             // get the profile document from the database
             DocumentReference downloadRef = fstore.collection("profile").document(userID);
@@ -233,107 +221,13 @@ public class EditProfilePage extends AppCompatActivity {
                 // Glide makes it easy to load images into ImageViews
                 if(downloadUrl != null) {
                     Glide.with(EditProfilePage.this)
-                            .load(downloadUrl)
-                            .into(profileImage);
+                        .load(downloadUrl)
+                        .into(profileImage);
                 }
 
-            }).addOnFailureListener(e -> Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+            }).addOnFailureListener(e -> Toast.makeText(EditProfilePage.this, e.getMessage()+"in downloadImage1", Toast.LENGTH_SHORT).show());
         } catch (Exception e) {
-            Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    private void uploadBannerImage(){
-        Log.d(TAG, "User has a banner image: " + profile.getBannerImageName());
-        if(profile.getBannerImageName() != null) { // if user already has a banner image
-            // delete that image from Firebase Storage
-            StorageReference recipeImageRef = bannerstorageRef.child(profile.getBannerImageName());
-            Log.d(TAG, "Deleting image: " + profile.getBannerImageName());
-            recipeImageRef.delete()
-                    .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + profile.getBannerImageName()))
-                    .addOnFailureListener(e -> Log.e(TAG, e.toString()));
-        }
-
-        try { // uploading the profile pic
-            if (bannerImageUri != null) {
-                LoadingDialog loadingDialog = new LoadingDialog(EditProfilePage.this);
-                loadingDialog.startLoadingDialog();
-
-                String imageName = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(bannerImageUri);
-                StorageReference imageReference = bannerstorageRef.child(imageName);
-
-                Log.d(TAG, "Image name: " + imageName);
-
-                UploadTask uploadTask = imageReference.putFile(bannerImageUri); // store image
-                uploadTask.continueWithTask(task -> {
-                    if (!task.isSuccessful()) {
-                        loadingDialog.dismissDialog();
-                        throw task.getException();
-                    }
-                    return imageReference.getDownloadUrl(); // im guessing this is where it messes up
-                }).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "Task successful!!");
-                        // update profile document's profileImageURL field
-                        profile.setBannerImageURL(task.getResult().toString());
-                        profile.setBannerImageName(imageName);
-                        fstore.collection("profile")
-                                .document(userID)
-                                .update("bannerImageURL", profile.getBannerImageURL(),
-                                        "bannerImageName", profile.getBannerImageName())
-                                .addOnCompleteListener(task1 -> {
-                                    loadingDialog.dismissDialog();
-                                    Log.d(TAG, "Success!!!");
-                                    Toast.makeText(EditProfilePage.this, "Banner image uploaded!", Toast.LENGTH_SHORT).show();
-                                }).addOnFailureListener(e -> {
-                            loadingDialog.dismissDialog();
-                            Log.d(TAG, "Failure in storing");
-                            Toast.makeText(EditProfilePage.this, "Banner image failed to upload.", Toast.LENGTH_SHORT).show();
-                        });
-                    } // Something with the code is giving the error that the task was not successful.
-                    else if (!task.isSuccessful()) {
-                        loadingDialog.dismissDialog();
-                        Log.d(TAG, "Task failed: " + task.getException().toString());
-                        Toast.makeText(EditProfilePage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        } catch (Exception e) {
-            Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void downloadBannerImage(){
-        try {
-            // get the profile document from the database
-            DocumentReference downloadRef = fstore.collection("profile").document(userID);
-
-            downloadRef.get().addOnSuccessListener(documentSnapshot -> {
-                String downloadUrl = documentSnapshot.getString("bannerImageURL");
-
-                // Glide makes it easy to load images into ImageViews
-                if(downloadUrl != null) {
-                    Glide.with(EditProfilePage.this)
-                            .load(downloadUrl)
-                            .into(bannerImage);
-                }
-
-            }).addOnFailureListener(e -> Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show());
-        } catch (Exception e) {
-            Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private String getExtension(Uri uri) {
-        try {
-            ContentResolver contentResolver = getContentResolver();
-            MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-
-            return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
-
-        } catch (Exception e) {
-            return null;
+            Toast.makeText(EditProfilePage.this, e.getMessage() + "in downloadImage2", Toast.LENGTH_SHORT).show();
         }
     }
 
