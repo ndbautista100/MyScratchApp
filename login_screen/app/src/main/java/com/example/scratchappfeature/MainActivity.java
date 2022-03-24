@@ -109,18 +109,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void openRecipePageActivity(String recipe_ID) {
         Intent intent = new Intent(this, RecipePageActivity.class);
-<<<<<<< HEAD
-<<<<<<< HEAD
         intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }
 
     public void openOtherUserRecipe(String recipe_ID){
         Intent intent = new Intent(getApplicationContext(), ViewOtherRecipe.class);
-=======
->>>>>>> parent of 94c821d (Merge branch 'main' into Layouts)
-=======
->>>>>>> parent of 94c821d (Merge branch 'main' into Layouts)
         intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }
