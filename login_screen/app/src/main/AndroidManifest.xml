@@ -23,17 +23,11 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
-            android:name=".SearchableActivity"
+            android:name=".SearchActivity"
             android:exported="false"
             android:label="Search"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"/>
         <activity
             android:name=".EditRecipeActivity"
             android:exported="false"
@@ -74,6 +68,7 @@
             android:label="My Scratch!"
             android:parentActivityName=".CreateRecipeActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar"/>
+<<<<<<< HEAD
         <activity
             android:name=".ExploreActivity"
             android:exported="true"
@@ -82,6 +77,8 @@
             android:theme="@style/Theme.scratchappfeature.NoActionBar"
             />
 
+=======
+>>>>>>> parent of 94c821d (Merge branch 'main' into Layouts)
         <activity
             android:name=".Login"
             android:exported="true"
