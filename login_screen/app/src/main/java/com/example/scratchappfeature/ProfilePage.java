@@ -42,7 +42,7 @@ public class ProfilePage extends AppCompatActivity {
     private ImageButton followImageButton;
     private CardView followCardView;
 
-    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference profilesCollection = db.collection("profile");
     private String userID;
@@ -61,8 +61,6 @@ public class ProfilePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page); // change to correct activity if needed
 
-        setToolbar();
-
         profileImageView = findViewById(R.id.profilePictureImageView);
         bannerImageView = findViewById(R.id.bannerImageView);
 
@@ -75,7 +73,7 @@ public class ProfilePage extends AppCompatActivity {
         bioTextView = findViewById(R.id.bioTextView);
         favoriteFoodTextView = findViewById(R.id.favoriteFoodTextView);
         
-        userID = fAuth.getCurrentUser().getUid();
+        userID = auth.getCurrentUser().getUid();
 
         recipeRV = findViewById(R.id.recipeRecycler);
 
@@ -90,14 +88,15 @@ public class ProfilePage extends AppCompatActivity {
 
                     profile = document.toObject(Profile.class);
 
+                    setToolbar();
                     ab.setTitle(profile.getpname());
 
                     displayNameTextView.setText(profile.getpname());
                     bioTextView.setText(profile.getbio());
                     favoriteFoodTextView.setText(profile.getfavoritefood());
 
-                    if(!profile.getUserID().equals(fAuth.getCurrentUser().getUid())) { // if the user is not yourself, show the follow button
-                        Log.d(TAG, "statement = " + profile.getUserID().equals(fAuth.getCurrentUser().getUid()));
+                    if(!profile.getUserID().equals(auth.getCurrentUser().getUid())) { // if the user is not yourself, show the follow button
+                        Log.d(TAG, "statement = " + profile.getUserID().equals(auth.getCurrentUser().getUid()));
                         followCardView.setVisibility(View.VISIBLE);
                         followImageButton.setVisibility(View.VISIBLE);
 
@@ -244,6 +243,13 @@ public class ProfilePage extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_profile_page, menu);
+
+        MenuItem editButton = menu.findItem(R.id.action_edit_profile);
+
+        // vvv Attempt to invoke virtual method 'java.lang.String classes.Profile.getUserID()' on a null object reference
+        if(auth.getCurrentUser().getUid().equals(profile.getUserID())) { // if the profile is yours, show the edit button
+            editButton.setVisible(true);
+        }
         return true;
     }
 
