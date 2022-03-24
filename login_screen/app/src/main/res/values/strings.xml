@@ -6,7 +6,11 @@
     <string name="add_ingredient">Add Ingredient</string>
     <string name="cancel">Cancel</string>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <string name="search_hint">Recipes or users…</string>
+=======
+    <!-- TODO: Remove or change this placeholder text -->
+>>>>>>> parent of 94c821d (Merge branch 'main' into Layouts)
 =======
     <!-- TODO: Remove or change this placeholder text -->
 >>>>>>> parent of 94c821d (Merge branch 'main' into Layouts)
