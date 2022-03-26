@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/rootContainer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ScratchNotesActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/notebook_background"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -25,14 +25,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/recipesTextView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recipesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginTop="125dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_below="@+id/appBarLayoutScratchNotes"
+        android:background="@color/gray"
+        android:padding="4dp"
+        android:scrollbars="vertical" />
 
 </RelativeLayout>

@@ -25,31 +25,47 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ImageView
-        android:id="@+id/recipeImagesImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:layout_below="@id/appBarLayoutRecipePage"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_centerHorizontal="true"
-        android:background="@color/black"/>
-
     <Button
-        android:id="@+id/showImagesButton"
+        android:id="@+id/addImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="5dp"
+        android:layout_below="@id/appBarLayoutRecipePage"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/gray"
+        android:text="Add Image" />
+
+    <ImageView
+        android:id="@+id/recipeImageView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/appBarLayoutRecipePage"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/recipeImagesImageView"
-        android:text="Add Image"/>
+        android:layout_marginBottom="5dp"
+        android:background="@color/gray"
+        android:scaleType="centerCrop"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/recipePageDescriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipeImageView"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:hint="Recipe Description"/>
 
     <LinearLayout
-        android:id="@+id/ingredientsAndInstructionsLinearLayout"
+        android:id="@+id/ingredientsAndInstructionsHeaderLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/showImagesButton"
+        android:layout_below="@id/recipePageDescriptionTextView"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp">
 
@@ -77,27 +93,40 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/toolsTextViewRecipePage"
+    <LinearLayout
+        android:id="@+id/ingredientsAndInstructionsLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ingredientsAndInstructionsLinearLayout"
-        android:textColor="@color/black"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ingredientsAndInstructionsHeaderLinearLayout"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="5dp">
 
-    <TextView
-        android:id="@+id/ingredientsTextViewRecipePage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolsTextViewRecipePage"
-        android:textColor="@color/black"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+        <TextView
+            android:id="@+id/toolsTextViewRecipePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+            android:hint="Tools Used"/>
+
+        <TextView
+            android:id="@+id/ingredientsTextViewRecipePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+            android:hint="Ingredients Used"/>
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>

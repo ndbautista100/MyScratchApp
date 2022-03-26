@@ -6,7 +6,7 @@
     tools:context=".CreateRecipeActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/notebook_background"
+
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -29,37 +29,54 @@
         android:id="@+id/recipeNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginTop="90dp"
+        android:layout_below="@id/appBarLayoutCreateRecipe"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="171dp"
         android:layout_marginBottom="5dp"
-        android:textSize="16dp"
+        android:hint="Recipe name"
         android:inputType="text"
-        android:hint="Recipe name"/>
+        android:textSize="25dp" />
+
+    <EditText
+        android:id="@+id/recipeDescriptionEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipeNameEditText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="107dp"
+        android:layout_marginBottom="5dp"
+        android:hint="Recipe description"
+        android:inputType="text"
+        android:textSize="25dp" />
 
     <LinearLayout
         android:id="@+id/toolsLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/recipeNameEditText"
+        android:layout_below="@id/recipeDescriptionEditText"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="207dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/addToolImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:background="@null"
+            android:paddingStart="2dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp"
             android:src="@drawable/ic_baseline_add_circle_24" />
 
         <TextView
@@ -67,8 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:text="Tools:"
             android:textColor="@color/black"
@@ -80,8 +97,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolsLinearLayout"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="213dp"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="5dp"
         android:hint="Tools List" />
@@ -90,25 +109,27 @@
         android:id="@+id/ingredientsLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/toolsTextView"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="141dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/addIngredientImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:background="@null"
+            android:paddingStart="2dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="2dp"
+            android:paddingBottom="2dp"
             android:src="@drawable/ic_baseline_add_circle_24" />
 
         <TextView
@@ -116,24 +137,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:text="Ingredients:"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/ingredientsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Ingredients List"
         android:layout_below="@+id/ingredientsLinearLayout"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="25dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="150dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp"
+        android:hint="Ingredients List" />
 
     <Button
         android:id="@+id/doneButton"
