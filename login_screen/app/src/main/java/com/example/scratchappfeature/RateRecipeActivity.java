@@ -18,12 +18,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Map;
 
-import classes.Recipe;
-
 public class RateRecipeActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private Recipe recipe;
     private String ratingComment;
     private float ratingNum;
     // Below was copied over
@@ -57,7 +54,9 @@ public class RateRecipeActivity extends AppCompatActivity {
     //collection('scratchUsers').get();
 
     /*********/
+    /*
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_recipe);
@@ -79,3 +78,4 @@ public class RateRecipeActivity extends AppCompatActivity {
             //Map<String, Object> recipeMap = oMapper.convertValue(ratingcomments, Map.class);
         }
     }
+     */

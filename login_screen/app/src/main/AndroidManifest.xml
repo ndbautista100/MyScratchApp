@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.scratchappfeature"
-        android:theme="@style/Theme.scratchappfeature"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".RateRecipeActivity"
