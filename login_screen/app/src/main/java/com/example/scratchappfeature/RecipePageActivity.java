@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,11 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,15 +46,14 @@ public class RecipePageActivity extends AppCompatActivity {
     private TextView toolsTextView;
     private TextView ingredientsTextView;
 
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final StorageReference storageReference = storage.getReference("images/recipes");
     private Uri imageLocationUri;
 
     private Toolbar toolbarScratchNotes;
     private ActionBar ab;
 
-    // must be placed outside of onCreate
-    // startActivityForResult is deprecated
+    // must be placed outside of onCreate- startActivityForResult is deprecated
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
         @Override
         public void onActivityResult(Uri result) {
@@ -78,58 +73,117 @@ public class RecipePageActivity extends AppCompatActivity {
 
         setToolbar();
 
-        // get the Firebase storage reference
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference("images/recipes");
-
-        // getting recipe sent from CreateRecipeActivity
-        // create different scenarios for opening from CreateRecipe and EditRecipe
         Intent intent = getIntent();
 
-        if(intent.hasExtra("create_recipe")) {
+        if (intent.hasExtra("create_recipe")) { // getting recipe sent from CreateRecipeActivity
             recipe = (Recipe) intent.getSerializableExtra("create_recipe");
             populateRecipePage();
 
-        } else if (intent.hasExtra("open_recipe_from_id")) {
+        } else if (intent.hasExtra("open_recipe_from_id")) { // getting recipe from EditRecipeActivity
             String recipe_ID = intent.getStringExtra("open_recipe_from_id");
+            findRecipe(recipe_ID);
 
-            // with the recipe ID, find the document and create a Recipe object
-            DocumentReference docRef = db.collection("recipes").document(recipe_ID);
-            docRef.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if(document.exists()) {
-                        Log.i(TAG, "Found document!");
+        } else if (intent.hasExtra("com.google.firebase.dynamiclinks.DYNAMIC_LINK_DATA")) { // handle Dynamic Link
+            handleDynamicLink(intent);
 
-                        recipe = document.toObject(Recipe.class);
-                        populateRecipePage();
-
-                    } else {
-                        Log.e(TAG, "No such document.");
-                    }
-                } else {
-                    Log.e(TAG, "get failed with" + task.getException());
-                }
-            });
+        } else {
+            Log.d(TAG, "No intents.");
         }
     }
 
-    public void populateRecipePage() {
-        ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
+    // with the recipe ID, find the document and create a Recipe object
+    public void findRecipe(String recipe_ID) {
+        DocumentReference docRef = db.collection("recipes").document(recipe_ID);
+        docRef.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if(document.exists()) {
+                    Log.i(TAG, "Found document!");
 
-        descriptionTextView = (TextView) findViewById(R.id.recipePageDescriptionTextView);
-        descriptionTextView.setText(recipe.getDescription());
-        toolsTextView = (TextView) findViewById(R.id.toolsTextViewRecipePage);
-        toolsTextView.setText(recipe.getTools());
-        ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextViewRecipePage);
-        ingredientsTextView.setText(recipe.getIngredients());
+                    recipe = document.toObject(Recipe.class);
+                    populateRecipePage();
+
+                } else {
+                    Log.e(TAG, "No such document.");
+                }
+            } else {
+                Log.e(TAG, "get failed with" + task.getException());
+            }
+        });
+    }
+
+    public void populateRecipePage() {
+        descriptionTextView = findViewById(R.id.recipePageDescriptionTextView);
+        toolsTextView = findViewById(R.id.toolsTextViewRecipePage);
+        ingredientsTextView = findViewById(R.id.ingredientsTextViewRecipePage);
 
         // recipe images
-        recipeImageView = (ImageView) findViewById(R.id.recipeImageView);
-        addImageButton = (Button) findViewById(R.id.addImageButton);
-        addImageButton.setOnClickListener(view -> mGetContent.launch("image/*"));
+        recipeImageView = findViewById(R.id.recipeImageView);
+        addImageButton = findViewById(R.id.addImageButton);
 
-        downloadImage();
+        try {
+            ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
+            descriptionTextView.setText(recipe.getDescription());
+            toolsTextView.setText(recipe.getTools());
+            ingredientsTextView.setText(recipe.getIngredients());
+            addImageButton.setOnClickListener(view -> mGetContent.launch("image/*"));
+            downloadImage();
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+    }
+
+    public void handleDynamicLink(Intent intent) {
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this, pendingDynamicLinkData -> {
+                Log.i(TAG, "We have a dynamic link!");
+                // Get deep link from result (may be null if no link is found)
+                Uri deepLink = null;
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.getLink();
+                }
+
+                // Handle the deep link. For example, open the linked
+                // content, or apply promotional credit to the user's
+                // account.
+                if (deepLink != null) {
+                    String deepLinkString = deepLink.toString();
+                    Log.i(TAG, "Here's the deep link URL:\n" + deepLinkString);
+
+                    String recipe_ID = deepLinkString.substring(deepLinkString.lastIndexOf('/') + 1);
+                    Log.i(TAG, "Recipe ID: " + recipe_ID);
+
+                    // Now get the recipe from the database with recipe_ID
+                    findRecipe(recipe_ID);
+                }
+            })
+            .addOnFailureListener(this, e -> Log.w(TAG, "getDynamicLink failed: ", e));
+    }
+
+    public void shareRecipe() {
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+            .setLink(Uri.parse("https://myscratch.page.link/recipe/" + recipe.getDocument_ID()))
+            .setDomainUriPrefix("https://myscratch.page.link")
+            // Open links with this app on Android
+            .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+            // Open links with com.example.ios on iOS
+            .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+            .buildDynamicLink();
+
+        Uri dynamicLinkUri = dynamicLink.getUri();
+        Log.i(TAG, "Created Dynamic Link: " + dynamicLinkUri);
+
+        String recipe_ID = dynamicLinkUri.toString().substring(dynamicLinkUri.toString().lastIndexOf("%2F") + 3);
+        Log.d(TAG, "Recipe ID: " + recipe_ID);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, dynamicLinkUri.toString());
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "Recipe: " + recipe.getName());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     public void uploadImage() {
@@ -251,6 +305,7 @@ public class RecipePageActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share_recipe:
+                shareRecipe();
                 return true;
             case R.id.action_edit_recipe:
                 openEditRecipeActivity();
