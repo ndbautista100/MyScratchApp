@@ -91,7 +91,7 @@ public class Register extends AppCompatActivity {
                     if(task.isSuccessful()){
                         Toast.makeText(Register.this, "User created!", Toast.LENGTH_SHORT).show();
                         // Change Activity to Main
-                        // startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         Profile user = new Profile(mFullName.getText().toString(), "default", "default", fAuth.getCurrentUser().getUid());
                         ObjectMapper oMapper = new ObjectMapper();
                         Map<String, Object> profileMap = oMapper.convertValue(user, Map.class);
