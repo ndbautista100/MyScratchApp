@@ -2,6 +2,7 @@ package com.example.scratchappfeature;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import classes.Profile;
 import classes.Recipe;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,59 +50,80 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showRecipes() {
-        Query query = recipesRef.orderBy("name", Query.Direction.ASCENDING); // order by rating once ratings are implemented
 
-        FirestorePagingOptions<Recipe> firestorePagingOptions = new FirestorePagingOptions.Builder<Recipe>()
-            .setLifecycleOwner(this)
-            .setQuery(query, pagingConfig, Recipe.class)
-            .build();
+        ArrayList<String> following = new ArrayList<>();
+        db.collection("profile").whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
 
-        adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
+                            Profile profile = document.toObject(Profile.class);
+                            for (Map.Entry<String, Integer> entry : profile.getFollowing().entrySet()) {
+                                following.add(entry.getKey());
+                            }
+                            String joined = TextUtils.join(", ", following);
+                            Log.i("Here", joined);
+                            Query q = FirebaseFirestore.getInstance()
+                                    .collection("recipes")
+                                    .whereIn("user_ID", following);
+                            FirestorePagingOptions<Recipe> firestorePagingOptions = new FirestorePagingOptions.Builder<Recipe>()
+                                    .setLifecycleOwner(this)
+                                    .setQuery(q, pagingConfig, Recipe.class)
+                                    .build();
 
-        adapter.setOnItemClickListener((documentSnapshot, position) -> openRecipePageActivity(documentSnapshot.getId()));
+                            adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
 
-        adapter.addLoadStateListener(combinedLoadStates -> {
-            LoadState refresh = combinedLoadStates.getRefresh();
-            LoadState append = combinedLoadStates.getAppend();
+                            adapter.setOnItemClickListener((documentSnapshot, position) -> openRecipePageActivity(documentSnapshot.getId()));
 
-            if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
-                // The previous load (either initial or additional) failed. Call
-                // the retry() method in order to retry the load operation.
-                Toast.makeText(MainActivity.this, "Load failed. Retrying...", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Load failed. Retrying...");
-                adapter.retry();
-            }
+                            adapter.addLoadStateListener(combinedLoadStates -> {
+                                LoadState refresh = combinedLoadStates.getRefresh();
+                                LoadState append = combinedLoadStates.getAppend();
 
-            if (refresh instanceof LoadState.Loading) {
-                // The initial Load has begun
-                Log.d(TAG, "Initial load has begun.");
-            }
+                                if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
+                                    // The previous load (either initial or additional) failed. Call
+                                    // the retry() method in order to retry the load operation.
+                                    Toast.makeText(MainActivity.this, "Load failed. Retrying...", Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, "Load failed. Retrying...");
+                                    adapter.retry();
+                                }
 
-            if (append instanceof LoadState.Loading) {
-                // The adapter has started to load an additional page
-                Log.d(TAG, "Loading additional page...");
-            }
+                                if (refresh instanceof LoadState.Loading) {
+                                    // The initial Load has begun
+                                    Log.d(TAG, "Initial load has begun.");
+                                }
 
-            if (append instanceof LoadState.NotLoading) {
-                LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
-                if (notLoading.getEndOfPaginationReached()) {
-                    // The adapter has finished loading all of the data set
-                    Log.d(TAG, "Finished loading all data.");
-                    return null;
-                }
+                                if (append instanceof LoadState.Loading) {
+                                    // The adapter has started to load an additional page
+                                    Log.d(TAG, "Loading additional page...");
+                                }
 
-                if (refresh instanceof LoadState.NotLoading) {
-                    // The previous load (either initial or additional) completed
-                    Log.d(TAG, "Previous load completed.");
-                    return null;
-                }
-            }
-            return null;
-        });
+                                if (append instanceof LoadState.NotLoading) {
+                                    LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
+                                    if (notLoading.getEndOfPaginationReached()) {
+                                        // The adapter has finished loading all of the data set
+                                        Log.d(TAG, "Finished loading all data.");
+                                        return null;
+                                    }
 
-        userRecipesRV.setHasFixedSize(true);
-        userRecipesRV.setLayoutManager(new LinearLayoutManager(this));
-        userRecipesRV.setAdapter(adapter);
+                                    if (refresh instanceof LoadState.NotLoading) {
+                                        // The previous load (either initial or additional) completed
+                                        Log.d(TAG, "Previous load completed.");
+                                        return null;
+                                    }
+                                }
+                                return null;
+                            });
+
+                            userRecipesRV.setHasFixedSize(true);
+                            userRecipesRV.setLayoutManager(new LinearLayoutManager(this));
+                            userRecipesRV.setAdapter(adapter);
+                        }}});
+
+        // commented this query out Query query = recipesRef.orderBy("name", Query.Direction.ASCENDING); // order by rating once ratings are implemented
+
+
     }
 
     public void openRecipePageActivity(String recipe_ID) {
