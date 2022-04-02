@@ -5,13 +5,17 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -41,39 +45,38 @@ import java.util.Map;
 
 public class EditProfilePage extends AppCompatActivity {
     private static final String TAG = "EditProfilePage";
-    private String name;
-    private String bio;
-    private String favoriteFood;
-    private String id;
-    private EditText nameInput;
-    private EditText bioInput;
-    private EditText favoriteFoodInput;
-    private Button finishbutton;
-    private Button uploadProfile;
-    private Button uploadBanner;
-    private ImageView profileImage;
-    private ImageView bannerImage;
+    private Profile profile;
+    private EditText nameEditText;
+    private EditText bioEditText;
+    private EditText favFoodEditText;
+    private Button finishButton;
+    private Button editAvatarButton;
+    private Button editBannerButton;
+    private ImageView profileImageView;
+    private ImageView bannerImageView;
     private Uri profileImageUri;
     private Uri bannerImageUri;
-    private FirebaseAuth fauth;
-    private FirebaseFirestore fstore;
-    private FirebaseStorage fstorage;
-    private StorageReference storageRef;
-    private StorageReference bannerstorageRef;
+
     private String userID;
-    private Profile profile;
-    private DocumentReference docRef;
+
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    private final StorageReference avatarStorageRef = storage.getReference("images/avatars");
+    private final StorageReference bannerStorageRef = storage.getReference("images/banners");
+    private DocumentReference profileRef;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
         @Override
         public void onActivityResult(Uri result) {
             if(result != null){
-                profileImage.setImageURI(result);
+                profileImageView.setImageURI(result);
                 profileImageUri = result;
 
                 Log.d(TAG, profileImageUri.toString());
 
-                uploadProfileImage();
+                editAvatarButtonImage();
             }
         }
     });
@@ -82,12 +85,12 @@ public class EditProfilePage extends AppCompatActivity {
         @Override
         public void onActivityResult(Uri result) {
             if(result != null){
-                bannerImage.setImageURI(result);
+                bannerImageView.setImageURI(result);
                 bannerImageUri = result;
 
                 Log.d(TAG, bannerImageUri.toString());
 
-                uploadBannerImage();
+                editBannerButtonImage();
             }
         }
     });
@@ -96,77 +99,66 @@ public class EditProfilePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile_page2); // change to correct activity if needed
-        nameInput = (EditText) findViewById(R.id.nameInput);
-        bioInput = (EditText) findViewById(R.id.bioInput);
-        favoriteFoodInput = (EditText) findViewById(R.id.favoritefoodInput);
+        
+        setToolbar();
 
-        fstorage = FirebaseStorage.getInstance();
-        storageRef = fstorage.getReference("images/avatars");
-        bannerstorageRef = fstorage.getReference("images/banners");
+        userID = auth.getCurrentUser().getUid();
 
-        profileImage = (ImageView) findViewById(R.id.profilePicture);
-        uploadProfile = (Button) findViewById(R.id.uploadProfilePic);
-        uploadProfile.setOnClickListener(view -> mGetContent.launch("image/*"));
+        nameEditText = findViewById(R.id.editNameEditText);
+        bioEditText = findViewById(R.id.editBioEditText);
+        favFoodEditText = findViewById(R.id.editFavFoodEditText);
 
-        bannerImage = (ImageView) findViewById(R.id.banner);
-        uploadBanner = (Button) findViewById(R.id.uploadbanner);
-        uploadBanner.setOnClickListener(view -> bGetContent.launch("image/*"));
+        profileImageView = findViewById(R.id.editAvatarImageView);
+        editAvatarButton = findViewById(R.id.editAvatarButton);
+        editAvatarButton.setOnClickListener(view -> mGetContent.launch("image/*"));
 
+        bannerImageView = findViewById(R.id.editBannerImageView);
+        editBannerButton = findViewById(R.id.editBannerButton);
+        editBannerButton.setOnClickListener(view -> bGetContent.launch("image/*"));
 
-
-        fstore = FirebaseFirestore.getInstance();
-        fauth = FirebaseAuth.getInstance();
-        userID = fauth.getCurrentUser().getUid();
-
-        id = fstore.collection("profile").document().getId();
-
-        docRef = fstore.collection("profile").document(userID);
-
-        docRef.get()
+        profileRef = db.collection("profile").document(userID);
+        profileRef.get()
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
                     if(doc.exists()){
                         profile = doc.toObject(Profile.class);
-                        name = doc.getString("pname");
-                        bio = doc.getString("bio");
-                        favoriteFood = doc.getString("favoritefood");
-                        nameInput.setText(name);
-                        bioInput.setText(bio);
-                        favoriteFoodInput.setText(favoriteFood);
+
+                        nameEditText.setText(profile.getpname());
+                        bioEditText.setText(profile.getbio());
+                        favFoodEditText.setText(profile.getfavoritefood());
 
                         downloadProfileImage();
                         downloadBannerImage();
                     }
                     else {
-                        Log.d("docv", "No such info");
+                        Log.d(TAG, "No such info");
                     }
                 }
                 else {
-                    Log.d("docv", "failed to get with", task.getException());
+                    Log.d(TAG, "failed to get with", task.getException());
                 }
             });
 
-        finishbutton = (Button) findViewById(R.id.finishbutton);
-        finishbutton.setOnClickListener(v -> {
-            profile = new Profile();
-            name = nameInput.getText().toString();
-            bio = bioInput.getText().toString();
-            favoriteFood = favoriteFoodInput.getText().toString();
+        finishButton = findViewById(R.id.finishEditButton);
+        finishButton.setOnClickListener(v -> {
 
-            addDataToDatabase(name, bio, favoriteFood);
+            profileRef.update("pname", nameEditText.getText().toString(),
+                    "bio", bioEditText.getText().toString(),
+                    "favoritefood", favFoodEditText.getText().toString())
+                .addOnSuccessListener(unused -> Log.i(TAG, "DocumentSnapshot successfully updated!"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error updating document", e));
 
-            // Change this to submitting the the information, picture, and everything.
             returnToProfileActivity();
         });
     }
 
 
-    private void uploadProfileImage(){
+    private void editAvatarButtonImage(){
         Log.d(TAG, "User has a profile image: " + profile.getProfileImageName());
         if(profile.getProfileImageName() != null) { // if user already has a profile image
             // delete that image from Firebase Storage
-            StorageReference recipeImageRef = storageRef.child(profile.getProfileImageName());
+            StorageReference recipeImageRef = avatarStorageRef.child(profile.getProfileImageName());
             Log.d(TAG, "Deleting image: " + profile.getProfileImageName());
             recipeImageRef.delete()
                 .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + profile.getProfileImageName()))
@@ -179,7 +171,7 @@ public class EditProfilePage extends AppCompatActivity {
                 loadingDialog.startLoadingDialog();
                 
                 String imageName = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
-                StorageReference imageReference = storageRef.child(imageName);
+                StorageReference imageReference = avatarStorageRef.child(imageName);
 
                 Log.d(TAG, "Image name: " + imageName);
 
@@ -196,7 +188,7 @@ public class EditProfilePage extends AppCompatActivity {
                         // update profile document's profileImageURL field
                         profile.setProfileImageURL(task.getResult().toString());
                         profile.setProfileImageName(imageName);
-                        fstore.collection("profile")
+                        db.collection("profile")
                             .document(userID)
                             .update("profileImageURL", profile.getProfileImageURL(),
                                     "profileImageName", profile.getProfileImageName())
@@ -225,7 +217,7 @@ public class EditProfilePage extends AppCompatActivity {
     public void downloadProfileImage(){
         try {
             // get the profile document from the database
-            DocumentReference downloadRef = fstore.collection("profile").document(userID);
+            DocumentReference downloadRef = db.collection("profile").document(userID);
 
             downloadRef.get().addOnSuccessListener(documentSnapshot -> {
                 String downloadUrl = documentSnapshot.getString("profileImageURL");
@@ -233,8 +225,8 @@ public class EditProfilePage extends AppCompatActivity {
                 // Glide makes it easy to load images into ImageViews
                 if(downloadUrl != null) {
                     Glide.with(EditProfilePage.this)
-                            .load(downloadUrl)
-                            .into(profileImage);
+                        .load(downloadUrl)
+                        .into(profileImageView);
                 }
 
             }).addOnFailureListener(e -> Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show());
@@ -244,15 +236,15 @@ public class EditProfilePage extends AppCompatActivity {
     }
 
 
-    private void uploadBannerImage(){
+    private void editBannerButtonImage(){
         Log.d(TAG, "User has a banner image: " + profile.getBannerImageName());
         if(profile.getBannerImageName() != null) { // if user already has a banner image
             // delete that image from Firebase Storage
-            StorageReference recipeImageRef = bannerstorageRef.child(profile.getBannerImageName());
+            StorageReference recipeImageRef = bannerStorageRef.child(profile.getBannerImageName());
             Log.d(TAG, "Deleting image: " + profile.getBannerImageName());
             recipeImageRef.delete()
-                    .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + profile.getBannerImageName()))
-                    .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+                .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + profile.getBannerImageName()))
+                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
         }
 
         try { // uploading the profile pic
@@ -261,7 +253,7 @@ public class EditProfilePage extends AppCompatActivity {
                 loadingDialog.startLoadingDialog();
 
                 String imageName = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(bannerImageUri);
-                StorageReference imageReference = bannerstorageRef.child(imageName);
+                StorageReference imageReference = bannerStorageRef.child(imageName);
 
                 Log.d(TAG, "Image name: " + imageName);
 
@@ -278,7 +270,7 @@ public class EditProfilePage extends AppCompatActivity {
                         // update profile document's profileImageURL field
                         profile.setBannerImageURL(task.getResult().toString());
                         profile.setBannerImageName(imageName);
-                        fstore.collection("profile")
+                        db.collection("profile")
                                 .document(userID)
                                 .update("bannerImageURL", profile.getBannerImageURL(),
                                         "bannerImageName", profile.getBannerImageName())
@@ -307,7 +299,7 @@ public class EditProfilePage extends AppCompatActivity {
     public void downloadBannerImage(){
         try {
             // get the profile document from the database
-            DocumentReference downloadRef = fstore.collection("profile").document(userID);
+            DocumentReference downloadRef = db.collection("profile").document(userID);
 
             downloadRef.get().addOnSuccessListener(documentSnapshot -> {
                 String downloadUrl = documentSnapshot.getString("bannerImageURL");
@@ -315,8 +307,8 @@ public class EditProfilePage extends AppCompatActivity {
                 // Glide makes it easy to load images into ImageViews
                 if(downloadUrl != null) {
                     Glide.with(EditProfilePage.this)
-                            .load(downloadUrl)
-                            .into(bannerImage);
+                        .load(downloadUrl)
+                        .into(bannerImageView);
                 }
 
             }).addOnFailureListener(e -> Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show());
@@ -337,20 +329,25 @@ public class EditProfilePage extends AppCompatActivity {
         }
     }
 
-    private void addDataToDatabase(String name, String bio, String favoriteFood) {
-        docRef.update("pname", name,
-                "bio", bio,
-                "favoritefood", favoriteFood)
-                .addOnSuccessListener(unused -> Log.i(TAG, "DocumentSnapshot successfully updated!"))
-                .addOnFailureListener(e -> Log.e(TAG, "Error updating document", e));
-    }
-
     public void returnToProfileActivity () {
         Intent intent = new Intent(this, ProfilePage.class);
         startActivity(intent);
     }
 
-    public void showToast (String text){
-        Toast.makeText(EditProfilePage.this, text, Toast.LENGTH_SHORT).show();
+    public void setToolbar() {
+        Toolbar toolbarEditProfile = findViewById(R.id.toolbarEditProfile);
+        setSupportActionBar(toolbarEditProfile);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                returnToProfileActivity();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
