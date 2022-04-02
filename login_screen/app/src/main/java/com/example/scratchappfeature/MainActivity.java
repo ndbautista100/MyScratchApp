@@ -119,10 +119,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void logout(){
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), Login.class));
-        finish();
+    public void openSettingsActivity() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     public void setToolbar() {
@@ -161,9 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 openProfilePageActivity();
                 return true;
             case R.id.action_settings:
-                return true;
-            case R.id.action_logout:
-                logout();
+                openSettingsActivity();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
