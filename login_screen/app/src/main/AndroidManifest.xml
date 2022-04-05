@@ -100,6 +100,13 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar"
             />
+        <activity
+            android:name=".IngredientListActivity"
+            android:exported="true"
+            android:label="My Scratch"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"
+            />
     </application>
 
 </manifest>

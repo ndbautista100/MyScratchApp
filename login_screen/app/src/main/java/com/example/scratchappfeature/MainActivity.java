@@ -125,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openIngredientsList(){
+        Intent intent = new Intent(this, IngredientListActivity.class);
+        startActivity(intent);
+    }
+
     public void logout(){
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(), Login.class));
@@ -167,6 +172,9 @@ public class MainActivity extends AppCompatActivity {
                 openProfilePageActivity();
                 return true;
             case R.id.action_settings:
+                return true;
+            case R.id.action_ingredients_list:
+                openIngredientsList();
                 return true;
             case R.id.action_logout:
                 logout();
