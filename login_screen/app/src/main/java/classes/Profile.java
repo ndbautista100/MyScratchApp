@@ -17,8 +17,10 @@ public class Profile {
     private String bannerImageURL;
     private String bannerImageName;
     private String userID;
-    private ArrayList<String> followers;
+    //private ArrayList<String> followers;
+    private HashMap<String, Integer> followers;
     private ArrayList<String> savedRecipes;
+    private ArrayList<String> savedIngredients;
 
     public Profile() {
         // empty constructor
@@ -31,8 +33,10 @@ public class Profile {
         pbio = bio;
         pfavoritefood = favoritefood;
         userID = userid;
-        followers =  new ArrayList<String>();
+        //followers =  new ArrayList<>();
+        followers = new HashMap<>();
         savedRecipes = new ArrayList<>();
+        savedIngredients = new ArrayList<>();
     }
 
     // getter methods for all variables.
@@ -93,16 +97,21 @@ public class Profile {
         this.userID = userID;
     }
 
+    /*
     public ArrayList<String> getFollowers() {
         return followers;
-    }
+    }*/
 
     public ArrayList<String> getSavedRecipes() {return this.savedRecipes;}
 
+    /*
     public void setFriends(String userID) {
         if(!followers.contains(userID)) {
             followers.add(userID);
         }
-    }
+    }*/
 
+    public ArrayList<String> getSavedIngredients() {
+        return this.savedIngredients;
+    }
 }

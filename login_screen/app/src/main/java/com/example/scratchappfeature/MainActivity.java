@@ -220,6 +220,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+    public void openIngredientsList(){
+        Intent intent = new Intent(this, IngredientListActivity.class);
+        startActivity(intent);
+    }
+
+    public void logout(){
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getApplicationContext(), Login.class));
+        finish();
+    }
 
     public void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbarMain);
@@ -258,6 +268,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_settings:
                 openSettingsActivity();
+                return true;
+            case R.id.action_ingredients_list:
+                openIngredientsList();
+                return true;
+            case R.id.action_logout:
+                logout();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
