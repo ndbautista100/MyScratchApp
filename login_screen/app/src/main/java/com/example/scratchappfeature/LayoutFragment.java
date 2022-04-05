@@ -97,6 +97,7 @@ public class LayoutFragment extends Fragment {
         mainBackground.setBackgroundColor(recipe.getBackgroundColor());
         ScrollView parentScrollView = view.findViewById(R.id.layoutBackground);
         TextView recipeName = view.findViewById(R.id.titleTextView);
+        TextView recipeDescription = view.findViewById(R.id.descriptionTextView);
 
         TextView recipeTools = view.findViewById(R.id.toolsTextView);
         ScrollView toolsScrollView = view.findViewById(R.id.toolsScrollView);
@@ -172,6 +173,11 @@ public class LayoutFragment extends Fragment {
         GradientDrawable gradientDrawable = (GradientDrawable) recipeName.getBackground().mutate();
         gradientDrawable.setColor(recipe.getTextBoxColor());
 
+        recipeDescription.setText(recipe.getDescription());
+        recipeDescription.setTypeface(recipeFont);
+        gradientDrawable = (GradientDrawable) recipeDescription.getBackground().mutate();
+        gradientDrawable.setColor(recipe.getTextBoxColor());
+
         recipeTools.setText(makeList(recipe.getTools()));
         recipeTools.setTypeface(recipeFont);
         gradientDrawable = (GradientDrawable) toolsScrollView.getBackground().mutate();
@@ -182,7 +188,7 @@ public class LayoutFragment extends Fragment {
         gradientDrawable = (GradientDrawable) ingredientsScrollView.getBackground().mutate();
         gradientDrawable.setColor(recipe.getTextBoxColor());
 
-        recipeInstructions.setText(recipe.getDescription());
+        recipeInstructions.setText(recipe.getDirections());
         recipeInstructions.setTypeface(recipeFont);
         gradientDrawable = (GradientDrawable) instructionsScrollView.getBackground().mutate();
         gradientDrawable.setColor(recipe.getTextBoxColor());
