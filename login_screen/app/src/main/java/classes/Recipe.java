@@ -1,6 +1,7 @@
 package classes;
 
 import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class Recipe implements Serializable { // Serializable allows classes to be transferred between Activities
@@ -8,6 +9,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String description;
     private String ingredients;
     private String tools;
+    private String directions;
     private String user_ID;
     private String document_ID;
 
@@ -83,13 +85,20 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.user_ID = user;
     }
 
-    public String getDocument_ID()
-    {
+    public String getDocument_ID() {
         return document_ID;
     }
 
     public void setDocument_ID(String id) {
         this.document_ID = id;
+    }
+
+    public void setDirections(String directions) {
+        this.directions = directions;
+    }
+
+    public String getDirections() {
+        return this.directions;
     }
 
     public String getImage_URL() {
@@ -102,15 +111,25 @@ public class Recipe implements Serializable { // Serializable allows classes to 
 
     public void setTextBoxColor (int color) {this.textBoxColor = color;}
 
-    public int getTextBoxColor() {return this.textBoxColor;}
+    public int getTextBoxColor() {
+        return this.textBoxColor;
+    }
 
-    public int getBackgroundColor() {return this.backgroundColor;}
+    public int getBackgroundColor() {
+        return this.backgroundColor;
+    }
 
-    public void setBackgroundColor(int color) {this.backgroundColor = color;}
+    public void setBackgroundColor(int color) {
+        this.backgroundColor = color;
+    }
 
-    public void setFontFamily(String font) {this.fontFamily = font;}
+    public void setFontFamily(String font) {
+        this.fontFamily = font;
+    }
 
-    public String getFontFamily() {return this.fontFamily;}
+    public String getFontFamily() {
+        return this.fontFamily;
+    }
 
 
     @Override

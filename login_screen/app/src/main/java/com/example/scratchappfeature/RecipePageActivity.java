@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class RecipePageActivity extends AppCompatActivity {
     private TextView descriptionTextView;
     private TextView toolsTextView;
     private TextView ingredientsTextView;
+    private EditText directionsET;
 
 
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -121,12 +123,18 @@ public class RecipePageActivity extends AppCompatActivity {
         descriptionTextView = findViewById(R.id.recipePageDescriptionTextView);
         toolsTextView = findViewById(R.id.toolsTextViewRecipePage);
         ingredientsTextView = findViewById(R.id.ingredientsTextViewRecipePage);
+        ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
+        descriptionTextView.setText(recipe.getDescription());
+        directionsET = (EditText) findViewById(R.id.directionsEditText);
+        directionsET.setText(recipe.getDirections());
 
         nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                String directions = directionsET.getText().toString();
+                saveDirections(directions);
                 downloadImage();
                 openCustomizeRecipeFeatureActivity(recipe);
             }
@@ -310,6 +318,12 @@ public class RecipePageActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), CustomizeRecipeFeature.class);
         intent.putExtra("customize_recipe", recipe.getDocument_ID());
         startActivity(intent);
+
+    }
+
+    private void saveDirections(String directions){
+        db.collection("recipes").document(recipe.getDocument_ID())
+                .update("directions", directions);
 
     }
 }
