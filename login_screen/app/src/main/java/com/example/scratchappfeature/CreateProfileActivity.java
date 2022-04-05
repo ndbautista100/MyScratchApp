@@ -116,12 +116,8 @@ public class CreateProfileActivity extends AppCompatActivity {
 
             db.collection("profile").document(fAuth.getCurrentUser().getUid())
                 .set(profile)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.i(TAG, "Successfully created profile!");
-                    }
-                }).addOnFailureListener(e -> {
+                .addOnSuccessListener(unused -> Log.i(TAG, "Successfully created profile!"))
+                .addOnFailureListener(e -> {
                     Toast.makeText(CreateProfileActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e(TAG, e.toString());
                 });
@@ -159,7 +155,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                         loadingDialog.dismissDialog();
                         throw task.getException();
                     }
-                    return imageReference.getDownloadUrl(); // im guessing this is where it messes up
+                    return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Task successful!!");
@@ -179,8 +175,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                                 Log.d(TAG, "Failure in storing");
                                 Toast.makeText(CreateProfileActivity.this, "Profile image failed to upload.", Toast.LENGTH_SHORT).show();
                         });
-                    } // Something with the code is giving the error that the task was not successful.
-                    else if (!task.isSuccessful()) {
+                    } else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
                         Log.d(TAG, "Task failed: " + task.getException().toString());
                         Toast.makeText(CreateProfileActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
@@ -219,7 +214,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                         loadingDialog.dismissDialog();
                         throw task.getException();
                     }
-                    return imageReference.getDownloadUrl(); // im guessing this is where it messes up
+                    return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Task successful!!");
@@ -239,8 +234,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                                 Log.d(TAG, "Failure in storing");
                                 Toast.makeText(CreateProfileActivity.this, "Banner image failed to upload.", Toast.LENGTH_SHORT).show();
                         });
-                    } // Something with the code is giving the error that the task was not successful.
-                    else if (!task.isSuccessful()) {
+                    } else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
                         Log.d(TAG, "Task failed: " + task.getException().toString());
                         Toast.makeText(CreateProfileActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();

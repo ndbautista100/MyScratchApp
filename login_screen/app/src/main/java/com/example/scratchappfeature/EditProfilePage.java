@@ -181,7 +181,7 @@ public class EditProfilePage extends AppCompatActivity {
                         loadingDialog.dismissDialog();
                         throw task.getException();
                     }
-                    return imageReference.getDownloadUrl(); // im guessing this is where it messes up
+                    return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Task successful!!");
@@ -201,7 +201,7 @@ public class EditProfilePage extends AppCompatActivity {
                                 Log.d(TAG, "Failure in storing");
                                 Toast.makeText(EditProfilePage.this, "Profile image failed to upload.", Toast.LENGTH_SHORT).show();
                         });
-                    } // Something with the code is giving the error that the task was not successful.
+                    }
                     else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
                         Log.d(TAG, "Task failed: " + task.getException().toString());
@@ -263,7 +263,7 @@ public class EditProfilePage extends AppCompatActivity {
                         loadingDialog.dismissDialog();
                         throw task.getException();
                     }
-                    return imageReference.getDownloadUrl(); // im guessing this is where it messes up
+                    return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Task successful!!");
@@ -283,7 +283,7 @@ public class EditProfilePage extends AppCompatActivity {
                             Log.d(TAG, "Failure in storing");
                             Toast.makeText(EditProfilePage.this, "Banner image failed to upload.", Toast.LENGTH_SHORT).show();
                         });
-                    } // Something with the code is giving the error that the task was not successful.
+                    } 
                     else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
                         Log.d(TAG, "Task failed: " + task.getException().toString());
