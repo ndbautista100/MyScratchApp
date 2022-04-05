@@ -135,8 +135,8 @@ public class CreateProfileActivity extends AppCompatActivity {
             StorageReference recipeImageRef = avatarStorageRef.child(profile.getProfileImageName());
             Log.d(TAG, "Deleting image: " + profile.getProfileImageName());
             recipeImageRef.delete()
-                    .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + profile.getProfileImageName()))
-                    .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+                .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + profile.getProfileImageName()))
+                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
         }
 
         try { // uploading the profile pic
@@ -158,7 +158,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                     return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "Task successful!!");
+                        Log.d(TAG, "Uploading avatar was successful!");
                         // update profile document's profileImageURL field
                         profile.setProfileImageURL(task.getResult().toString());
                         profile.setProfileImageName(imageName);
@@ -166,13 +166,13 @@ public class CreateProfileActivity extends AppCompatActivity {
                             .document(userID)
                             .update("profileImageURL", profile.getProfileImageURL(),
                                     "profileImageName", profile.getProfileImageName())
-                            .addOnCompleteListener(task1 -> {
+                            .addOnSuccessListener(unused -> {
                                 loadingDialog.dismissDialog();
-                                Log.d(TAG, "Success!!!");
+                                Log.d(TAG, "Uploading avatar success!");
                                 Toast.makeText(CreateProfileActivity.this, "Profile image uploaded!", Toast.LENGTH_SHORT).show();
                             }).addOnFailureListener(e -> {
                                 loadingDialog.dismissDialog();
-                                Log.d(TAG, "Failure in storing");
+                                Log.e(TAG, "Failure in storing avatar: " + e);
                                 Toast.makeText(CreateProfileActivity.this, "Profile image failed to upload.", Toast.LENGTH_SHORT).show();
                         });
                     } else if (!task.isSuccessful()) {
@@ -194,8 +194,8 @@ public class CreateProfileActivity extends AppCompatActivity {
             StorageReference recipeImageRef = bannerStorageRef.child(profile.getBannerImageName());
             Log.d(TAG, "Deleting image: " + profile.getBannerImageName());
             recipeImageRef.delete()
-                    .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + profile.getBannerImageName()))
-                    .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+                .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + profile.getBannerImageName()))
+                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
         }
 
         try { // uploading the profile pic
@@ -217,7 +217,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                     return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "Task successful!!");
+                        Log.d(TAG, "Uploading banner was successful!");
                         // update profile document's profileImageURL field
                         profile.setBannerImageURL(task.getResult().toString());
                         profile.setBannerImageName(imageName);
@@ -225,13 +225,13 @@ public class CreateProfileActivity extends AppCompatActivity {
                             .document(userID)
                             .update("bannerImageURL", profile.getBannerImageURL(),
                                     "bannerImageName", profile.getBannerImageName())
-                            .addOnCompleteListener(task1 -> {
+                            .addOnSuccessListener(unused -> {
                                 loadingDialog.dismissDialog();
-                                Log.d(TAG, "Success!!!");
+                                Log.d(TAG, "Uploading banner success!");
                                 Toast.makeText(CreateProfileActivity.this, "Banner image uploaded!", Toast.LENGTH_SHORT).show();
                             }).addOnFailureListener(e -> {
                                 loadingDialog.dismissDialog();
-                                Log.d(TAG, "Failure in storing");
+                                Log.e(TAG, "Failure in storing banner: " + e);
                                 Toast.makeText(CreateProfileActivity.this, "Banner image failed to upload.", Toast.LENGTH_SHORT).show();
                         });
                     } else if (!task.isSuccessful()) {

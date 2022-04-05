@@ -283,7 +283,7 @@ public class EditProfilePage extends AppCompatActivity {
                             Log.d(TAG, "Failure in storing");
                             Toast.makeText(EditProfilePage.this, "Banner image failed to upload.", Toast.LENGTH_SHORT).show();
                         });
-                    } 
+                    }
                     else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
                         Log.d(TAG, "Task failed: " + task.getException().toString());
