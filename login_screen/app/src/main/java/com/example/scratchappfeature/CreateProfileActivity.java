@@ -1,28 +1,22 @@
 package com.example.scratchappfeature;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -147,7 +141,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                 String imageName = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
                 StorageReference imageReference = avatarStorageRef.child(imageName);
 
-                Log.d(TAG, "Image name: " + imageName);
+                Log.d(TAG, "Avatar image name: " + imageName);
 
                 UploadTask uploadTask = imageReference.putFile(profileImageUri); // store image
                 uploadTask.continueWithTask(task -> {
@@ -158,23 +152,14 @@ public class CreateProfileActivity extends AppCompatActivity {
                     return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        loadingDialog.dismissDialog();
                         Log.d(TAG, "Uploading avatar was successful!");
-                        // update profile document's profileImageURL field
+                        Toast.makeText(CreateProfileActivity.this, "Banner image uploaded!", Toast.LENGTH_SHORT).show();
+
+                        // set profile object's profileImageURL and profileImageName fields
                         profile.setProfileImageURL(task.getResult().toString());
                         profile.setProfileImageName(imageName);
-                        db.collection("profile")
-                            .document(userID)
-                            .update("profileImageURL", profile.getProfileImageURL(),
-                                    "profileImageName", profile.getProfileImageName())
-                            .addOnSuccessListener(unused -> {
-                                loadingDialog.dismissDialog();
-                                Log.d(TAG, "Uploading avatar success!");
-                                Toast.makeText(CreateProfileActivity.this, "Profile image uploaded!", Toast.LENGTH_SHORT).show();
-                            }).addOnFailureListener(e -> {
-                                loadingDialog.dismissDialog();
-                                Log.e(TAG, "Failure in storing avatar: " + e);
-                                Toast.makeText(CreateProfileActivity.this, "Profile image failed to upload.", Toast.LENGTH_SHORT).show();
-                        });
+
                     } else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
                         Log.d(TAG, "Task failed: " + task.getException().toString());
@@ -183,7 +168,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                 });
             }
         } catch (Exception e) {
-            Toast.makeText(CreateProfileActivity.this, e.getMessage() +"in upload image2", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CreateProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -206,7 +191,7 @@ public class CreateProfileActivity extends AppCompatActivity {
                 String imageName = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(bannerImageUri);
                 StorageReference imageReference = bannerStorageRef.child(imageName);
 
-                Log.d(TAG, "Image name: " + imageName);
+                Log.d(TAG, "Banner image name: " + imageName);
 
                 UploadTask uploadTask = imageReference.putFile(bannerImageUri); // store image
                 uploadTask.continueWithTask(task -> {
@@ -217,23 +202,14 @@ public class CreateProfileActivity extends AppCompatActivity {
                     return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        loadingDialog.dismissDialog();
                         Log.d(TAG, "Uploading banner was successful!");
-                        // update profile document's profileImageURL field
+                        Toast.makeText(CreateProfileActivity.this, "Banner image uploaded!", Toast.LENGTH_SHORT).show();
+
+                        // set profile object's bannerImageURL and bannerImageName fields
                         profile.setBannerImageURL(task.getResult().toString());
                         profile.setBannerImageName(imageName);
-                        db.collection("profile")
-                            .document(userID)
-                            .update("bannerImageURL", profile.getBannerImageURL(),
-                                    "bannerImageName", profile.getBannerImageName())
-                            .addOnSuccessListener(unused -> {
-                                loadingDialog.dismissDialog();
-                                Log.d(TAG, "Uploading banner success!");
-                                Toast.makeText(CreateProfileActivity.this, "Banner image uploaded!", Toast.LENGTH_SHORT).show();
-                            }).addOnFailureListener(e -> {
-                                loadingDialog.dismissDialog();
-                                Log.e(TAG, "Failure in storing banner: " + e);
-                                Toast.makeText(CreateProfileActivity.this, "Banner image failed to upload.", Toast.LENGTH_SHORT).show();
-                        });
+
                     } else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
                         Log.d(TAG, "Task failed: " + task.getException().toString());
