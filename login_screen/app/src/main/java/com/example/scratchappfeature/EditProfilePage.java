@@ -173,7 +173,7 @@ public class EditProfilePage extends AppCompatActivity {
                 String imageName = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(profileImageUri);
                 StorageReference imageReference = avatarStorageRef.child(imageName);
 
-                Log.d(TAG, "Image name: " + imageName);
+                Log.d(TAG, "Avatar image name: " + imageName);
 
                 UploadTask uploadTask = imageReference.putFile(profileImageUri); // store image
                 uploadTask.continueWithTask(task -> {
@@ -184,8 +184,7 @@ public class EditProfilePage extends AppCompatActivity {
                     return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "Task successful!!");
-                        // update profile document's profileImageURL field
+                        // update profile document's profileImageURL and profileImageName fields
                         profile.setProfileImageURL(task.getResult().toString());
                         profile.setProfileImageName(imageName);
                         db.collection("profile")
@@ -194,23 +193,22 @@ public class EditProfilePage extends AppCompatActivity {
                                     "profileImageName", profile.getProfileImageName())
                             .addOnCompleteListener(task1 -> {
                                 loadingDialog.dismissDialog();
-                                Log.d(TAG, "Success!!!");
+                                Log.i(TAG, "Uploading avatar was successful!");
                                 Toast.makeText(EditProfilePage.this, "Profile image uploaded!", Toast.LENGTH_SHORT).show();
                             }).addOnFailureListener(e -> {
                                 loadingDialog.dismissDialog();
-                                Log.d(TAG, "Failure in storing");
+                                Log.e(TAG, "Failure in storing avatar: " + e.getMessage());
                                 Toast.makeText(EditProfilePage.this, "Profile image failed to upload.", Toast.LENGTH_SHORT).show();
                         });
-                    }
-                    else if (!task.isSuccessful()) {
+                    } else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
-                        Log.d(TAG, "Task failed: " + task.getException().toString());
+                        Log.e(TAG, "Task failed: " + task.getException().toString());
                         Toast.makeText(EditProfilePage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         } catch (Exception e) {
-            Toast.makeText(EditProfilePage.this, e.getMessage() +"in upload image2", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditProfilePage.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -255,7 +253,7 @@ public class EditProfilePage extends AppCompatActivity {
                 String imageName = userID + "_" + UUID.randomUUID().toString() + "." + getExtension(bannerImageUri);
                 StorageReference imageReference = bannerStorageRef.child(imageName);
 
-                Log.d(TAG, "Image name: " + imageName);
+                Log.d(TAG, "Banner image name: " + imageName);
 
                 UploadTask uploadTask = imageReference.putFile(bannerImageUri); // store image
                 uploadTask.continueWithTask(task -> {
@@ -266,27 +264,25 @@ public class EditProfilePage extends AppCompatActivity {
                     return imageReference.getDownloadUrl();
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "Task successful!!");
-                        // update profile document's profileImageURL field
+                        // update profile document's bannerImageURL and bannerImageName fields
                         profile.setBannerImageURL(task.getResult().toString());
                         profile.setBannerImageName(imageName);
                         db.collection("profile")
-                                .document(userID)
-                                .update("bannerImageURL", profile.getBannerImageURL(),
-                                        "bannerImageName", profile.getBannerImageName())
-                                .addOnCompleteListener(task1 -> {
-                                    loadingDialog.dismissDialog();
-                                    Log.d(TAG, "Success!!!");
-                                    Toast.makeText(EditProfilePage.this, "Banner image uploaded!", Toast.LENGTH_SHORT).show();
-                                }).addOnFailureListener(e -> {
-                            loadingDialog.dismissDialog();
-                            Log.d(TAG, "Failure in storing");
-                            Toast.makeText(EditProfilePage.this, "Banner image failed to upload.", Toast.LENGTH_SHORT).show();
+                            .document(userID)
+                            .update("bannerImageURL", profile.getBannerImageURL(),
+                                    "bannerImageName", profile.getBannerImageName())
+                            .addOnCompleteListener(task1 -> {
+                                loadingDialog.dismissDialog();
+                                Log.i(TAG, "Uploading banner was successful!");
+                                Toast.makeText(EditProfilePage.this, "Banner image uploaded!", Toast.LENGTH_SHORT).show();
+                            }).addOnFailureListener(e -> {
+                                loadingDialog.dismissDialog();
+                                Log.e(TAG, "Failure in storing banner: " + e.getMessage());
+                                Toast.makeText(EditProfilePage.this, "Banner image failed to upload.", Toast.LENGTH_SHORT).show();
                         });
-                    }
-                    else if (!task.isSuccessful()) {
+                    } else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
-                        Log.d(TAG, "Task failed: " + task.getException().toString());
+                        Log.e(TAG, "Uploading banner failed: " + task.getException().toString());
                         Toast.makeText(EditProfilePage.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });

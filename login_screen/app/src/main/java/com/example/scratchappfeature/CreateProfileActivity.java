@@ -162,7 +162,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
                     } else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
-                        Log.d(TAG, "Task failed: " + task.getException().toString());
+                        Log.e(TAG, "Uploading avatar failed: " + task.getException().toString());
                         Toast.makeText(CreateProfileActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -212,7 +212,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
                     } else if (!task.isSuccessful()) {
                         loadingDialog.dismissDialog();
-                        Log.d(TAG, "Task failed: " + task.getException().toString());
+                        Log.e(TAG, "Uploading banner failed: " + task.getException().toString());
                         Toast.makeText(CreateProfileActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
