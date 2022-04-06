@@ -103,7 +103,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         nameEditText.setText(displayName);
 
         finishButton.setOnClickListener(view -> {
-            profile.setname(displayName);
+            profile.setname(nameEditText.getText().toString());
             profile.setbio(bioEditText.getText().toString());
             profile.setfavoritefood(favFoodEditText.getText().toString());
             profile.setUserID(fAuth.getCurrentUser().getUid());
