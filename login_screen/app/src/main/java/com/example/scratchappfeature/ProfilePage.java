@@ -102,6 +102,7 @@ public class ProfilePage extends AppCompatActivity {
                         Log.i(TAG, "Found user document!");
 
                         profile = document.toObject(Profile.class);
+                        Log.d(TAG, "Profile ID: " + profile.getUserID());
 
                         setToolbar();
                         ab.setTitle(profile.getpname());
@@ -132,43 +133,15 @@ public class ProfilePage extends AppCompatActivity {
             });
     }
 
-//    public void handleDynamicLink(Intent intent) {
-//        FirebaseDynamicLinks.getInstance()
-//            .getDynamicLink(intent)
-//            .addOnSuccessListener(this, pendingDynamicLinkData -> {
-//                Log.i(TAG, "We have a dynamic link!");
-//                // Get deep link from result (may be null if no link is found)
-//                Uri deepLink = null;
-//                if (pendingDynamicLinkData != null) {
-//                    deepLink = pendingDynamicLinkData.getLink();
-//                }
-//
-//                // Handle the deep link. For example, open the linked
-//                // content, or apply promotional credit to the user's
-//                // account.
-//                if (deepLink != null) {
-//                    String deepLinkString = deepLink.toString();
-//                    Log.i(TAG, "Here's the deep link URL:\n" + deepLinkString);
-//
-//                    String user_ID = deepLinkString.substring(deepLinkString.lastIndexOf('/') + 1);
-//                    Log.i(TAG, "User ID: " + user_ID);
-//
-//                    // Now get the recipe from the database with recipe_ID
-//                    findUser(user_ID);
-//                }
-//            })
-//            .addOnFailureListener(this, e -> Log.w(TAG, "getDynamicLink failed: ", e));
-//    }
-
     public void shareProfile() {
         DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://myscratch.page.link/userprofile/" + profile.getDocument_ID()))
-                .setDomainUriPrefix("https://myscratch.page.link")
-                // Open links with this app on Android
-                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
-                // Open links with com.example.ios on iOS
-                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
-                .buildDynamicLink();
+            .setLink(Uri.parse("https://myscratch.page.link/userprofile/" + profile.getUserID()))
+            .setDomainUriPrefix("https://myscratch.page.link")
+            // Open links with this app on Android
+            .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+            // Open links with com.example.ios on iOS
+            .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+            .buildDynamicLink();
 
         Uri dynamicLinkUri = dynamicLink.getUri();
         Log.i(TAG, "Created Dynamic Link: " + dynamicLinkUri);

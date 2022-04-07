@@ -130,34 +130,6 @@ public class RecipePageActivity extends AppCompatActivity {
         }
     }
 
-//    public void handleDynamicLink(Intent intent) {
-//        FirebaseDynamicLinks.getInstance()
-//            .getDynamicLink(intent)
-//            .addOnSuccessListener(this, pendingDynamicLinkData -> {
-//                Log.i(TAG, "We have a dynamic link!");
-//                // Get deep link from result (may be null if no link is found)
-//                Uri deepLink = null;
-//                if (pendingDynamicLinkData != null) {
-//                    deepLink = pendingDynamicLinkData.getLink();
-//                }
-//
-//                // Handle the deep link. For example, open the linked
-//                // content, or apply promotional credit to the user's
-//                // account.
-//                if (deepLink != null) {
-//                    String deepLinkString = deepLink.toString();
-//                    Log.i(TAG, "Here's the deep link URL:\n" + deepLinkString);
-//
-//                    String recipe_ID = deepLinkString.substring(deepLinkString.lastIndexOf('/') + 1);
-//                    Log.i(TAG, "Recipe ID: " + recipe_ID);
-//
-//                    // Now get the recipe from the database with recipe_ID
-//                    findRecipe(recipe_ID);
-//                }
-//            })
-//            .addOnFailureListener(this, e -> Log.w(TAG, "getDynamicLink failed: ", e));
-//    }
-
     public void shareRecipe() {
         DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
             .setLink(Uri.parse("https://myscratch.page.link/recipe/" + recipe.getDocument_ID()))

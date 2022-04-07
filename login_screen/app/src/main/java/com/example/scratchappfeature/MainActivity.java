@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra("com.google.firebase.dynamiclinks.DYNAMIC_LINK_DATA")) { // handle Dynamic Link
+            Log.d(TAG, "Handling intent...");
             handleDynamicLinks(intent);
         }
     }
@@ -136,23 +137,22 @@ public class MainActivity extends AppCompatActivity {
                     recipesRef.document(doc_ID).get()
                         .addOnSuccessListener(documentSnapshot -> {
                             if(documentSnapshot.exists()) {
+                                Log.d(TAG, "Recipe DocumentSnapshot: " + documentSnapshot);
                                 Log.d(TAG, "Recipe ID: " + doc_ID);
                                 Intent recipeIntent = new Intent(getApplicationContext(), RecipePageActivity.class);
                                 recipeIntent.putExtra("open_recipe_from_id", doc_ID);
                                 startActivity(recipeIntent);
                             } else {
-                                Log.d(TAG, "hi");
-                            }
-                        }).addOnFailureListener(e -> {
-                            Log.d(TAG, "Document is not a recipe - now searching profiles collection: " + e.getMessage());
-                            // not a recipe - check profile collection now
-                            profilesRef.document(doc_ID).get()
-                                .addOnSuccessListener(documentSnapshot -> {
+                                profilesRef.document(doc_ID).get().addOnSuccessListener(documentSnapshot1 -> {
+                                    Log.d(TAG, "Profile DocumentSnapshot: " + documentSnapshot1);
                                     Log.d(TAG, "Profile ID: " + doc_ID);
                                     Intent profileIntent = new Intent(getApplicationContext(), ProfilePage.class);
                                     profileIntent.putExtra("open_profile_from_id", doc_ID);
                                     startActivity(profileIntent);
                                 }).addOnFailureListener(e1 -> Log.e(TAG, "Document is neither recipe nor profile: " + e1.getMessage()));
+                            }
+                        }).addOnFailureListener(e -> {
+                            Log.d(TAG, "Document is not a recipe:" + e.getMessage());
                         });
                 }
             })
