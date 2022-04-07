@@ -1,6 +1,7 @@
 package com.example.scratchappfeature;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -61,6 +64,14 @@ public class ProfilePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page); // change to correct activity if needed
 
+        Intent intent = getIntent();
+        if (intent.hasExtra("open_profile_from_id")) { // handle intent coming from Dynamic Link in MainActivity
+            userID = intent.getStringExtra("open_profile_from_id");
+        }
+        populateProfilePage();
+    }
+
+    public void populateProfilePage() {
         profileImageView = findViewById(R.id.profilePictureImageView);
         bannerImageView = findViewById(R.id.bannerImageView);
 
@@ -72,49 +83,106 @@ public class ProfilePage extends AppCompatActivity {
         displayNameTextView = findViewById(R.id.nameTextView);
         bioTextView = findViewById(R.id.bioTextView);
         favoriteFoodTextView = findViewById(R.id.favoriteFoodTextView);
-        
+
         userID = auth.getCurrentUser().getUid();
 
         recipeRV = findViewById(R.id.recipeRecycler);
 
         showProfileRecipes();
 
-        DocumentReference docRef = db.collection("profile").document(userID);
-        docRef.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if(document.exists()) {
-                    Log.i(TAG, "Found document!");
+        findUser(userID);
+    }
 
-                    profile = document.toObject(Profile.class);
+    public void findUser(String user_ID) {
+        profilesCollection.document(user_ID).get()
+            .addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()) {
+                        Log.i(TAG, "Found user document!");
 
-                    setToolbar();
-                    ab.setTitle(profile.getpname());
+                        profile = document.toObject(Profile.class);
 
-                    displayNameTextView.setText(profile.getpname());
-                    bioTextView.setText(profile.getbio());
-                    favoriteFoodTextView.setText(profile.getfavoritefood());
+                        setToolbar();
+                        ab.setTitle(profile.getpname());
 
-                    if(!profile.getUserID().equals(auth.getCurrentUser().getUid())) { // if the user is not yourself, show the follow button
-                        Log.d(TAG, "statement = " + profile.getUserID().equals(auth.getCurrentUser().getUid()));
-                        followCardView.setVisibility(View.VISIBLE);
-                        followImageButton.setVisibility(View.VISIBLE);
+                        displayNameTextView.setText(profile.getpname());
+                        bioTextView.setText(profile.getbio());
+                        favoriteFoodTextView.setText(profile.getfavoritefood());
 
-                        followImageButton.setOnClickListener(view -> {
-                            // follow user method
-                        });
+                        if(!profile.getUserID().equals(auth.getCurrentUser().getUid())) { // if the user is not yourself, show the follow button
+                            Log.d(TAG, "statement = " + profile.getUserID().equals(auth.getCurrentUser().getUid()));
+                            followCardView.setVisibility(View.VISIBLE);
+                            followImageButton.setVisibility(View.VISIBLE);
+
+                            followImageButton.setOnClickListener(view -> {
+                                // follow user method
+                            });
+                        }
+
+                        downloadProfileImage();
+                        downloadBannerImage();
+
+                    } else {
+                        Log.e(TAG, "No such document.");
                     }
-
-                    downloadProfileImage();
-                    downloadBannerImage();
-
                 } else {
-                    Log.e(TAG, "No such document.");
+                    Log.e(TAG, "get failed with" + task.getException());
                 }
-            } else {
-                Log.e(TAG, "get failed with" + task.getException());
-            }
-        });
+            });
+    }
+
+//    public void handleDynamicLink(Intent intent) {
+//        FirebaseDynamicLinks.getInstance()
+//            .getDynamicLink(intent)
+//            .addOnSuccessListener(this, pendingDynamicLinkData -> {
+//                Log.i(TAG, "We have a dynamic link!");
+//                // Get deep link from result (may be null if no link is found)
+//                Uri deepLink = null;
+//                if (pendingDynamicLinkData != null) {
+//                    deepLink = pendingDynamicLinkData.getLink();
+//                }
+//
+//                // Handle the deep link. For example, open the linked
+//                // content, or apply promotional credit to the user's
+//                // account.
+//                if (deepLink != null) {
+//                    String deepLinkString = deepLink.toString();
+//                    Log.i(TAG, "Here's the deep link URL:\n" + deepLinkString);
+//
+//                    String user_ID = deepLinkString.substring(deepLinkString.lastIndexOf('/') + 1);
+//                    Log.i(TAG, "User ID: " + user_ID);
+//
+//                    // Now get the recipe from the database with recipe_ID
+//                    findUser(user_ID);
+//                }
+//            })
+//            .addOnFailureListener(this, e -> Log.w(TAG, "getDynamicLink failed: ", e));
+//    }
+
+    public void shareProfile() {
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://myscratch.page.link/userprofile/" + profile.getDocument_ID()))
+                .setDomainUriPrefix("https://myscratch.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                // Open links with com.example.ios on iOS
+                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                .buildDynamicLink();
+
+        Uri dynamicLinkUri = dynamicLink.getUri();
+        Log.i(TAG, "Created Dynamic Link: " + dynamicLinkUri);
+
+        String user_ID = dynamicLinkUri.toString().substring(dynamicLinkUri.toString().lastIndexOf("%2F") + 3);
+        Log.d(TAG, "User ID: " + user_ID);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, dynamicLinkUri.toString());
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "Profile: " + profile.getpname());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     public void downloadProfileImage(){
@@ -214,10 +282,6 @@ public class ProfilePage extends AppCompatActivity {
 
         recipeRV.setHasFixedSize(false);
         recipeRV.setAdapter(adapter);
-    }
-
-    public void shareProfile() {
-        // implement in the future
     }
 
     public void openEditProfileActivity () {
