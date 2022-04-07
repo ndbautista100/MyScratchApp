@@ -83,11 +83,8 @@ public class RecipePageActivity extends AppCompatActivity {
             String recipe_ID = intent.getStringExtra("open_recipe_from_id");
             findRecipe(recipe_ID);
 
-        } else if (intent.hasExtra("com.google.firebase.dynamiclinks.DYNAMIC_LINK_DATA")) { // handle Dynamic Link
-            handleDynamicLink(intent);
-
         } else {
-            Log.d(TAG, "No intents.");
+            Log.w(TAG, "No intents.");
         }
     }
 
@@ -131,34 +128,6 @@ public class RecipePageActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
-    }
-
-    public void handleDynamicLink(Intent intent) {
-        FirebaseDynamicLinks.getInstance()
-            .getDynamicLink(intent)
-            .addOnSuccessListener(this, pendingDynamicLinkData -> {
-                Log.i(TAG, "We have a dynamic link!");
-                // Get deep link from result (may be null if no link is found)
-                Uri deepLink = null;
-                if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.getLink();
-                }
-
-                // Handle the deep link. For example, open the linked
-                // content, or apply promotional credit to the user's
-                // account.
-                if (deepLink != null) {
-                    String deepLinkString = deepLink.toString();
-                    Log.i(TAG, "Here's the deep link URL:\n" + deepLinkString);
-
-                    String recipe_ID = deepLinkString.substring(deepLinkString.lastIndexOf('/') + 1);
-                    Log.i(TAG, "Recipe ID: " + recipe_ID);
-
-                    // Now get the recipe from the database with recipe_ID
-                    findRecipe(recipe_ID);
-                }
-            })
-            .addOnFailureListener(this, e -> Log.w(TAG, "getDynamicLink failed: ", e));
     }
 
     public void shareRecipe() {

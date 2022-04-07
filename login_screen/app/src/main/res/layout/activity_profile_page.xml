@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/foodbanner" />
+                    android:background="@color/gray"/>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/followCardView"
@@ -106,7 +106,6 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
                         android:gravity="center"
-                        android:hint='Age, hobbies, interest, etc...'
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -130,7 +129,6 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
                         android:gravity="start"
-                        android:hint='Pasta, Salad, Pizza, etc...'
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -146,14 +144,32 @@
                 android:layout_below="@id/profileRelativeLayout"
                 android:background="@color/gray" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recipeRecycler"
+            <RelativeLayout
+                android:id="@+id/profileRecyclerViewLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/splitLineView"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:layout_below="@id/splitLineView" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="20dp"
+                    android:text="This user doesn't have any recipes :("
+                    android:textStyle="italic"
+                    android:textSize="20sp"
+                    android:textAlignment="center" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recipeRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
