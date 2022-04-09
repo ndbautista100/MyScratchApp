@@ -1,6 +1,7 @@
 package com.example.scratchappfeature;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,8 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -35,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView userRecipesRV;
     private FirestoreAdapter adapter;
     private final CollectionReference recipesRef = db.collection("recipes");
+    private final CollectionReference profilesRef = db.collection("profile");
     private final PagingConfig pagingConfig = new PagingConfig(6, 3, false);
 
     @Override
@@ -47,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
         userRecipesRV = findViewById(R.id.userRecipesRecyclerView); // create a RecyclerView to store the main feed
 
         showRecipes();
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("com.google.firebase.dynamiclinks.DYNAMIC_LINK_DATA")) { // handle Dynamic Link
+            Log.d(TAG, "Handling intent...");
+            handleDynamicLinks(intent);
+        }
     }
 
     public void showRecipes() {
@@ -128,6 +141,53 @@ public class MainActivity extends AppCompatActivity {
         // commented this query out Query query = recipesRef.orderBy("name", Query.Direction.ASCENDING); // order by rating once ratings are implemented
 
 
+    }
+
+    public void handleDynamicLinks(Intent intent) {
+        FirebaseDynamicLinks.getInstance()
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this, pendingDynamicLinkData -> {
+                Log.i(TAG, "We have a dynamic link!");
+                // Get deep link from result (may be null if no link is found)
+                Uri deepLink = null;
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.getLink();
+                }
+
+                // Handle the deep link. For example, open the linked
+                // content, or apply promotional credit to the user's
+                // account.
+                if (deepLink != null) {
+                    String deepLinkString = deepLink.toString();
+                    Log.i(TAG, "Here's the deep link URL:\n" + deepLinkString);
+
+                    String doc_ID = deepLinkString.substring(deepLinkString.lastIndexOf('/') + 1);
+                    Log.i(TAG, "Document ID: " + doc_ID);
+
+                    // determine if the id is from a recipe or profile
+                    recipesRef.document(doc_ID).get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if(documentSnapshot.exists()) {
+                                Log.d(TAG, "Recipe DocumentSnapshot: " + documentSnapshot);
+                                Log.d(TAG, "Recipe ID: " + doc_ID);
+                                Intent recipeIntent = new Intent(getApplicationContext(), RecipePageActivity.class);
+                                recipeIntent.putExtra("open_recipe_from_id", doc_ID);
+                                startActivity(recipeIntent);
+                            } else {
+                                profilesRef.document(doc_ID).get().addOnSuccessListener(documentSnapshot1 -> {
+                                    Log.d(TAG, "Profile DocumentSnapshot: " + documentSnapshot1);
+                                    Log.d(TAG, "Profile ID: " + doc_ID);
+                                    Intent profileIntent = new Intent(getApplicationContext(), ProfilePage.class);
+                                    profileIntent.putExtra("open_profile_from_id", doc_ID);
+                                    startActivity(profileIntent);
+                                }).addOnFailureListener(e1 -> Log.e(TAG, "Document is neither recipe nor profile: " + e1.getMessage()));
+                            }
+                        }).addOnFailureListener(e -> {
+                            Log.d(TAG, "Document is not a recipe:" + e.getMessage());
+                        });
+                }
+            })
+            .addOnFailureListener(this, e -> Log.w(TAG, "getDynamicLink failed: ", e));
     }
 
     public void openRecipePageActivity(String recipe_ID) {

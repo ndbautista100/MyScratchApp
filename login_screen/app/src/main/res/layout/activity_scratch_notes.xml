@@ -7,6 +7,7 @@
     tools:context=".ScratchNotesActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -25,12 +26,23 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appBarLayoutScratchNotes"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Create your own recipes to view them here!"
+        android:textStyle="italic"
+        android:textSize="20sp"
+        android:textAlignment="center" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appBarLayoutScratchNotes"
-        android:background="@color/gray"
         android:padding="4dp"
         android:scrollbars="vertical" />
 
