@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -60,6 +61,7 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
         private Button followBTN;
         private final ImageView profileImageView;
         private boolean followed;
+        private final FirebaseFirestore db = FirebaseFirestore.getInstance();
         //private final ImageButton removeBtn;
 
         public ProfileViewHolder(@NonNull View itemView, ProfileRVAdapter.OnItemClickListener listener) {
@@ -217,6 +219,12 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
     public int getItemCount() {
         // returning the size of array list.
         return profileArrayList.size();
+    }
+
+    private void removeAt(int position) {
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, profileArrayList.size());
+        profileArrayList.remove(position);
     }
 
     /*
