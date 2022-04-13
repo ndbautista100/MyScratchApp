@@ -120,11 +120,6 @@ public class RecipePageActivity extends AppCompatActivity {
     }
 
     public void populateRecipePage() {
-        descriptionTextView = findViewById(R.id.recipePageDescriptionTextView);
-        toolsTextView = findViewById(R.id.toolsTextViewRecipePage);
-        ingredientsTextView = findViewById(R.id.ingredientsTextViewRecipePage);
-        ab.setTitle(recipe.getName()); // set toolbar title using the recipe name
-        descriptionTextView.setText(recipe.getDescription());
         directionsET = (EditText) findViewById(R.id.directionsEditText);
         directionsET.setText(recipe.getDirections());
 
@@ -253,12 +248,33 @@ public class RecipePageActivity extends AppCompatActivity {
 
             downloadRef.get().addOnSuccessListener(documentSnapshot -> {
                 String downloadUrl = documentSnapshot.getString("image_URL");
+                    // Glide makes it easy to load images into ImageViews
+                    if(downloadUrl != null) {
+                        Glide.with(RecipePageActivity.this)
+                            .load(downloadUrl)
+                            .into(recipeImageView);
+                    }
 
-                // Glide makes it easy to load images into ImageViews
-                if(downloadUrl != null) {
-                    Glide.with(RecipePageActivity.this)
-                        .load(downloadUrl)
-                        .into(recipeImageView);
+                    recipe.setImage_URL(downloadUrl);
+                    /*
+                    //If we want to implement the photos as just a single string, or if we want
+                    //To do a subcollection
+
+                    //If recipe doesn't have a photo
+                    if (recipe.getImage_URL() == "") {
+                        recipe.setImage_URL(downloadUrl);
+                    } else {
+                        //If the recipe already has a photo
+                        String imageUrl = recipe.getImage_URL();
+                        recipe.setImage_URL(imageUrl + " " + downloadUrl);
+                    }*/
+
+
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(RecipePageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
                 }
 
             }).addOnFailureListener(e -> Toast.makeText(RecipePageActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());

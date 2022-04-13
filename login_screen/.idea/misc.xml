@@ -44,11 +44,41 @@
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/loading_dialog.xml" value="0.5471014492753623" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/settings_activity.xml" value="0.20969202898550723" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/tool_bar.xml" value="0.28125" />
-<<<<<<< HEAD
+
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/menu/menu_profile_page.xml" value="0.36666666666666664" />
-=======
+
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/xml/filepaths.xml" value="0.20969202898550723" />
->>>>>>> main
+
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/drawable/edittext_background.xml" value="0.2115" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/drawable/ingredients_background.xml" value="0.2115" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/drawable/tvBorder.xml" value="0.2115" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/drawable/tv_border.xml" value="0.2115" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_add_ingredient.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_add_ingredient_to_list.xml" value="0.18" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_add_tool.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_create_recipe.xml" value="0.1" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_customize_recipe_features.xml" value="0.18704710144927536" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_edit_profile_page2.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_explore.xml" value="0.1" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_ingredients_list.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_login.xml" value="0.16077898550724637" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_main.xml" value="0.18704710144927536" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_profile_page.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_recipe_page.xml" value="0.25" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_scratch_notes.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/activity_view_other_recipe.xml" value="0.1" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/feed_rv_item.xml" value="0.33" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/font_rv_item.xml" value="0.1" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/fragment_blank.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/fragment_layout_one.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/image_rv_item.xml" value="0.22" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/ingredient_rv_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/recipe_rv_item.xml" value="0.1" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/layout/tool_bar.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/menu/menu_ingredient_list.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/menu/menu_popup_delete.xml" value="0.20416666666666666" />
+
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_create_recipe.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/ndbau/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_main.xml" value="0.1" />
