@@ -11,6 +11,16 @@
         android:theme="@style/Theme.scratchappfeature"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".CreateProfileActivity"
+            android:exported="false"
+            android:label="Create Profile" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"/>
+        <activity
             android:name=".EditProfilePage"
             android:exported="false"
             android:label="Edit Profile"
@@ -60,9 +70,22 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:parentActivityName=".Login"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="myscratch.page.link"
+                    android:scheme="https" />
+                <data
+                    android:host="myscratch.page.link"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Register"
             android:exported="true"
@@ -81,6 +104,10 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar"
             />
+        <activity
+            android:name=".ExploreActivity_Revamp"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
 
         <activity
             android:name=".Login"

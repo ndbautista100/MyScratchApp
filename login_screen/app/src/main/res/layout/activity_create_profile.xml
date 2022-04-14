@@ -1,47 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayoutEditProfile"
+    <TextView
+        android:id="@+id/createProfileTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.scratchappfeature.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarEditProfile"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/colorPrimary"
-            android:visibility="visible"
-            app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="10dp"
+        android:text="Let's get started and create your profile!"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
     <RelativeLayout
-        android:id="@+id/editBannerLayout"
+        android:id="@+id/createBannerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/appBarLayoutEditProfile"
+        android:layout_below="@id/createProfileTextView"
         android:layout_marginTop="30dp">
 
         <Button
-            android:id="@+id/editBannerButton"
+            android:id="@+id/createBannerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:text="Edit Banner"
-            android:textSize="15dp"
-            android:backgroundTint="@color/gray"/>
+            android:backgroundTint="@color/gray"
+            android:text="Upload Banner"
+            android:textSize="15dp" />
 
         <ImageView
-            android:id="@+id/editBannerImageView"
+            android:id="@+id/createBannerImageView"
             android:layout_width="200dp"
             android:layout_height="75dp"
             android:layout_alignParentEnd="true"
@@ -53,24 +48,24 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/editAvatarLayout"
+        android:id="@+id/createAvatarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editBannerLayout"
+        android:layout_below="@id/createBannerLayout"
         android:layout_marginTop="30dp">
 
         <Button
-            android:id="@+id/editAvatarButton"
+            android:id="@+id/createAvatarButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:text="Edit Avatar"
-            android:textSize="15dp"
-            android:backgroundTint="@color/gray"/>
+            android:backgroundTint="@color/gray"
+            android:text="Upload Avatar"
+            android:textSize="15dp" />
 
         <ImageView
-            android:id="@+id/editAvatarImageView"
+            android:id="@+id/createAvatarImageView"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_alignParentEnd="true"
@@ -81,14 +76,14 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/editProfileDetailsLayout"
+        android:id="@+id/createProfileDetailsLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editAvatarLayout"
+        android:layout_below="@id/createAvatarLayout"
         android:layout_marginTop="30dp">
 
         <TextView
-            android:id="@+id/editNameView"
+            android:id="@+id/createNameView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
@@ -99,22 +94,22 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editNameEditText"
+            android:id="@+id/createNameEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/editNameView"
-            android:layout_marginStart="10dp"
-            android:hint='Your name'
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:textSize="20sp"
-            android:textColor="@color/black" />
+            android:layout_toEndOf="@id/createNameView"
+            android:hint='Your display name'
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/editBioView"
+            android:id="@+id/createBioView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editNameView"
+            android:layout_below="@id/createNameView"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:gravity="start"
@@ -124,11 +119,11 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editBioEditText"
+            android:id="@+id/createBioEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editNameView"
-            android:layout_toEndOf="@id/editBioView"
+            android:layout_below="@id/createNameView"
+            android:layout_toEndOf="@id/createBioView"
             android:layout_marginStart="10dp"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
@@ -138,10 +133,10 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/favoriteFoodView"
+            android:id="@+id/createFavoriteFoodView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editBioView"
+            android:layout_below="@id/createBioView"
             android:layout_marginTop="20dp"
             android:gravity="start"
             android:layout_marginStart="10dp"
@@ -151,15 +146,15 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editFavFoodEditText"
+            android:id="@+id/createFavFoodEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editBioView"
+            android:layout_below="@id/createBioView"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
-            android:layout_toEndOf="@id/favoriteFoodView"
+            android:layout_toEndOf="@id/createFavoriteFoodView"
             android:hint='Pasta, salad, pizza, etc...'
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -169,10 +164,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/editProfileDetailsLayout" >
+        android:layout_below="@id/createProfileDetailsLayout" >
 
         <Button
-            android:id="@+id/finishEditButton"
+            android:id="@+id/finishCreateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

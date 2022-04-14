@@ -17,8 +17,8 @@ public class Profile {
     private String bannerImageURL;
     private String bannerImageName;
     private String userID;
-    //private ArrayList<String> followers;
     private HashMap<String, Integer> followers;
+    private HashMap<String, Integer> following;
     private ArrayList<String> savedRecipes;
     private ArrayList<String> savedIngredients;
 
@@ -33,7 +33,6 @@ public class Profile {
         pbio = bio;
         pfavoritefood = favoritefood;
         userID = userid;
-        //followers =  new ArrayList<>();
         followers = new HashMap<>();
         savedRecipes = new ArrayList<>();
         savedIngredients = new ArrayList<>();
@@ -97,21 +96,35 @@ public class Profile {
         this.userID = userID;
     }
 
-    /*
-    public ArrayList<String> getFollowers() {
-        return followers;
-    }*/
-
     public ArrayList<String> getSavedRecipes() {return this.savedRecipes;}
-
-    /*
-    public void setFriends(String userID) {
-        if(!followers.contains(userID)) {
-            followers.add(userID);
-        }
-    }*/
 
     public ArrayList<String> getSavedIngredients() {
         return this.savedIngredients;
+    }
+
+    public HashMap<String, Integer> getFollowers() {
+        return followers;
+    }
+    public HashMap<String, Integer> removeFollowers(String id) {
+        followers.remove(id);
+        return followers;
+    }
+
+    public HashMap<String, Integer> addFollowers(String id) {
+        followers.put(id, 0);
+        return followers;
+    }
+
+    public HashMap<String, Integer> getFollowing() {
+        return following;
+    }
+    public HashMap<String, Integer> removeFollowing(String id) {
+        following.remove(id);
+        return following;
+    }
+
+    public HashMap<String, Integer> addFollowing(String id) {
+        following.put(id, 0);
+        return following;
     }
 }
