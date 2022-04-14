@@ -32,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 import java.util.UUID;
@@ -139,6 +140,14 @@ public class RecipePageActivity extends AppCompatActivity {
         recipeImageView = (ImageView) findViewById(R.id.recipeImageView);
         addImageButton = (Button) findViewById(R.id.addImageButton);
         addImageButton.setOnClickListener(view -> mGetContent.launch("image/*"));
+
+        if (recipe.getImage_URL() != null){
+            Picasso.with(this.getApplicationContext())
+                    .load(recipe.getImage_URL())
+                    .resize(1000,1000)
+                    .centerInside()
+                    .into(recipeImageView);
+        }
 
 
     }
