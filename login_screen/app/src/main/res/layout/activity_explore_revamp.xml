@@ -14,7 +14,7 @@
         android:layout_marginEnd="7dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="searchBar" />
+        android:hint="Search" />
 
     <ImageButton
         android:id="@+id/searchButton"
@@ -26,9 +26,16 @@
         android:layout_marginEnd="26dp"
         app:srcCompat="@android:drawable/ic_menu_search" />
 
+    <Spinner
+        android:id="@+id/searchSpinner"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchBar"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/profileRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/searchBar"
-        android:id="@+id/profileRV"/>
+        android:layout_below="@+id/searchSpinner" />
 </RelativeLayout>
