@@ -40,7 +40,8 @@ public class ViewOtherRecipe extends AppCompatActivity {
     Recipe recipe;
     FragmentManager fragmentManager = getSupportFragmentManager();
     Button saveButton;
-
+    //Sarah add
+    Button commentButton;
 
 
     @Override
@@ -51,6 +52,8 @@ public class ViewOtherRecipe extends AppCompatActivity {
         userTV = findViewById(R.id.userNameTV);
         profilePic = findViewById(R.id.creatorProfilePicture);
         saveButton = findViewById(R.id.saveRecipeButton);
+        //Sarah add
+        commentButton = findViewById(R.id.commentRecipeButton);
 
         fauth = FirebaseAuth.getInstance();
         userID = fauth.getCurrentUser().getUid();
