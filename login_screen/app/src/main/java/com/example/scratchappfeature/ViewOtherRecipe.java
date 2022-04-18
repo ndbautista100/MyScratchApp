@@ -54,7 +54,6 @@ public class ViewOtherRecipe extends AppCompatActivity {
         saveButton = findViewById(R.id.saveRecipeButton);
         //Sarah add
         commentButton = findViewById(R.id.commentRecipeButton);
-
         fauth = FirebaseAuth.getInstance();
         userID = fauth.getCurrentUser().getUid();
 
@@ -97,6 +96,19 @@ public class ViewOtherRecipe extends AppCompatActivity {
 
             }
         });
+        //Sarah add
+        commentButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                //Recipe isn't owned by the user then they can comment
+                if(!recipe.getUser_ID().equals(userID)) {
+                    openRateCommentActivity();
+                }
+                else{
+                    Toast.makeText(ViewOtherRecipe.this, "You cannot rate your own recipe.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -105,7 +117,6 @@ public class ViewOtherRecipe extends AppCompatActivity {
         //I used layout one because not every recipe has a layout chosen
         inflateFragment(fragmentManager, R.layout.fragment_layout_one);
         //inflateFragment(fragmentManager, recipe.getLayoutChoice());
-
     }
 
 
@@ -156,5 +167,12 @@ public class ViewOtherRecipe extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    //Sarah Added
+    public void openRateCommentActivity()
+    {
+        Intent intent = new Intent(this, RateCommentActivity.class);
+        startActivity(intent);
     }
 }

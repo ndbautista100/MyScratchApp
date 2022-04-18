@@ -1,23 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/msa_woodbg01"
     tools:context=".RateCommentActivity">
 
-    <!-- TODO: -->
-    <TextView
+    <!-- TODO: Tie everything into java class-->
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarRateCommentPage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.scratchappfeature.AppBarOverlay"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarRecipePage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            android:visibility="visible"
+            app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:id="@+id/recipeImageView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/appBarRateCommentPage"
+        android:background="@color/gray"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/ratingBarNum"
+        app:layout_constraintTop_toBottomOf="@+id/appBarRateCommentPage"
+        tools:layout_editor_absoluteX="0dp"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <RatingBar
+        android:id="@+id/ratingBarNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recipeImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:numStars="5"
+        android:progressTint="#FFFFFF"
+        android:rating="0"
+        android:stepSize="1"
+        app:layout_constraintBottom_toTopOf="@+id/btn_Submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reviewConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/ratingBarNum">
+
+        <TextView
+            android:id="@+id/reviewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#D8C6B0B0"
+            android:text="Your Review:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/reviewConstraintLayout" />
+
+        <EditText
+            android:id="@+id/commentEditText"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="#D8C6B0B0"
+            android:gravity="start"
+            android:hint="@string/comment_hint"
+            android:inputType="textMultiLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviewHeader" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/btn_Submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/reviewConstraintLayout"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
         android:background="#592222"
         android:text="@string/submit_rating"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,16 +104,4 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.7" />
-
-    <RatingBar
-        android:id="@+id/ratingBarNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

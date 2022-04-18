@@ -39,4 +39,5 @@
     <string name="delete_account">Are you sure you want to delete your account?</string>
     <string name="test">testtesttesttesttesttesttesttesttesttesttest</string>
     <string name= "submit_rating">Submit Rating</string>
+    <string name= "comment_hint">Select the star amount and write your review here.</string>
 </resources>

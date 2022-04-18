@@ -134,6 +134,13 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar"
             />
+        <activity
+            android:name=".RateCommentActivity"
+            android:exported="true"
+            android:label="My Scratch"
+            android:parentActivityName=".ViewOtherRecipe"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"
+            />
     </application>
 
 </manifest>

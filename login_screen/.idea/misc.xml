@@ -4,11 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_add_ingredient.xml" value="0.1469098277608916" />
+        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_create_recipe.xml" value="0.18931159420289856" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_customize_recipe_features.xml" value="0.1" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_explore_revamp.xml" value="0.22" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_profile_page.xml" value="0.14351851851851852" />
-        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_rate_comment.xml" value="0.14351851851851852" />
-        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_recipe_page.xml" value="0.1" />
+        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_rate_comment.xml" value="0.25" />
+        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_recipe_page.xml" value="0.22" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_settings.xml" value="0.1469098277608916" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_view_other_recipe.xml" value="0.18" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/feed_rv_item.xml" value="0.1" />
