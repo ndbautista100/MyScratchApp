@@ -42,7 +42,6 @@ public class ViewOtherRecipe extends AppCompatActivity {
     Button saveButton;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +53,6 @@ public class ViewOtherRecipe extends AppCompatActivity {
 
         fauth = FirebaseAuth.getInstance();
         userID = fauth.getCurrentUser().getUid();
-
 
 
         Intent intent = getIntent();
@@ -83,7 +81,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //If its not their own recipe, the user can save it
-                if(!recipe.getUser_ID().equals(userID)) {
+                if (!recipe.getUser_ID().equals(userID)) {
                     Map<String, Object> savedRecipes = new HashMap<>();
                     savedRecipes.put("savedRecipes", FieldValue.arrayUnion(recipe.getDocument_ID()));
                     db.collection("profile").document(userID)
@@ -97,12 +95,21 @@ public class ViewOtherRecipe extends AppCompatActivity {
     }
 
 
-    private void populatePage(Recipe recipe) {
-
-        //I used layout one because not every recipe has a layout chosen
-        inflateFragment(fragmentManager, R.layout.fragment_layout_one);
-        //inflateFragment(fragmentManager, recipe.getLayoutChoice());
-
+    private boolean populatePage(Recipe recipe) {
+        switch (recipe.getLayoutChoice()) {
+            case 2:
+                inflateFragment(fragmentManager, R.layout.fragment_layout_two);
+                return true;
+            case 3:
+                inflateFragment(fragmentManager, R.layout.fragment_layout_three);
+                return true;
+            case 4:
+                inflateFragment(fragmentManager, R.layout.fragment_layout_four);
+                return true;
+            default:
+                inflateFragment(fragmentManager, R.layout.fragment_layout_one);
+                return true;
+        }
     }
 
 
