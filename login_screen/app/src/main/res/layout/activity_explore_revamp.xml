@@ -6,15 +6,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutExplorePage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.scratchappfeature.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarExplorePage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/colorPrimary"
+            android:visibility="visible"
+            app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <EditText
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="88dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="7dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="-9dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Search" />
+        android:hint="Search"
+        android:inputType="textPersonName" />
 
     <ImageButton
         android:id="@+id/searchButton"
