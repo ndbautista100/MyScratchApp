@@ -184,8 +184,9 @@ public class ScratchNotesActivity extends AppCompatActivity {
                             mProfile = document.toObject(Profile.class);
                             //Once we have the user's profile, we can now get their saved recipes
                             //and add them to the recipe arraylist
-                            for (String documentID: mProfile.getSavedRecipes()){
-                                db.collection("recipes")
+                            if (mProfile.getSavedRecipes() != null) {
+                                for (String documentID: mProfile.getSavedRecipes()) {
+                                    db.collection("recipes")
                                         .document(documentID)
                                         .get()
                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -201,6 +202,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
                                                 }
                                             }
                                         });
+                                }
                             }
                         }
                     }
