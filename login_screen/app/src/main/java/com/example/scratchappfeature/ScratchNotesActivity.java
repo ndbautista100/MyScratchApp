@@ -67,16 +67,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
             .get()
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    if(task.getResult() == null || task.getResult().isEmpty()) {
-                        ArrayList<Recipe> noRecipes = new ArrayList<>();
-                        Recipe noRecipe = new Recipe();
-                        noRecipe.setName("No recipes found!");
-                        noRecipe.setDescription("Get started by tapping on the + icon");
-                        noRecipes.add(noRecipe);
-
-                        adapter = new RecipeRVAdapter(noRecipes, getApplicationContext());
-                        recipesRV.setAdapter(adapter);
-                    } else {
+                    if(task.getResult() != null || !task.getResult().isEmpty()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 //                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
                             Recipe recipe = document.toObject(Recipe.class);

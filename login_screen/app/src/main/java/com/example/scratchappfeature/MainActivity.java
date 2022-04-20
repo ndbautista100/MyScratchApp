@@ -59,82 +59,85 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showRecipes() {
-
         ArrayList<String> following = new ArrayList<>();
-        db.collection("profile").whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
 
-                            Profile profile = document.toObject(Profile.class);
+        db.collection("profile").whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+            .get()
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
+
+                        Profile profile = document.toObject(Profile.class);
+                        if(profile.getFollowing() != null) {
                             for (Map.Entry<String, Integer> entry : profile.getFollowing().entrySet()) {
                                 following.add(entry.getKey());
                             }
                             String joined = TextUtils.join(", ", following);
                             Log.i("Here", joined);
-                            if(following.size() <=0){
+                        }
 
-                            }else {
-                                Query q = FirebaseFirestore.getInstance()
-                                        .collection("recipes")
-                                        .whereIn("user_ID", following);
-                                FirestorePagingOptions<Recipe> firestorePagingOptions = new FirestorePagingOptions.Builder<Recipe>()
-                                        .setLifecycleOwner(this)
-                                        .setQuery(q, pagingConfig, Recipe.class)
-                                        .build();
+                        if (following.size() <= 0) {
+                            // do nothing?
+                        } else {
+                            Query q = FirebaseFirestore.getInstance()
+                                    .collection("recipes")
+                                    .whereIn("user_ID", following);
+                            FirestorePagingOptions<Recipe> firestorePagingOptions = new FirestorePagingOptions.Builder<Recipe>()
+                                    .setLifecycleOwner(this)
+                                    .setQuery(q, pagingConfig, Recipe.class)
+                                    .build();
 
-                                adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
+                            adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
 
-                                adapter.setOnItemClickListener((documentSnapshot, position) -> openOtherUserRecipe(documentSnapshot.getId()));
+                            adapter.setOnItemClickListener((documentSnapshot, position) -> openOtherUserRecipe(documentSnapshot.getId()));
 
-                                adapter.addLoadStateListener(combinedLoadStates -> {
-                                    LoadState refresh = combinedLoadStates.getRefresh();
-                                    LoadState append = combinedLoadStates.getAppend();
+                            adapter.addLoadStateListener(combinedLoadStates -> {
+                                LoadState refresh = combinedLoadStates.getRefresh();
+                                LoadState append = combinedLoadStates.getAppend();
 
-                                    if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
-                                        // The previous load (either initial or additional) failed. Call
-                                        // the retry() method in order to retry the load operation.
-                                        Toast.makeText(MainActivity.this, "Load failed. Retrying...", Toast.LENGTH_SHORT).show();
-                                        Log.e(TAG, "Load failed. Retrying...");
-                                        adapter.retry();
+                                if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
+                                    // The previous load (either initial or additional) failed. Call
+                                    // the retry() method in order to retry the load operation.
+                                    Toast.makeText(MainActivity.this, "Load failed. Retrying...", Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, "Load failed. Retrying...");
+                                    adapter.retry();
+                                }
+
+                                if (refresh instanceof LoadState.Loading) {
+                                    // The initial Load has begun
+                                    Log.d(TAG, "Initial load has begun.");
+                                }
+
+                                if (append instanceof LoadState.Loading) {
+                                    // The adapter has started to load an additional page
+                                    Log.d(TAG, "Loading additional page...");
+                                }
+
+                                if (append instanceof LoadState.NotLoading) {
+                                    LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
+                                    if (notLoading.getEndOfPaginationReached()) {
+                                        // The adapter has finished loading all of the data set
+                                        Log.d(TAG, "Finished loading all data.");
+                                        return null;
                                     }
 
-                                    if (refresh instanceof LoadState.Loading) {
-                                        // The initial Load has begun
-                                        Log.d(TAG, "Initial load has begun.");
+                                    if (refresh instanceof LoadState.NotLoading) {
+                                        // The previous load (either initial or additional) completed
+                                        Log.d(TAG, "Previous load completed.");
+                                        return null;
                                     }
+                                }
+                                return null;
+                            });
 
-                                    if (append instanceof LoadState.Loading) {
-                                        // The adapter has started to load an additional page
-                                        Log.d(TAG, "Loading additional page...");
-                                    }
-
-                                    if (append instanceof LoadState.NotLoading) {
-                                        LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
-                                        if (notLoading.getEndOfPaginationReached()) {
-                                            // The adapter has finished loading all of the data set
-                                            Log.d(TAG, "Finished loading all data.");
-                                            return null;
-                                        }
-
-                                        if (refresh instanceof LoadState.NotLoading) {
-                                            // The previous load (either initial or additional) completed
-                                            Log.d(TAG, "Previous load completed.");
-                                            return null;
-                                        }
-                                    }
-                                    return null;
-                                });
-
-                                userRecipesRV.setHasFixedSize(true);
-                                userRecipesRV.setLayoutManager(new LinearLayoutManager(this));
-                                userRecipesRV.setAdapter(adapter);
-                            }}}});
+                            userRecipesRV.setHasFixedSize(true);
+                            userRecipesRV.setLayoutManager(new LinearLayoutManager(this));
+                            userRecipesRV.setAdapter(adapter);
+                        }}}});
 
 
-        // commented this query out Query query = recipesRef.orderBy("name", Query.Direction.ASCENDING); // order by rating once ratings are implemented
+    // commented this query out Query query = recipesRef.orderBy("name", Query.Direction.ASCENDING); // order by rating once ratings are implemented
 
 
     }
@@ -219,12 +222,6 @@ public class MainActivity extends AppCompatActivity {
     public void openSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
-    }
-
-    public void logout(){
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), Login.class));
-        finish();
     }
 
     public void setToolbar() {
