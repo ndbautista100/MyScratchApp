@@ -192,6 +192,9 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
         // setting data to our views in RecyclerView items
         Profile profile = profileArrayList.get(position);
         holder.profileNameTextView.setText(profile.getpname());
+        if(profile.getFollowers().containsKey(currentUser)){
+            holder.followBTN.setText("Following");
+        }
         holder.followBTN.setOnClickListener(v -> {
             //removeAt(position);//i is your adapter position
             if(holder.followed == false){
