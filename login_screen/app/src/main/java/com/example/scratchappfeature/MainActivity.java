@@ -216,6 +216,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openToolsList(){
+        Intent intent = new Intent(this, ToolsListActivity.class);
+        startActivity(intent);
+    }
+
     public void openSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
@@ -267,6 +272,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_ingredients_list:
                 openIngredientsList();
+                return true;
+            case R.id.action_tools_list:
+                openToolsList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

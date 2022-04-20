@@ -2,12 +2,14 @@ package com.example.scratchappfeature;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -117,7 +119,12 @@ public class IngredientsRVAdapter extends RecyclerView.Adapter<IngredientsRVAdap
                 }
 
                 if (item.getItemId() == R.id.searchPopUpMenu){
+                    String[] name = mIngredientsList.get(position).split("/");
                     //send to search with ingredient name
+                    Intent intent = new Intent(mContext,ExploreActivity_Revamp.class);
+                    intent.putExtra("open_explore_from_ingredients", name[0]);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
                 }
                 return true;
             }

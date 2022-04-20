@@ -1,9 +1,12 @@
 package com.example.scratchappfeature;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -54,6 +57,22 @@ public class ExploreActivity_Revamp extends AppCompatActivity implements Adapter
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        searchBox.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    if (v != null) {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
+                    search(searchBox.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
 
         searchBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +80,24 @@ public class ExploreActivity_Revamp extends AppCompatActivity implements Adapter
                 search(searchBox.getText().toString());
             }
         });
+
+
+        Intent intent = getIntent();
+        if(intent.hasExtra("open_explore_from_ingredients")){
+            String name = intent.getStringExtra("open_explore_from_ingredients");
+            selectedOption = 2;
+            spinner.setSelection(2);
+            searchBox.setText(name);
+            search(name);
+        }
+
+        if(intent.hasExtra("open_explore_from_tools")){
+            String name = intent.getStringExtra("open_explore_from_tools");
+            selectedOption = 3;
+            spinner.setSelection(3);
+            searchBox.setText(name);
+            search(name);
+        }
     }
 
     public boolean search(String query){
