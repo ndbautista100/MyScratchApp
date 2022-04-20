@@ -204,8 +204,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openSearchableActivity() {
-        Intent intent = new Intent(this, SearchableActivity.class);
+    public void openExploreActivity() {
+        Intent intent = new Intent(getApplicationContext(), ExploreActivity_Revamp.class);
         startActivity(intent);
     }
 
@@ -246,15 +246,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_open_search:
-                openSearchableActivity();
+            case R.id.action_open_explore:
+                openExploreActivity();
                 return true;
             case R.id.action_create:
                 openScratchNotesActivity();
-                return true;
-            case R.id.action_explore:
-                Intent intent = new Intent(getApplicationContext(), ExploreActivity_Revamp.class);
-                startActivity(intent);
                 return true;
             case R.id.action_profile:
                 openProfilePageActivity();
