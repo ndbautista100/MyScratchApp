@@ -64,7 +64,8 @@ public class IngredientListActivity extends AppCompatActivity implements AddIngr
                             mProfile = document.toObject(Profile.class);
                             //Once we have the user's profile, we can now get their saved recipes
                             //and add them to the recipe arraylist
-                            if (mProfile.getSavedIngredients() == null) {
+                            if (mProfile.getSavedIngredients() == null ||
+                                    mProfile.getSavedIngredients().size() == 0) {
                                 String emptyList =
                                         "Lets add some ingredients" +
                                                 "/Get started by tapping on the +";
