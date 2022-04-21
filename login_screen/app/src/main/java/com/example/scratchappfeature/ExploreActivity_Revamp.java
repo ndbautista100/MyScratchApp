@@ -33,7 +33,6 @@ public class ExploreActivity_Revamp extends AppCompatActivity implements Adapter
     private EditText searchBox;
     private ImageButton searchBTN;
     private RecyclerView profiles_RV;
-    private ProfileRVAdapter adapter;
     private Spinner spinner;
     private String[] spinnerOptions =
             {"User", "Recipe", "Ingredients", "Tools"};
@@ -121,28 +120,20 @@ public class ExploreActivity_Revamp extends AppCompatActivity implements Adapter
     }
 
     public void searchUser(String query){
-        ArrayList<Profile> results = new ArrayList<Profile>();
-        db.collection("profile").whereEqualTo("pname", query)
+        ArrayList<Profile> profilesList = new ArrayList<>();
+        db.collection("profile")
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
-
-                            Profile profile = document.toObject(Profile.class);
-                            results.add(profile);
+                    for (QueryDocumentSnapshot profile : task.getResult()) {
+                        if (profile.get("pname").toString().toLowerCase().contains(query.toLowerCase())) {
+                            profilesList.add(profile.toObject(Profile.class));
                         }
-                        adapter = new ProfileRVAdapter(results, getApplicationContext());
-                        // after passing this ArrayList to our adapter class we are setting our adapter to our RecyclerView
-                        profiles_RV.setAdapter(adapter);
-                        // this is called when a recipe is clicked
-                        adapter.setOnItemClickListener(position -> {
-                            Profile clickedProfile = results.get(position);
-
-                        });
-                    } else {
-                        Log.e(TAG, "Error getting documents: ", task.getException());
                     }
+                    ProfileRVAdapter adapter = new ProfileRVAdapter(profilesList, getApplicationContext());
+                    profiles_RV.setAdapter(adapter);
+                    adapter.setOnItemClickListener(position -> {
+                        Profile clickedProfile = profilesList.get(position);
+                    });
                 });
 
     }
