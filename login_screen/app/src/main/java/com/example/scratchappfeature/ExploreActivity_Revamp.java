@@ -14,7 +14,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +41,10 @@ public class ExploreActivity_Revamp extends AppCompatActivity implements Adapter
     private int selectedOption = 0;
     private String userID;
 
+
+    private Toolbar toolbarExplorePage;
+    private ActionBar ab;
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore_revamp);
@@ -49,6 +55,8 @@ public class ExploreActivity_Revamp extends AppCompatActivity implements Adapter
         profiles_RV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         spinner = findViewById(R.id.searchSpinner);
         spinner.setOnItemSelectedListener(this);
+        setToolbar();
+        ab.setTitle("Explore");
 
         ArrayAdapter adapter = new ArrayAdapter(this,
                 android.R.layout.simple_spinner_item,
@@ -203,6 +211,13 @@ public class ExploreActivity_Revamp extends AppCompatActivity implements Adapter
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void setToolbar() {
+        toolbarExplorePage = findViewById(R.id.toolbarExplorePage);
+        setSupportActionBar(toolbarExplorePage);
+        ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     public void openViewOtherRecipe(String recipe_ID){
