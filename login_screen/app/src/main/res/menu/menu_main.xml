@@ -41,4 +41,10 @@
         android:title="Ingredients List"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/action_faq"
+        android:orderInCategory="7"
+        android:title="FAQ Page"
+        app:showAsAction="never"
+        />
 </menu>

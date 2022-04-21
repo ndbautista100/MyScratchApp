@@ -7,6 +7,9 @@
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_create_recipe.xml" value="0.18931159420289856" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_customize_recipe_features.xml" value="0.1" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_explore_revamp.xml" value="0.22" />
+        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_faq.xml" value="0.23333333333333334" />
+        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_faq_list_group.xml" value="0.11930091185410334" />
+        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_faq_list_item.xml" value="0.1" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_profile_page.xml" value="0.14351851851851852" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_rate_comment.xml" value="0.25" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/activity_recipe_page.xml" value="0.22" />
@@ -26,6 +29,8 @@
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/profile_source_item.xml" value="0.1469098277608916" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/layout/recipe_rv_item.xml" value="0.1469098277608916" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/menu/menu_faq.xml" value="0.1" />
+        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/menu/menu_popup_delete.xml" value="0.18974358974358974" />
+        <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/menu/menu_popup_ingredients_tools.xml" value="0.18974358974358974" />
         <entry key="..\:/Users/Sarah/Documents/GitHub/MyScratchApp/login_screen/app/src/main/res/xml/settings.xml" value="0.1" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.590625" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.590625" />
