@@ -121,7 +121,15 @@
             android:exported="true"
             android:label="My Scratch"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"
+            />
+        <activity
+            android:name=".ToolsListActivity"
+            android:exported="true"
+            android:label="My Scratch"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"
+            />
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ public class Profile {
     private HashMap<String, Integer> following;
     private ArrayList<String> savedRecipes;
     private ArrayList<String> savedIngredients;
+    private ArrayList<String> savedTools;
 
     public Profile() {
         // empty constructor
@@ -126,5 +127,13 @@ public class Profile {
     public HashMap<String, Integer> addFollowing(String id) {
         following.put(id, 0);
         return following;
+    }
+
+    public ArrayList<String> getSavedTools() {
+        return savedTools;
+    }
+
+    public void setSavedTools(ArrayList<String> savedTools) {
+        this.savedTools = savedTools;
     }
 }
