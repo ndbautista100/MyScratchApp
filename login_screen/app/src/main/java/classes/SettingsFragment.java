@@ -15,17 +15,37 @@ import com.example.scratchappfeature.Login;
 import com.example.scratchappfeature.MainActivity;
 import com.example.scratchappfeature.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements DeleteAccountDialogFragment.DeleteAccountDialogListener {
     private static final String TAG = "SettingsFragment";
+    FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         setPreferencesFromResource(R.xml.settings, rootKey);
 
         Preference feedbackPreference = findPreference("feedback");
+        Preference emailPreference = findPreference("email");
+        Preference passwordPreference = findPreference("password");
         Preference logoutPreference = findPreference("logout");
         Preference deleteAccountPreference = findPreference("delete");
+
+        emailPreference.setOnPreferenceClickListener(preference -> {
+            FirebaseUser user = auth.getCurrentUser();
+            String newEmail = "new";
+            user.updateEmail(newEmail);
+
+            return false;
+        });
+
+        passwordPreference.setOnPreferenceClickListener(preference -> {
+            FirebaseUser user = auth.getCurrentUser();
+            String newPassword = "new";
+            user.updatePassword(newPassword);
+
+            return false;
+        });
 
         feedbackPreference.setOnPreferenceClickListener(preference -> {
             String[] addresses = {"myscratch.longbeach@gmail.com"};
