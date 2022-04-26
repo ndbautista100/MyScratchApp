@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class SettingsFragment extends PreferenceFragmentCompat implements DeleteAccountDialogFragment.DeleteAccountDialogListener {
     private static final String TAG = "SettingsFragment";
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
@@ -32,7 +33,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Delete
         Preference deleteAccountPreference = findPreference("delete");
 
         emailPreference.setOnPreferenceClickListener(preference -> {
-            FirebaseUser user = auth.getCurrentUser();
+            // try to have the preference description display the user's current email in settings.xml
+            // create dialog fragments for email and password
             String newEmail = "new";
             user.updateEmail(newEmail);
 
@@ -40,7 +42,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Delete
         });
 
         passwordPreference.setOnPreferenceClickListener(preference -> {
-            FirebaseUser user = auth.getCurrentUser();
             String newPassword = "new";
             user.updatePassword(newPassword);
 
