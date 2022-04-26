@@ -1,6 +1,7 @@
 package classes;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,7 +28,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Delete
         Preference deleteAccountPreference = findPreference("delete");
 
         feedbackPreference.setOnPreferenceClickListener(preference -> {
-            Log.d(TAG, "TODO: Implement feedback feature (open email app to myscratch.longbeach@gmail.com, etc.");
+            String[] addresses = {"myscratch.longbeach@gmail.com"};
+
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+            intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+            intent.putExtra(Intent.EXTRA_SUBJECT, "My Scratch! App - Feedback");
+            startActivity(intent);
 
             return false;
         });
