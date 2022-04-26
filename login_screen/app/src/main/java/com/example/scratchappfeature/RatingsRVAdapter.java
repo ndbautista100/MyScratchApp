@@ -52,10 +52,10 @@ public class RatingsRVAdapter extends RecyclerView.Adapter<RatingsRVAdapter.Rati
     private RatingsRVAdapter.OnItemClickListener mListener;
 
     //------
-    public RatingsRVAdapter(ArrayList<RateComment> recipeArrayList, Context context) {
+    public RatingsRVAdapter(ArrayList<RateComment> ratingArrayList, Context context) {
         this.rateCommentArrayList = rateCommentArrayList;
         // create a copy that doesn't point to the same ArrayList
-        rateCommentArrayListFull = new ArrayList<>(recipeArrayList);
+        rateCommentArrayListFull = new ArrayList<>(ratingArrayList);
         this.context = context;
     }
     public interface OnItemClickListener{
@@ -72,7 +72,7 @@ public class RatingsRVAdapter extends RecyclerView.Adapter<RatingsRVAdapter.Rati
         private final TextView ratingCommentTextView;
         private final TextView userProfileName;
         private final CardView cardItem;
-        public RatingViewHolder(@NonNull View itemView, RecipeRVAdapter.OnItemClickListener listener)
+        public RatingViewHolder(@NonNull View itemView, RatingsRVAdapter.OnItemClickListener listener)
         {
             super(itemView);
             ratingNumTextView = itemView.findViewById(R.id.ratingItem_Num);
