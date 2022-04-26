@@ -34,4 +34,10 @@
         android:title="Ingredients List"
         app:showAsAction="never"
         />
+    <item
+        android:id="@+id/action_tools_list"
+        android:orderInCategory="7"
+        android:title="Tools List"
+        app:showAsAction="never"
+        />
 </menu>

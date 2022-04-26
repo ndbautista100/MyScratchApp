@@ -107,8 +107,7 @@ public class IngredientListActivity extends AppCompatActivity implements AddIngr
             case R.id.action_add_ingredient_to_list:
                 //Make Dialog
                 showAddIngredientDialog();
-                Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show();
-                return true;
+               return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
