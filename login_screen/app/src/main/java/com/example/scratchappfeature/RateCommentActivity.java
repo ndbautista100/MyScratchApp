@@ -2,6 +2,7 @@ package com.example.scratchappfeature;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,6 +65,12 @@ public class RateCommentActivity extends AppCompatActivity {
         btn_SubmitRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //If rate comment is empty
+                if(TextUtils.isEmpty(rateCommentText.getText().toString())){
+                    rateCommentText.setError("Please enter a description for the rating.");
+                    return;
+                }
+
                 String stringRating = String.valueOf(ratingBarNum.getRating());
                 Toast.makeText(getApplicationContext(), stringRating, Toast.LENGTH_LONG).show();
                 stars = ratingBarNum.getNumStars();

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ratingRVItem"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:longClickable="true"
+    app:cardCornerRadius="6dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rv_rating"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray">
+        <TextView
+            android:id="@+id/ratingItem_PersonTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="Rater:"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/ratingItem_Person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
+            android:text="Person Name"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/ratingItem_PersonTitle"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/ratingItem_NumTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="Rating:"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingItem_PersonTitle" />
+
+        <TextView
+            android:id="@+id/ratingItem_Num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
+            android:text="Num"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/ratingItem_NumTitle"
+            app:layout_constraintTop_toBottomOf="@+id/ratingItem_PersonTitle" />
+
+        <TextView
+            android:id="@+id/ratingItem_CommentTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="4dp"
+            android:text="Comment:"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingItem_NumTitle" />
+        />
+
+        <TextView
+            android:id="@+id/ratingItem_Comment"
+            android:layout_width="410dp"
+            android:layout_height="200dp"
+            android:background="@color/NEW_primary_light"
+            android:inputType="textMultiLine"
+            android:paddingVertical="4dp"
+            android:text="Comment"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingItem_CommentTitle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
