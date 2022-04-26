@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity"
-    android:background="@drawable/cookingapp">
+    android:background="@color/gray" >
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutMain"
@@ -24,13 +24,24 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/appBarLayoutMain"
+        android:text="Follow more users to view their recipes here!"
+        android:textStyle="italic"
+        android:textSize="15sp"
+        android:textAlignment="center" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userRecipesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appBarLayoutMain"
         android:padding="4dp"
-        android:scrollbars="vertical"
-        android:background="@color/gray"/>
+        android:scrollbars="vertical"/>
 
 </RelativeLayout>

@@ -105,7 +105,11 @@ public class ProfilePage extends AppCompatActivity {
                             Log.d(TAG, "Profile ID: " + profile.getUserID());
 
                             setToolbar();
-                            ab.setTitle(profile.getpname());
+                            if (profile.getpname().isEmpty()) {
+                                ab.setTitle("User");
+                            } else {
+                                ab.setTitle(profile.getpname());
+                            }
 
                             displayNameTextView.setText(profile.getpname());
                             bioTextView.setText(profile.getbio());

@@ -145,7 +145,7 @@ public class CustomizeRecipeFeature extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 layoutScrollView.setVisibility(View.VISIBLE);
-                inflateFragment(fragmentManager, recipe.getLayoutChoice());
+                inflateFragment(fragmentManager, R.layout.fragment_layout_one);
 
             }
         });
