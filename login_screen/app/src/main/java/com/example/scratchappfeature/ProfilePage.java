@@ -63,11 +63,15 @@ public class ProfilePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page); // change to correct activity if needed
-
+        userID = auth.getCurrentUser().getUid();
         Intent intent = getIntent();
         if (intent.hasExtra("open_profile_from_id")) { // handle intent coming from Dynamic Link in MainActivity
             userID = intent.getStringExtra("open_profile_from_id");
         }
+        if (intent.hasExtra("open_profile_from_recipe")) {
+            userID = intent.getStringExtra("open_profile_from_recipe");
+        }
+
         populateProfilePage();
     }
 
@@ -84,8 +88,6 @@ public class ProfilePage extends AppCompatActivity {
         bioTextView = findViewById(R.id.bioTextView);
         favoriteFoodTextView = findViewById(R.id.favoriteFoodTextView);
 
-        userID = auth.getCurrentUser().getUid();
-
         recipeRV = findViewById(R.id.recipeRecycler);
 
         showProfileRecipes();
@@ -94,7 +96,7 @@ public class ProfilePage extends AppCompatActivity {
     }
 
     public void findUser(String user_ID) {
-        profilesCollection.document(user_ID).get()
+        profilesCollection.document(user_ID ).get()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();

@@ -40,6 +40,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
     Recipe recipe;
     FragmentManager fragmentManager = getSupportFragmentManager();
     Button saveButton;
+    private String banneruserid;
 
 
     @Override
@@ -54,6 +55,14 @@ public class ViewOtherRecipe extends AppCompatActivity {
         fauth = FirebaseAuth.getInstance();
         userID = fauth.getCurrentUser().getUid();
 
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewOtherRecipe.this, ProfilePage.class);
+                intent.putExtra("open_profile_from_recipe", banneruserid);
+                startActivity(intent);
+            }
+    });
 
         Intent intent = getIntent();
         if (intent.hasExtra("open_recipe_from_id")) {
@@ -150,6 +159,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
                             Picasso.with(this)
                                     .load(document.getString("profileImageURL"))
                                     .into(profilePic);
+                            banneruserid = document.getString("userID");
                             background.setBackgroundColor(recipe.getBackgroundColor());
                             Log.i(TAG, "Found Document");
                         } else {
