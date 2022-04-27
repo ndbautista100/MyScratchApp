@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView userRecipesRV;
     private FirestoreAdapter adapter;
+    private static final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final CollectionReference recipesRef = db.collection("recipes");
     private final CollectionReference profilesRef = db.collection("profile");
     private final PagingConfig pagingConfig = new PagingConfig(6, 3, false);
@@ -165,25 +167,32 @@ public class MainActivity extends AppCompatActivity {
 
                         // determine if the id is from a recipe or profile
                         recipesRef.document(doc_ID).get()
-                                .addOnSuccessListener(documentSnapshot -> {
-                                    if(documentSnapshot.exists()) {
-                                        Log.d(TAG, "Recipe DocumentSnapshot: " + documentSnapshot);
-                                        Log.d(TAG, "Recipe ID: " + doc_ID);
-                                        Intent recipeIntent = new Intent(getApplicationContext(), RecipePageActivity.class);
-                                        recipeIntent.putExtra("open_recipe_from_id", doc_ID);
-                                        startActivity(recipeIntent);
-                                    } else {
-                                        profilesRef.document(doc_ID).get().addOnSuccessListener(documentSnapshot1 -> {
-                                            Log.d(TAG, "Profile DocumentSnapshot: " + documentSnapshot1);
-                                            Log.d(TAG, "Profile ID: " + doc_ID);
-                                            Intent profileIntent = new Intent(getApplicationContext(), ProfilePage.class);
-                                            profileIntent.putExtra("open_profile_from_id", doc_ID);
-                                            startActivity(profileIntent);
-                                        }).addOnFailureListener(e1 -> Log.e(TAG, "Document is neither recipe nor profile: " + e1.getMessage()));
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if(documentSnapshot.exists()) { // the id is a recipe
+                                    Log.d(TAG, "Recipe DocumentSnapshot: " + documentSnapshot);
+                                    Log.d(TAG, "Recipe ID: " + doc_ID);
+
+                                    // determine if the recipe is another user's recipe, or the signed in user's own recipe
+                                    Intent recipeIntent;
+                                    if (documentSnapshot.get("user_ID").equals(auth.getCurrentUser().getUid())) { // my own recipe
+                                        recipeIntent = new Intent(getApplicationContext(), RecipePageActivity.class);
+                                    } else { // other user's recipe
+                                        recipeIntent = new Intent(getApplicationContext(), ViewOtherRecipe.class);
                                     }
-                                }).addOnFailureListener(e -> {
-                            Log.d(TAG, "Document is not a recipe:" + e.getMessage());
-                        });
+                                    recipeIntent.putExtra("open_recipe_from_id", doc_ID);
+                                    startActivity(recipeIntent);
+                                } else { // the id is a profile
+                                    profilesRef.document(doc_ID).get().addOnSuccessListener(documentSnapshot1 -> {
+                                        Log.d(TAG, "Profile DocumentSnapshot: " + documentSnapshot1);
+                                        Log.d(TAG, "Profile ID: " + doc_ID);
+                                        Intent profileIntent = new Intent(getApplicationContext(), ProfilePage.class);
+                                        profileIntent.putExtra("open_profile_from_id", doc_ID);
+                                        startActivity(profileIntent);
+                                    }).addOnFailureListener(e1 -> Log.e(TAG, "Document is neither recipe nor profile: " + e1.getMessage()));
+                                }
+                            }).addOnFailureListener(e -> {
+                                Log.d(TAG, "Document is not a recipe:" + e.getMessage());
+                            });
                     }
                 })
                 .addOnFailureListener(this, e -> Log.w(TAG, "getDynamicLink failed: ", e));
