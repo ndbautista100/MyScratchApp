@@ -13,7 +13,7 @@ import com.example.scratchappfeature.Login;
 import com.example.scratchappfeature.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements DeleteAccountDialogFragment.DeleteAccountDialogListener, UpdateEmailDialogFragment.UpdateEmailDialogListener, EnterPasswordDialogFragment.EnterPasswordDialogListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements DeleteAccountDialogFragment.DeleteAccountDialogListener, UpdateEmailDialogFragment.UpdateEmailDialogListener, EnterPasswordDialogFragment.EnterPasswordDialogListener, ChangePasswordDialogFragment.ChangePasswordDialogListener {
     private static final String TAG = "SettingsFragment";
     private static final FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -28,9 +28,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Delete
         Preference deleteAccountPreference = findPreference("delete");
 
         emailPreference.setSummary(auth.getCurrentUser().getEmail());
-
         emailPreference.setOnPreferenceClickListener(preference -> {
-            // try to have the preference description display the user's current email in settings.xml
             EnterPasswordDialogFragment passwordDialog = new EnterPasswordDialogFragment();
             passwordDialog.show(getParentFragmentManager(), "EnterPasswordDialogFragment");
 
@@ -39,6 +37,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Delete
 
         passwordPreference.setOnPreferenceClickListener(preference -> {
             // TODO: implement
+            ChangePasswordDialogFragment changeDialog = new ChangePasswordDialogFragment();
+            changeDialog.show(getParentFragmentManager(), "ChangePasswordDialogFragment");
 
             return false;
         });
@@ -83,6 +83,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Delete
 
     @Override
     public void applyNewEmail(String newEmail) {
+        // do nothing - overridden in SettingsActivity
+    }
+
+    @Override
+    public void changePassword(String currentPassword, String newPassword, String confirmPassword) {
         // do nothing - overridden in SettingsActivity
     }
 }

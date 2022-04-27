@@ -2,24 +2,29 @@ package com.example.scratchappfeature;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
+import classes.ChangePasswordDialogFragment;
 import classes.DeleteAccountDialogFragment;
 import classes.EnterPasswordDialogFragment;
 import classes.SettingsFragment;
 import classes.UpdateEmailDialogFragment;
 
-public class SettingsActivity extends AppCompatActivity implements DeleteAccountDialogFragment.DeleteAccountDialogListener, UpdateEmailDialogFragment.UpdateEmailDialogListener, EnterPasswordDialogFragment.EnterPasswordDialogListener {
+public class SettingsActivity extends AppCompatActivity implements DeleteAccountDialogFragment.DeleteAccountDialogListener, UpdateEmailDialogFragment.UpdateEmailDialogListener, EnterPasswordDialogFragment.EnterPasswordDialogListener, ChangePasswordDialogFragment.ChangePasswordDialogListener {
     private static final String TAG = "SettingsActivity";
     private static final FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -62,7 +67,6 @@ public class SettingsActivity extends AppCompatActivity implements DeleteAccount
                         UpdateEmailDialogFragment emailDialog = new UpdateEmailDialogFragment();
                         emailDialog.show(getSupportFragmentManager(), "UpdateEmailDialogFragment");
                     } else {
-                        Log.d(TAG, "email: " + email);
                         Log.e(TAG, "signInWithEmail:failure", task.getException());
                         Toast.makeText(SettingsActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
@@ -84,6 +88,45 @@ public class SettingsActivity extends AppCompatActivity implements DeleteAccount
                 });
         } catch (Exception e) {
             Log.e(TAG, e.toString());
+        }
+    }
+
+    @Override
+    public void changePassword(String currentPassword, String newPassword, String confirmPassword) {
+        String email = Objects.requireNonNull(auth.getCurrentUser()).getEmail();
+        if(email != null) {
+            auth.signInWithEmailAndPassword(email, currentPassword)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInWithEmail:success");
+
+                        // now that they verified their password, change their password
+                        if (TextUtils.equals(newPassword, confirmPassword)) {
+                            if (newPassword.length() < 6 || confirmPassword.length() < 6) {
+                                Toast.makeText(SettingsActivity.this, "Password must be at least 6 characters, try again.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                FirebaseUser user = auth.getCurrentUser();
+
+                                user.updatePassword(newPassword)
+                                    .addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            Toast.makeText(SettingsActivity.this, "Password updated!", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(SettingsActivity.this, "Password failed to update.", Toast.LENGTH_SHORT).show();
+                                            Log.e(TAG, "Update password failed: ", task1.getException());
+                                        }
+                                    });
+                            }
+                        } else {
+                            Log.e(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(SettingsActivity.this, "Passwords do not match, try again.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        Log.e(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(SettingsActivity.this, "Incorrect password, try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
         }
     }
 }
