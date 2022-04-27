@@ -21,7 +21,7 @@
 
         <Preference
             android:key="email"
-            android:title="Change email"
+            android:title="Update email"
             android:icon="@drawable/ic_baseline_email_24"/>
 
         <Preference

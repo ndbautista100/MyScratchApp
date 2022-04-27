@@ -14,13 +14,17 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.example.scratchappfeature.Login;
 import com.example.scratchappfeature.MainActivity;
 import com.example.scratchappfeature.R;
+import com.example.scratchappfeature.RecipePageActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SettingsFragment extends PreferenceFragmentCompat implements DeleteAccountDialogFragment.DeleteAccountDialogListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements DeleteAccountDialogFragment.DeleteAccountDialogListener, UpdateEmailDialogFragment.UpdateEmailDialogListener {
     private static final String TAG = "SettingsFragment";
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseUser user = auth.getCurrentUser();
+    private static final FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
@@ -34,16 +38,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Delete
 
         emailPreference.setOnPreferenceClickListener(preference -> {
             // try to have the preference description display the user's current email in settings.xml
-            // create dialog fragments for email and password
-            String newEmail = "new";
-            user.updateEmail(newEmail);
+            UpdateEmailDialogFragment dialog = new UpdateEmailDialogFragment();
+            dialog.show(getParentFragmentManager(), "UpdateEmailDialogFragment");
 
             return false;
         });
 
         passwordPreference.setOnPreferenceClickListener(preference -> {
-            String newPassword = "new";
-            user.updatePassword(newPassword);
+//            String newPassword = "new";
+//            user.updatePassword(newPassword);
 
             return false;
         });
@@ -79,5 +82,21 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Delete
     @Override
     public void startLoginActivity() {
         startActivity(new Intent(getContext(), Login.class));
+    }
+
+    @Override
+    public void applyNewEmail(String newEmail) {
+        Log.d(TAG, "New email: " + newEmail);
+        try {
+            FirebaseUser user = auth.getCurrentUser();
+            user.updateEmail(newEmail)
+                .addOnSuccessListener(unused -> Toast.makeText(getContext(), "Email updated to " + newEmail, Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Failed to update email", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, e.toString());
+                });
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
     }
 }
