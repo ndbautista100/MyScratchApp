@@ -22,7 +22,10 @@
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/menu/menu_main.xml" value="1.0" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/home_screen_prototype/app/src/main/res/menu/menu_scrach_notes.xml" value="1.1" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/drawable-anydpi/no_recipe_image.xml" value="0.328" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/drawable/bg_gradient.xml" value="0.347" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/drawable/ic_launcher_background.xml" value="0.347" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/drawable/ic_search.xml" value="0.328" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/drawable/splash_background.xml" value="0.14" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_add_ingredient.xml" value="0.15932117527862208" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_add_ingredient_to_list.xml" value="0.1527777777777778" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_add_tool.xml" value="0.5744791666666667" />
@@ -37,11 +40,8 @@
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_register.xml" value="0.2793819655521783" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_scratch_notes.xml" value="0.5" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_search.xml" value="0.5471014492753623" />
-        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_view_other_recipe.xml" value="0.33" />
-        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/dialog_fragment_change_email.xml" value="0.1527777777777778" />
-        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/dialog_fragment_change_password.xml" value="0.21240942028985507" />
-        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/dialog_fragment_enter_password.xml" value="0.21240942028985507" />
-        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/dialog_fragment_update_email.xml" value="0.2793819655521783" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_settings.xml" value="0.2793819655521783" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/activity_splash_screen.xml" value="0.45742753623188404" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/feed_rv_item.xml" value="0.33" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/fragment_layout_four.xml" value="0.18931159420289856" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/image_lv_item.xml" value="0.5744791666666667" />
@@ -49,8 +49,7 @@
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/items_loading.xml" value="0.39266304347826086" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/loading_dialog.xml" value="0.5471014492753623" />
         <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/layout/tool_bar.xml" value="0.28125" />
-        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/menu/menu_other_recipe.xml" value="0.3385416666666667" />
-        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/xml/settings.xml" value="0.2675925925925926" />
+        <entry key="..\:/Users/giosa/Documents/School/Fall 2021/CECS 491A/MyScratchApp/login_screen/app/src/main/res/xml/settings.xml" value="0.2793819655521783" />
         <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/drawable/edittext_background.xml" value="0.2115" />
         <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/drawable/ingredients_background.xml" value="0.2115" />
         <entry key="..\:/Users/micha/Desktop/MyScratchApp/login_screen/app/src/main/res/drawable/tvBorder.xml" value="0.2115" />
