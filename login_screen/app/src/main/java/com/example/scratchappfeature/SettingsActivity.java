@@ -12,11 +12,14 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 import classes.DeleteAccountDialogFragment;
+import classes.EnterPasswordDialogFragment;
 import classes.SettingsFragment;
 import classes.UpdateEmailDialogFragment;
 
-public class SettingsActivity extends AppCompatActivity implements DeleteAccountDialogFragment.DeleteAccountDialogListener, UpdateEmailDialogFragment.UpdateEmailDialogListener {
+public class SettingsActivity extends AppCompatActivity implements DeleteAccountDialogFragment.DeleteAccountDialogListener, UpdateEmailDialogFragment.UpdateEmailDialogListener, EnterPasswordDialogFragment.EnterPasswordDialogListener {
     private static final String TAG = "SettingsActivity";
     private static final FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -47,14 +50,36 @@ public class SettingsActivity extends AppCompatActivity implements DeleteAccount
     }
 
     @Override
+    public void verifyPassword(String newPassword) {
+        String email = Objects.requireNonNull(auth.getCurrentUser()).getEmail();
+        if(email != null) {
+            auth.signInWithEmailAndPassword(email, newPassword)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInWithEmail:success");
+
+                        // now that they verified their password, enter the new email
+                        UpdateEmailDialogFragment emailDialog = new UpdateEmailDialogFragment();
+                        emailDialog.show(getSupportFragmentManager(), "UpdateEmailDialogFragment");
+                    } else {
+                        Log.d(TAG, "email: " + email);
+                        Log.e(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(SettingsActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        }
+    }
+
+    @Override
     public void applyNewEmail(String newEmail) {
         Log.d(TAG, "New email: " + newEmail);
         try {
             FirebaseUser user = auth.getCurrentUser();
+
             user.updateEmail(newEmail)
-                .addOnSuccessListener(unused -> Toast.makeText(SettingsActivity.this, "Email updated to " + newEmail, Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(unused -> Toast.makeText(SettingsActivity.this, "Email successfully updated!", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> {
-                    Toast.makeText(SettingsActivity.this, "Failed to update email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "Failed to update email.", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, e.toString());
                 });
         } catch (Exception e) {
