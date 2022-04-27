@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ViewOtherRecipe"
+    tools:showIn="@layout/activity_view_other_recipe">
+    <item
+        android:id="@+id/share_other_recipe"
+        android:orderInCategory="1"
+        android:title="@string/share_recipe"
+        android:icon="@drawable/ic_baseline_share_24"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/save_other_recipe"
+        android:orderInCategory="2"
+        android:title="Save Recipe"
+        android:icon="@drawable/ic_baseline_save_alt_24"
+        app:showAsAction="always" />
+</menu>
