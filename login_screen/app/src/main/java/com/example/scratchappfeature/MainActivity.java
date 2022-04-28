@@ -172,13 +172,9 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d(TAG, "Recipe DocumentSnapshot: " + documentSnapshot);
                                     Log.d(TAG, "Recipe ID: " + doc_ID);
 
-                                    // determine if the recipe is another user's recipe, or the signed in user's own recipe
-                                    Intent recipeIntent;
-                                    if (documentSnapshot.get("user_ID").equals(auth.getCurrentUser().getUid())) { // my own recipe
-                                        recipeIntent = new Intent(getApplicationContext(), RecipePageActivity.class);
-                                    } else { // other user's recipe
-                                        recipeIntent = new Intent(getApplicationContext(), ViewOtherRecipe.class);
-                                    }
+                                    // links from RecipePageActivity and ViewOtherRecipe will open the ViewOtherRecipe activity
+                                    // to show the fully customized recipe
+                                    Intent recipeIntent = new Intent(getApplicationContext(), ViewOtherRecipe.class);
                                     recipeIntent.putExtra("open_recipe_from_id", doc_ID);
                                     startActivity(recipeIntent);
                                 } else { // the id is a profile
