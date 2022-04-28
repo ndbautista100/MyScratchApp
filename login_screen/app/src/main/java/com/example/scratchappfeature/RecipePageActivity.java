@@ -154,7 +154,7 @@ public class RecipePageActivity extends AppCompatActivity {
 
     public void shareRecipe() {
         DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://myscratch.page.link/recipe/" + recipe.getDocument_ID()))
+                .setLink(Uri.parse("https://myscratch.page.link/user-recipe/" + recipe.getDocument_ID()))
                 .setDomainUriPrefix("https://myscratch.page.link")
                 // Open links with this app on Android
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
