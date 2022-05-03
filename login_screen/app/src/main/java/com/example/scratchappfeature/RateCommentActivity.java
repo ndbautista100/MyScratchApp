@@ -1,8 +1,10 @@
 package com.example.scratchappfeature;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -24,10 +28,10 @@ public class RateCommentActivity extends AppCompatActivity {
     //TODO: connect to database, show recipe img + name
     //VARIABLES
     private RateComment rateComment;
-
+    private static final String TAG = "RateCommentActivity";
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private final CollectionReference ratingsCollection = db.collection("ratingComment");
     private FirebaseAuth fauth;
     private FirebaseStorage storage;
     private EditText rateCommentText;
@@ -44,6 +48,12 @@ public class RateCommentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //MUST GET RECIPE ID
+        // Intent intent = getIntent();
+        //recipe_ID = intent.getStringExtra("edit_recipe");
+        //MUST GET DOCUMENT ID FROM RECIPE ID
+        //DocumentReference docRef = db.collection("ratingComment").document(recipe_ID);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_comment);
         fauth = FirebaseAuth.getInstance();
@@ -55,33 +65,42 @@ public class RateCommentActivity extends AppCompatActivity {
 
         //TODO: fix the invoke virtual method on null object ref on 58, 60
         //Finding by ID, xml files
-        ratingBarNum = (RatingBar) findViewById(R.id.ratingBarNum);
+        ratingBarNum = (RatingBar)findViewById(R.id.ratingBarNum);
         //ratingBarNum.setRating(rateComment.getRatingNum());
-        rateCommentText = (EditText) findViewById(R.id.commentEditText);
+        rateCommentText = (EditText)findViewById(R.id.commentEditText);
         //rateCommentText.setText(rateComment.getRatingTextComment());
 
         //Action on Button Click, just shows the rating number
         btn_SubmitRating = (Button) findViewById(R.id.btn_Submit);
-        btn_SubmitRating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //If rate comment is empty
-                if(TextUtils.isEmpty(rateCommentText.getText().toString())){
-                    rateCommentText.setError("Please enter a description for the rating.");
-                    return;
-                }
+        try {
+            btn_SubmitRating.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //If rate comment is empty
+                    if (TextUtils.isEmpty(rateCommentText.getText().toString())) {
+                        rateCommentText.setError("Please enter a description for the rating.");
+                        return;
+                    }
 
-                String stringRating = String.valueOf(ratingBarNum.getRating());
-                Toast.makeText(getApplicationContext(), stringRating, Toast.LENGTH_LONG).show();
-                stars = ratingBarNum.getNumStars();
-                saveRating(stars);
-                String dbComment = rateCommentText.getText().toString();
-                saveComment(dbComment);
-            }
-        });
+                    String stringRating = String.valueOf(ratingBarNum.getRating());
+                    Toast.makeText(getApplicationContext(), stringRating, Toast.LENGTH_LONG).show();
+                    //Note here
+                    stars = ratingBarNum.getNumStars();
+                    saveRating(stars);
+                    String dbComment = rateCommentText.getText().toString();
+                    saveComment(dbComment);
+                    openMainActivity();
+                }
+            });
+        }catch (Exception e)
+        {
+            Log.e(TAG, "Exception caught");
+                    e.printStackTrace();
+        }
     }
 
     //TODO: Save rating num array perhaps?
+    //Note here
     private void saveRating(int ratingNum){
         db.collection("ratingComments").document(rateComment.getDocument_ID())
                 .update("rating", ratingNum);
@@ -89,5 +108,10 @@ public class RateCommentActivity extends AppCompatActivity {
     private void saveComment(String ratingTextComment){
         db.collection("ratingComments").document(rateComment.getDocument_ID())
                 .update("rating", rateComment);
+    }
+    public void openMainActivity()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

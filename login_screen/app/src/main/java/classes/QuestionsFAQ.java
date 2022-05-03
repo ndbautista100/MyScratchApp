@@ -23,9 +23,11 @@ public class QuestionsFAQ {
         //----
         List<String> follow = new ArrayList<String>();
         follow.add("Click on the searchbar on the main screen..");
+        follow.add("Be mindful of exact spelling, type in names of users.");
         //----
         List<String> logout = new ArrayList<String>();
-        follow.add("Click on the three dots, select settings.");
+        logout.add("Click on the three dots, select settings.");
+        logout.add("Select logout button and follow any directions if necessary.");
         //----
         expandableListDetail.put("How to Create Recipe", recipe_create);
         expandableListDetail.put("How to Edit Recipe", recipe_edit);
