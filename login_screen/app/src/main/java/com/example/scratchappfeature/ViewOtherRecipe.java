@@ -1,36 +1,38 @@
 package com.example.scratchappfeature;
 
-import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.Source;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import classes.Profile;
 import classes.Recipe;
 
 public class ViewOtherRecipe extends AppCompatActivity {
@@ -45,23 +47,19 @@ public class ViewOtherRecipe extends AppCompatActivity {
     ImageView profilePic;
     Recipe recipe;
     FragmentManager fragmentManager = getSupportFragmentManager();
-    Button saveButton;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_other_recipe);
+
         setToolbar();
+
         userTV = findViewById(R.id.userNameTV);
         profilePic = findViewById(R.id.creatorProfilePicture);
-        saveButton = findViewById(R.id.saveRecipeButton);
 
         fauth = FirebaseAuth.getInstance();
         userID = fauth.getCurrentUser().getUid();
-
-
 
         Intent intent = getIntent();
         if (intent.hasExtra("open_recipe_from_id")) {
@@ -84,39 +82,23 @@ public class ViewOtherRecipe extends AppCompatActivity {
 
             });
         }
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //If its not their own recipe, the user can save it
-                if(!recipe.getUser_ID().equals(userID)) {
-                    Map<String, Object> savedRecipes = new HashMap<>();
-                    savedRecipes.put("savedRecipes", FieldValue.arrayUnion(recipe.getDocument_ID()));
-                    db.collection("profile").document(userID)
-                            .update(savedRecipes);
-                } else {
-                    Toast.makeText(ViewOtherRecipe.this, "You created this wonderful recipe!", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
     }
 
-
-    private void populatePage(Recipe recipe) {
-
-        //I used layout one because not every recipe has a layout chosen
-        inflateFragment(fragmentManager, R.layout.fragment_layout_one);
-        //inflateFragment(fragmentManager, recipe.getLayoutChoice());
-
-    }
-
-
-    public void setToolbar() {
-        toolbarViewRecipe = findViewById(R.id.toolbarViewRecipe);
-        setSupportActionBar(toolbarViewRecipe);
-        ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+    private boolean populatePage(Recipe recipe) {
+        switch (recipe.getLayoutChoice()) {
+            case 2:
+                inflateFragment(fragmentManager, R.layout.fragment_layout_two);
+                return true;
+            case 3:
+                inflateFragment(fragmentManager, R.layout.fragment_layout_three);
+                return true;
+            case 4:
+                inflateFragment(fragmentManager, R.layout.fragment_layout_four);
+                return true;
+            default:
+                inflateFragment(fragmentManager, R.layout.fragment_layout_one);
+                return true;
+        }
     }
 
     private void inflateFragment(FragmentManager fragmentManager, int layoutId) {
@@ -159,5 +141,89 @@ public class ViewOtherRecipe extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    public void shareUserRecipe() {
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://myscratch.page.link/user-recipe/" + recipe.getDocument_ID()))
+                .setDomainUriPrefix("https://myscratch.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                // Open links with com.example.ios on iOS
+                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                .buildDynamicLink();
+
+        Uri dynamicLinkUri = dynamicLink.getUri();
+        Log.i(TAG, "Created Dynamic Link: " + dynamicLinkUri);
+
+        String recipe_ID = dynamicLinkUri.toString().substring(dynamicLinkUri.toString().lastIndexOf("%2F") + 3);
+        Log.d(TAG, "User recipe ID: " + recipe_ID);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, dynamicLinkUri.toString());
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "User recipe: " + recipe.getName());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
+    }
+
+    public void saveRecipe() {
+        // If it's not their own recipe, the user can save it
+        if (!recipe.getUser_ID().equals(userID)) {
+            Map<String, Object> savedRecipes = new HashMap<>();
+            savedRecipes.put("savedRecipes", FieldValue.arrayUnion(recipe.getDocument_ID()));
+
+            db.collection("profile").document(userID)
+                .update(savedRecipes)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(ViewOtherRecipe.this, "Saved recipe!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ViewOtherRecipe.this, "Failed to save recipe.", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Failed to save recipe: " + task.getException());
+                    }
+                });
+
+        } else {
+            Toast.makeText(ViewOtherRecipe.this, "You created this wonderful recipe!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void setToolbar() {
+        toolbarViewRecipe = findViewById(R.id.toolbarViewRecipe);
+        setSupportActionBar(toolbarViewRecipe);
+        ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    /*
+        Opens the tool bar
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_other_recipe, menu);
+        return true;
+    }
+
+    /*
+        Other Recipe Page action bar options:
+        - Share Recipe
+        - Save Recipe
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.share_other_recipe:
+                shareUserRecipe();
+                return true;
+            case R.id.save_other_recipe:
+                saveRecipe();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

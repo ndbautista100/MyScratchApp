@@ -6,9 +6,15 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
     <item
+<<<<<<< HEAD
         android:id="@+id/action_search"
         android:orderInCategory="1"
         android:title="@string/search"
+=======
+        android:id="@+id/action_open_explore"
+        android:orderInCategory="1"
+        android:title="Explore"
+>>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
         android:icon="@drawable/searchimageicon"
         app:showAsAction="always"/>
     <item
@@ -20,12 +26,17 @@
     <item
         android:id="@+id/action_profile"
         android:orderInCategory="3"
+<<<<<<< HEAD
         android:title="@string/user"
+=======
+        android:title="My Profile"
+>>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
         android:icon="@drawable/chef"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="4"
+<<<<<<< HEAD
         android:title="@string/settings"
         app:showAsAction="never" />
     <item
@@ -33,4 +44,20 @@
         android:orderInCategory="5"
         android:title="@string/log_out"
         app:showAsAction="never" />
+=======
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_ingredients_list"
+        android:orderInCategory="5"
+        android:title="Ingredients List"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_tools_list"
+        android:orderInCategory="7"
+        android:title="Tools List"
+        app:showAsAction="never"
+        />
+>>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
 </menu>

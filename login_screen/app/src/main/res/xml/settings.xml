@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="feedback_category"
+        android:title="Help"
+        android:icon="@drawable/ic_baseline_help_24">
+
+        <Preference
+            android:key="feedback"
+            android:title="Send feedback"
+            android:summary="Report technical issues or suggest new features"
+            android:icon="@drawable/ic_baseline_feedback_24"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="account_category"
+        android:title="Account"
+        android:icon="@drawable/ic_baseline_person_24">
+
+        <Preference
+            android:key="email"
+            android:title="Update email"
+            android:icon="@drawable/ic_baseline_email_24"/>
+
+        <Preference
+            android:key="password"
+            android:title="Change password"
+            android:icon="@drawable/ic_baseline_security_24"/>
+
+        <Preference
+            android:key="logout"
+            android:title="@string/log_out"
+            android:icon="@drawable/ic_baseline_logout_24"/>
+
+        <Preference
+            android:key="delete"
+            android:title="Delete account"
+            android:icon="@drawable/ic_baseline_delete_forever_24"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

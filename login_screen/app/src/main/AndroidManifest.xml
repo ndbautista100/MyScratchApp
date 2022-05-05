@@ -11,6 +11,25 @@
         android:theme="@style/Theme.scratchappfeature"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".SplashScreenActivity"
+            android:theme="@style/SplashTheme"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CreateProfileActivity"
+            android:exported="false"
+            android:label="Create Profile" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+        <activity
             android:name=".EditProfilePage"
             android:exported="false"
             android:label="Edit Profile"
@@ -23,12 +42,15 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
+<<<<<<< HEAD
             android:name=".SearchActivity"
             android:exported="false"
             android:label="Search"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.scratchappfeature.NoActionBar"/>
         <activity
+=======
+>>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
             android:name=".EditRecipeActivity"
             android:exported="false"
             android:label="Edit Recipe"
@@ -54,9 +76,22 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:parentActivityName=".Login"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+            android:theme="@style/Theme.scratchappfeature.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="myscratch.page.link"
+                    android:scheme="https" />
+                <data
+                    android:host="myscratch.page.link"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Register"
             android:exported="true"
@@ -67,14 +102,19 @@
             android:exported="true"
             android:label="My Scratch!"
             android:parentActivityName=".CreateRecipeActivity"
+<<<<<<< HEAD
             android:theme="@style/Theme.scratchappfeature.NoActionBar"/>
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+>>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
         <activity
             android:name=".ExploreActivity"
             android:exported="true"
             android:label="My Scratch"
             android:parentActivityName=".MainActivity"
+<<<<<<< HEAD
             android:theme="@style/Theme.scratchappfeature.NoActionBar"
             />
 
@@ -82,19 +122,34 @@
 >>>>>>> parent of 94c821d (Merge branch 'main' into Layouts)
 =======
 >>>>>>> parent of 94c821d (Merge branch 'main' into Layouts)
+=======
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+        <activity
+            android:name=".ExploreActivity_Revamp"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+>>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
         <activity
             android:name=".Login"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.scratchappfeature.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ViewOtherRecipe"
+            android:exported="true"
+            android:label="My Scratch"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+        <activity
+            android:name=".IngredientListActivity"
+            android:exported="true"
+            android:label="My Scratch"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"
+            />
+        <activity
+            android:name=".ToolsListActivity"
             android:exported="true"
             android:label="My Scratch"
             android:parentActivityName=".MainActivity"

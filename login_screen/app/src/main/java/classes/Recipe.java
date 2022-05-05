@@ -1,6 +1,9 @@
 package classes;
 
 import androidx.annotation.NonNull;
+
+import com.example.scratchappfeature.R;
+
 import java.io.Serializable;
 
 public class Recipe implements Serializable { // Serializable allows classes to be transferred between Activities
@@ -8,10 +11,11 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String description;
     private String ingredients;
     private String tools;
+    private String directions;
     private String user_ID;
     private String document_ID;
 
-    private int layoutChoice = 2131427391; //Layout One
+    private int layoutChoice = 1; //Layout One
     private int textBoxColor = 0xF2F2F2; //Gray
     private int backgroundColor = 0xFFFFFF; //White
     private String fontFamily = "sans-serif"; //default font
@@ -82,13 +86,20 @@ public class Recipe implements Serializable { // Serializable allows classes to 
         this.user_ID = user;
     }
 
-    public String getDocument_ID()
-    {
+    public String getDocument_ID() {
         return document_ID;
     }
 
     public void setDocument_ID(String id) {
         this.document_ID = id;
+    }
+
+    public void setDirections(String directions) {
+        this.directions = directions;
+    }
+
+    public String getDirections() {
+        return this.directions;
     }
 
     public String getImage_URL() {
@@ -100,17 +111,29 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     }
 
 
-    public void setTextBoxColor (int color) {this.textBoxColor = color;}
+    public void setTextBoxColor(int color) {
+        this.textBoxColor = color;
+    }
 
-    public int getTextBoxColor() {return this.textBoxColor;}
+    public int getTextBoxColor() {
+        return this.textBoxColor;
+    }
 
-    public int getBackgroundColor() {return this.backgroundColor;}
+    public int getBackgroundColor() {
+        return this.backgroundColor;
+    }
 
-    public void setBackgroundColor(int color) {this.backgroundColor = color;}
+    public void setBackgroundColor(int color) {
+        this.backgroundColor = color;
+    }
 
-    public void setFontFamily(String font) {this.fontFamily = font;}
+    public void setFontFamily(String font) {
+        this.fontFamily = font;
+    }
 
-    public String getFontFamily() {return this.fontFamily;}
+    public String getFontFamily() {
+        return this.fontFamily;
+    }
 
 
     @NonNull
@@ -127,7 +150,16 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     }
 
     public int getLayoutChoice() {
-        return layoutChoice;
+        switch(this.layoutChoice){
+            case 2:
+                return R.layout.fragment_layout_two;
+            case 3:
+                return R.layout.fragment_layout_three;
+            case 4:
+                return R.layout.fragment_layout_four;
+            default:
+                return R.layout.fragment_layout_one;
+        }
     }
 
     public void setLayoutChoice(int layoutChoice) {

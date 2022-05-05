@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".RecipePageActivity"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/notebook_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".RecipePageActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutRecipePage"
@@ -29,20 +28,20 @@
         android:id="@+id/addImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/appBarLayoutRecipePage"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="5dp"
-        android:layout_below="@id/appBarLayoutRecipePage"
-        android:textSize="11sp"
-        android:textStyle="bold"
         android:backgroundTint="@color/gray"
-        android:text="@string/add_image" />
+        android:text="@string/add_image"
+        android:textSize="11sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/recipeImageView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_below="@id/appBarLayoutRecipePage"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-2dp"
         android:layout_marginBottom="5dp"
         android:background="@color/gray"
         android:scaleType="centerCrop"
@@ -53,80 +52,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/recipeImageView"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:hint="@string/recipe_description"/>
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="2dp"
+        android:hint="@string/recipe_description" />
 
-    <LinearLayout
-        android:id="@+id/ingredientsAndInstructionsHeaderLinearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/recipePageDescriptionTextView"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
 
-        <TextView
-            android:id="@+id/ingredientsPageHeaderTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ingredients"
-            android:textColor="@color/black"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp" />
 
-        <TextView
-            android:id="@+id/instructionsPageHeaderTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/instructions"
-            android:textColor="@color/black"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp" />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ingredientsAndInstructionsLinearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/directionsConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/ingredientsAndInstructionsHeaderLinearLayout"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_below="@id/recipePageDescriptionTextView">
 
         <TextView
-            android:id="@+id/toolsTextViewRecipePage"
+            android:id="@+id/directionsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/black"
-            android:hint="@string/tools_used"/>
+            android:text="Directions:"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/directionsConstraintLayout" />
 
-        <TextView
-            android:id="@+id/ingredientsTextViewRecipePage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/black"
-            android:hint="@string/ingredients_used"/>
 
-    </LinearLayout>
+        <EditText
+            android:id="@+id/directionsEditText"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:hint="Directions"
+            android:gravity="start"
+            android:inputType="textMultiLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/directionsHeader" />
 
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
         android:id="@+id/nextButton"
@@ -134,8 +97,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:text="Next" />
 
 

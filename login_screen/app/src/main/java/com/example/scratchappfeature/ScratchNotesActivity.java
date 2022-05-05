@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
@@ -66,16 +67,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
             .get()
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    if(task.getResult() == null || task.getResult().isEmpty()) {
-                        ArrayList<Recipe> noRecipes = new ArrayList<>();
-                        Recipe noRecipe = new Recipe();
-                        noRecipe.setName("No recipes found!");
-                        noRecipe.setDescription("Get started by tapping on the + icon");
-                        noRecipes.add(noRecipe);
-
-                        adapter = new RecipeRVAdapter(noRecipes, getApplicationContext());
-                        recipesRV.setAdapter(adapter);
-                    } else {
+                    if(task.getResult() != null || !task.getResult().isEmpty()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 //                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
                             Recipe recipe = document.toObject(Recipe.class);
@@ -173,8 +165,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
         }
     }
 
-    private void getSavedRecipes(ArrayList<Recipe> user_recipes) {
-        //Get the user's profile
+    private void getSavedRecipes(ArrayList<Recipe> user_recipes) {    //Get the user's profile
         db.collection("profile")
                 .whereEqualTo("userID", userID)
                 .get()
@@ -184,8 +175,9 @@ public class ScratchNotesActivity extends AppCompatActivity {
                             mProfile = document.toObject(Profile.class);
                             //Once we have the user's profile, we can now get their saved recipes
                             //and add them to the recipe arraylist
-                            for (String documentID: mProfile.getSavedRecipes()){
-                                db.collection("recipes")
+                            if (mProfile.getSavedRecipes() != null) {
+                                for (String documentID: mProfile.getSavedRecipes()) {
+                                    db.collection("recipes")
                                         .document(documentID)
                                         .get()
                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -201,6 +193,7 @@ public class ScratchNotesActivity extends AppCompatActivity {
                                                 }
                                             }
                                         });
+                                }
                             }
                         }
                     }

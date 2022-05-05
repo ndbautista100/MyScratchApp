@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,12 +26,15 @@ import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.Map;
 import java.util.UUID;
@@ -47,6 +51,7 @@ public class RecipePageActivity extends AppCompatActivity {
     private TextView descriptionTextView;
     private TextView toolsTextView;
     private TextView ingredientsTextView;
+    private EditText directionsET;
 
     private Button nextButton;
 
@@ -119,16 +124,16 @@ public class RecipePageActivity extends AppCompatActivity {
 
         descriptionTextView = (TextView) findViewById(R.id.recipePageDescriptionTextView);
         descriptionTextView.setText(recipe.getDescription());
-        toolsTextView = (TextView) findViewById(R.id.toolsTextViewRecipePage);
-        toolsTextView.setText(recipe.getTools());
-        ingredientsTextView = (TextView) findViewById(R.id.ingredientsTextViewRecipePage);
-        ingredientsTextView.setText(recipe.getIngredients());
+        directionsET = (EditText) findViewById(R.id.directionsEditText);
+        directionsET.setText(recipe.getDirections());
 
         nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
+                String directions = directionsET.getText().toString();
+                saveDirections(directions);
                 downloadImage();
                 openCustomizeRecipeFeatureActivity(recipe);
             }
@@ -138,7 +143,38 @@ public class RecipePageActivity extends AppCompatActivity {
         addImageButton = (Button) findViewById(R.id.addImageButton);
         addImageButton.setOnClickListener(view -> mGetContent.launch("image/*"));
 
+        if (recipe.getImage_URL() != null){
+            Picasso.with(this.getApplicationContext())
+                    .load(recipe.getImage_URL())
+                    .resize(1000,1000)
+                    .centerInside()
+                    .into(recipeImageView);
+        }
+    }
 
+    public void shareRecipe() {
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://myscratch.page.link/user-recipe/" + recipe.getDocument_ID()))
+                .setDomainUriPrefix("https://myscratch.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                // Open links with com.example.ios on iOS
+                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                .buildDynamicLink();
+
+        Uri dynamicLinkUri = dynamicLink.getUri();
+        Log.i(TAG, "Created Dynamic Link: " + dynamicLinkUri);
+
+        String recipe_ID = dynamicLinkUri.toString().substring(dynamicLinkUri.toString().lastIndexOf("%2F") + 3);
+        Log.d(TAG, "Recipe ID: " + recipe_ID);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, dynamicLinkUri.toString());
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "Recipe: " + recipe.getName());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     public void uploadImage() {
@@ -282,6 +318,7 @@ public class RecipePageActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share_recipe:
+                shareRecipe();
                 return true;
             case R.id.action_edit_recipe:
                 openEditRecipeActivity();
@@ -299,6 +336,12 @@ public class RecipePageActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), CustomizeRecipeFeature.class);
         intent.putExtra("customize_recipe", recipe.getDocument_ID());
         startActivity(intent);
+
+    }
+
+    private void saveDirections(String directions){
+        db.collection("recipes").document(recipe.getDocument_ID())
+                .update("directions", directions);
 
     }
 }
