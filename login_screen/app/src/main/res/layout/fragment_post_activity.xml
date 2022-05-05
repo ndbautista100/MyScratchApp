@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PostActivity">
+
+    <RelativeLayout
+        android:id="@+id/ActivityFeedrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ActivityFeedProfilePic"
+            android:layout_width="75dp"
+            android:layout_height="60dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/blankpicture" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/ActivityFeedProfilePic">
+
+            <TextView
+                android:id="@+id/ActivityFeedProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/ActivityFeedPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ActivityFeedrl"
+        android:textColor="@color/black"
+        android:hint="Write something here...."/>
+
+    <ImageView
+        android:id="@+id/Postaddimage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/ActivityFeedPost"
+        android:src="@drawable/addimage" />
+
+    <ImageView
+        android:id="@+id/activitypicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ActivityFeedPost"
+        android:layout_toRightOf="@id/Postaddimage"
+        android:src="@drawable/foodbanner"/>
+
+    <Button
+        android:id="@+id/postsubmitbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activitypicture"
+        android:layout_marginTop="10sp"
+        android:layout_centerInParent="true"
+        android:text="Submit"
+        android:textSize="15dp"/>
+
+</RelativeLayout>

@@ -14,6 +14,10 @@ import androidx.paging.LoadState;
 import androidx.paging.PagingConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,8 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView userRecipesRV;
     private FirestoreAdapter adapter;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private String userid = auth.getCurrentUser().getUid();
     private final CollectionReference recipesRef = db.collection("recipes");
     private final PagingConfig pagingConfig = new PagingConfig(6, 3, false);
+    Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +171,16 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_logout:
                 logout();
+                return true;
+            case R.id.action_postactivity:
+                PostActivity fragment2 = PostActivity.newInstance();
+                fragment2.setUserID(userid);
+                fragment=fragment2;
+
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.mainframelayout, fragment)
+                        .commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

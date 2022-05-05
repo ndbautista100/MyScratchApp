@@ -31,13 +31,19 @@
         android:icon="@drawable/chef"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_postactivity"
         android:orderInCategory="5"
+        android:title="Post Activity"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="6"
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
-        android:orderInCategory="6"
+        android:orderInCategory="7"
         android:title="Log out"
         app:showAsAction="never" />
 </menu>

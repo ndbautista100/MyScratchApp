@@ -16,18 +16,27 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 import androidx.paging.LoadState;
 import androidx.paging.PagingConfig;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import android.widget.FrameLayout;
+
 
 import classes.Profile;
 import classes.Recipe;
@@ -56,10 +65,14 @@ public class ProfilePage extends AppCompatActivity {
     private Toolbar toolbarProfilePage;
     private ActionBar ab;
 
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
+    FrameLayout frameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_page); // change to correct activity if needed
+        setContentView(R.layout.activity_profile_page); //change to correct activity if needed
 
         profileImageView = findViewById(R.id.profilePictureImageView);
         bannerImageView = findViewById(R.id.bannerImageView);
@@ -75,9 +88,60 @@ public class ProfilePage extends AppCompatActivity {
         
         userID = auth.getCurrentUser().getUid();
 
-        recipeRV = findViewById(R.id.recipeRecycler);
+        //recipeRV = findViewById(R.id.recipeRecycler);
 
-        showProfileRecipes();
+
+        //Experiment with tablayout.
+        frameLayout = findViewById(R.id.frlayout);
+
+        tabLayout = findViewById(R.id.tlayout);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Posts"));
+        tabLayout.addTab(tabLayout.newTab().setText("Recipes"));
+//        TabLayout.Tab firstTab = tabLayout.newTab();
+//        firstTab.setText("Posts");
+//        tabLayout.addTab(firstTab);
+//
+//        TabLayout.Tab secondTab = tabLayout.newTab();
+//        secondTab.setText("Recipes");
+//        tabLayout.addTab(secondTab);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                Fragment fragment = null;
+                switch (tab.getPosition()){
+                    case 0:
+                        //fragment = new ActivityFeed();
+                        break;
+                    case 1:
+                        ShowUserRecipesFragment fragment2 = ShowUserRecipesFragment.newInstance();
+                        fragment2.setUserID(userID);
+                        fragment = fragment2;
+                        break;
+                }
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.frlayout, fragment)
+                    .setReorderingAllowed(true)
+                    .addToBackStack("name")
+                    .commit();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+      //  MainAdapter adapter = new MainAdapter(getSupportFragmentManager());
+
+//        showProfileRecipes();
 
         DocumentReference docRef = db.collection("profile").document(userID);
         docRef.get().addOnCompleteListener(task -> {
@@ -161,60 +225,60 @@ public class ProfilePage extends AppCompatActivity {
         }
     }
 
-    public void showProfileRecipes() {
-        Query query = recipesRef.whereEqualTo("user_ID", userID);
-
-        FirestorePagingOptions<Recipe> firestorePagingOptions = new FirestorePagingOptions.Builder<Recipe>()
-                .setLifecycleOwner(this)
-                .setQuery(query, pagingConfig, Recipe.class)
-                .build();
-
-        adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
-
-        adapter.setOnItemClickListener((documentSnapshot, position) -> openRecipePageActivity(documentSnapshot.getId()));
-
-        adapter.addLoadStateListener(combinedLoadStates -> {
-            LoadState refresh = combinedLoadStates.getRefresh();
-            LoadState append = combinedLoadStates.getAppend();
-
-            if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
-                // The previous load (either initial or additional) failed. Call
-                // the retry() method in order to retry the load operation.
-                Toast.makeText(ProfilePage.this, "Load failed. Retrying...", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Load failed. Retrying...");
-                adapter.retry();
-            }
-
-            if (refresh instanceof LoadState.Loading) {
-                // The initial Load has begun
-                Log.d(TAG, "Initial load has begun.");
-            }
-
-            if (append instanceof LoadState.Loading) {
-                // The adapter has started to load an additional page
-                Log.d(TAG, "Loading additional page...");
-            }
-
-            if (append instanceof LoadState.NotLoading) {
-                LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
-                if (notLoading.getEndOfPaginationReached()) {
-                    // The adapter has finished loading all of the data set
-                    Log.d(TAG, "Finished loading all data.");
-                    return null;
-                }
-
-                if (refresh instanceof LoadState.NotLoading) {
-                    // The previous load (either initial or additional) completed
-                    Log.d(TAG, "Previous load completed.");
-                    return null;
-                }
-            }
-            return null;
-        });
-
-        recipeRV.setHasFixedSize(false);
-        recipeRV.setAdapter(adapter);
-    }
+//    public void showProfileRecipes() {
+//        Query query = recipesRef.whereEqualTo("user_ID", userID);
+//
+//        FirestorePagingOptions<Recipe> firestorePagingOptions = new FirestorePagingOptions.Builder<Recipe>()
+//                .setLifecycleOwner(this)
+//                .setQuery(query, pagingConfig, Recipe.class)
+//                .build();
+//
+//        adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
+//
+//        adapter.setOnItemClickListener((documentSnapshot, position) -> openRecipePageActivity(documentSnapshot.getId()));
+//
+//        adapter.addLoadStateListener(combinedLoadStates -> {
+//            LoadState refresh = combinedLoadStates.getRefresh();
+//            LoadState append = combinedLoadStates.getAppend();
+//
+//            if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
+//                // The previous load (either initial or additional) failed. Call
+//                // the retry() method in order to retry the load operation.
+//                Toast.makeText(ProfilePage.this, "Load failed. Retrying...", Toast.LENGTH_SHORT).show();
+//                Log.e(TAG, "Load failed. Retrying...");
+//                adapter.retry();
+//            }
+//
+//            if (refresh instanceof LoadState.Loading) {
+//                // The initial Load has begun
+//                Log.d(TAG, "Initial load has begun.");
+//            }
+//
+//            if (append instanceof LoadState.Loading) {
+//                // The adapter has started to load an additional page
+//                Log.d(TAG, "Loading additional page...");
+//            }
+//
+//            if (append instanceof LoadState.NotLoading) {
+//                LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
+//                if (notLoading.getEndOfPaginationReached()) {
+//                    // The adapter has finished loading all of the data set
+//                    Log.d(TAG, "Finished loading all data.");
+//                    return null;
+//                }
+//
+//                if (refresh instanceof LoadState.NotLoading) {
+//                    // The previous load (either initial or additional) completed
+//                    Log.d(TAG, "Previous load completed.");
+//                    return null;
+//                }
+//            }
+//            return null;
+//        });
+//
+//        recipeRV.setHasFixedSize(false);
+//        recipeRV.setAdapter(adapter);
+//    }
 
     public void shareProfile() {
         // implement in the future
@@ -271,4 +335,24 @@ public class ProfilePage extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void replaceFragment(Fragment fragment){
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.frlayout,fragment);
+        transaction.commit();
+    }
+
+    private void inflateRecipe(){
+        ShowUserRecipesFragment fragment = ShowUserRecipesFragment.newInstance();
+        fragment.setUserID(userID);
+    }
+
+//    private class MainAdapter extends FragmentPagerAdapter {
+//        public MainAdapter(FragmentManager supportFragmentManager){
+//            super(supportFragmentManager);
+//        }
+//    }
+
+
 }

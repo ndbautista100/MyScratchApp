@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import classes.Recipe;
 
-public class ScratchNotesActivity extends AppCompatActivity {
+public class    ScratchNotesActivity extends AppCompatActivity {
     private static final String TAG = "ScratchNotesActivity";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView recipesRV;

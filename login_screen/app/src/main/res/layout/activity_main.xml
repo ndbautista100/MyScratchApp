@@ -22,6 +22,15 @@
             android:visibility="visible"
             app:popupTheme="@style/Theme.scratchappfeature.PopupOverlay" />
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainframelayout"
+            android:background="@color/white"
+            android:layout_below="@id/toolbarMain">
+            <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+        </FrameLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
