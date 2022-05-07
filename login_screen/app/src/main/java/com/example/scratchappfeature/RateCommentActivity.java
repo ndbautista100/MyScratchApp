@@ -50,8 +50,10 @@ public class RateCommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         //MUST GET RECIPE ID
-        // Intent intent = getIntent();
-        //recipe_ID = intent.getStringExtra("edit_recipe");
+        Intent intent = getIntent();
+        if (intent.hasExtra("open_recipe_from_id")) {
+            String recipe_Id = intent.getStringExtra("open_recipe_from_id");
+        }
         //MUST GET DOCUMENT ID FROM RECIPE ID
         //DocumentReference docRef = db.collection("ratingComment").document(recipe_ID);
         super.onCreate(savedInstanceState);

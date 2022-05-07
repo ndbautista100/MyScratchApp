@@ -35,6 +35,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
     private ActionBar ab;
     private FirebaseAuth fauth;
     private String userID;
+    private String main_recipe_ID;
     TextView userTV;
     ImageView profilePic;
     Recipe recipe;
@@ -60,6 +61,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("open_recipe_from_id")) {
             String recipe_Id = intent.getStringExtra("open_recipe_from_id");
+            main_recipe_ID = intent.getStringExtra("open_recipe_from_id");
             DocumentReference docRef = db.collection("recipes").document(recipe_Id);
             docRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -100,7 +102,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
             public void onClick(View view){
                 //Recipe isn't owned by the user then they can comment
                 if(!recipe.getUser_ID().equals(userID)) {
-                    openRateCommentActivity();
+                    openRateCommentActivity(main_recipe_ID);
                 }
                 else{
                     Toast.makeText(ViewOtherRecipe.this, "You cannot rate your own recipe.", Toast.LENGTH_SHORT).show();
@@ -178,7 +180,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
     }
 
     //Sarah Added
-    public void openRateCommentActivity()
+    public void openRateCommentActivity(String recipe_ID)
     {
         Intent intent = new Intent(this, RateCommentActivity.class);
         startActivity(intent);
