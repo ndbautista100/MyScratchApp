@@ -215,6 +215,9 @@ public class ViewOtherRecipe extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
             case R.id.share_other_recipe:
                 shareUserRecipe();
                 return true;
@@ -223,7 +226,6 @@ public class ViewOtherRecipe extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 }
