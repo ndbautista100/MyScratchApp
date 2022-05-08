@@ -34,6 +34,7 @@ public class ActivityRVAdapter extends RecyclerView.Adapter<ActivityRVAdapter.Ac
     private ArrayList<Posts> postsArrayListFull;
     private Context context;
     private String userID;
+    private String documentID;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
     private final StorageReference storageReference = storage.getReference("images/");
@@ -41,6 +42,7 @@ public class ActivityRVAdapter extends RecyclerView.Adapter<ActivityRVAdapter.Ac
     public void setUserID(String userID){
         this.userID=userID;
     }
+    public void setDocumentID(String documentID){this.documentID = documentID;}
 
     public static class ActivityViewHolder extends RecyclerView.ViewHolder{
 
@@ -86,7 +88,13 @@ public class ActivityRVAdapter extends RecyclerView.Adapter<ActivityRVAdapter.Ac
         Posts posts = postsArrayList.get(position);
         setAvatar(holder, posts.getUserID());
         holder.status.setText((posts.getDescription()));
-        setPicture(holder, posts.getDocumentID());
+
+        if(posts.getImageURL() != null) {
+            holder.picture.setVisibility(View.VISIBLE);
+            Picasso.with(context.getApplicationContext())
+                    .load(posts.getImageURL())
+                    .into(holder.picture);
+        }
     }
 
     @Override
@@ -119,27 +127,6 @@ public class ActivityRVAdapter extends RecyclerView.Adapter<ActivityRVAdapter.Ac
                                 Glide.with(context)
                                         .load(document.getString(("profileImageURL")))
                                         .into(holder.profilepic);
-                            }
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
-    }
-
-    private void setPicture(@NonNull ActivityRVAdapter.ActivityViewHolder holder, String documentID){
-        Log.d(TAG, "documentID " + documentID);
-        db.collection("activityfeed")
-                .document(documentID)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if(document.exists()) {
-                            // we are using Picasso to load profile images from URLs into an ImageView
-                            if(document.getString("imageURL") != null) {
-                                Glide.with(context)
-                                        .load(document.getString(("imageURL")))
-                                        .into(holder.picture);
                             }
                         }
                     }

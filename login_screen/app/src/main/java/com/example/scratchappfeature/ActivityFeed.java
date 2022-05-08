@@ -120,11 +120,13 @@ public class ActivityFeed extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Posts posts = document.toObject(Posts.class);
                                 userposts.add(posts);
+
                             }
                             adapter = new ActivityRVAdapter(userposts, getActivity().getApplicationContext());
-                            adapter.setUserID(userID);
 
+                            adapter.setUserID(userID);
                             activityRV.setAdapter(adapter);
+                            activityRV.setNestedScrollingEnabled(false);
                         }
                     }else{
                         Log.e(TAG, "Error getting documents: ", task.getException());

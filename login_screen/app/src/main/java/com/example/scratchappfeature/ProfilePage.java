@@ -88,10 +88,20 @@ public class ProfilePage extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Posts"));
         tabLayout.addTab(tabLayout.newTab().setText("Recipes"));
 
+        ActivityFeed fragment3 = ActivityFeed.newInstance();
+        fragment3.setUserID(userID);
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.frlayout, fragment3)
+                .setReorderingAllowed(true)
+                .addToBackStack("name")
+                .commit();
+
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Fragment fragment = null;
+                Fragment fragment = fragment3;
                 switch (tab.getPosition()){
                     case 0:
                         ActivityFeed fragment1 = ActivityFeed.newInstance();
