@@ -82,6 +82,7 @@ public class ActivityFeed extends Fragment {
         // Required empty public constructor
     }
 
+
     public static ActivityFeed newInstance() {
         ActivityFeed fragment = new ActivityFeed();
         return fragment;

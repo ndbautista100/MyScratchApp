@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -115,8 +116,8 @@ public class ActivityRVAdapter extends RecyclerView.Adapter<ActivityRVAdapter.Ac
 
                             // we are using Picasso to load profile images from URLs into an ImageView
                             if(document.getString("profileImageURL") != null) {
-                                Picasso.with(context)
-                                        .load(document.getString("profileImageURL"))
+                                Glide.with(context)
+                                        .load(document.getString(("profileImageURL")))
                                         .into(holder.profilepic);
                             }
                         }
@@ -136,8 +137,8 @@ public class ActivityRVAdapter extends RecyclerView.Adapter<ActivityRVAdapter.Ac
                         if(document.exists()) {
                             // we are using Picasso to load profile images from URLs into an ImageView
                             if(document.getString("imageURL") != null) {
-                                Picasso.with(context)
-                                        .load(document.getString("imageURL"))
+                                Glide.with(context)
+                                        .load(document.getString(("imageURL")))
                                         .into(holder.picture);
                             }
                         }
