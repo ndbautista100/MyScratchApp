@@ -14,13 +14,12 @@ public class Profile {
     private String pname, pbio, pfavoritefood;
     private String profileImageURL;
     private String profileImageName;
-    private String bannerImageURL;
-    private String bannerImageName;
     private String userID;
     private HashMap<String, Integer> followers;
     private HashMap<String, Integer> following;
     private ArrayList<String> savedRecipes;
     private ArrayList<String> savedIngredients;
+    private ArrayList<String> savedTools;
 
     public Profile() {
         // empty constructor
@@ -76,18 +75,6 @@ public class Profile {
         this.profileImageName = profileImageName;
     }
 
-    public String getBannerImageURL(){return bannerImageURL;}
-
-    public void setBannerImageURL(String bannerImageURL){this.bannerImageURL = bannerImageURL;}
-
-    public String getBannerImageName() {
-        return bannerImageName;
-    }
-
-    public void setBannerImageName(String bannerImageName) {
-        this.bannerImageName = bannerImageName;
-    }
-
     public String getUserID() {
         return userID;
     }
@@ -126,5 +113,13 @@ public class Profile {
     public HashMap<String, Integer> addFollowing(String id) {
         following.put(id, 0);
         return following;
+    }
+
+    public ArrayList<String> getSavedTools() {
+        return savedTools;
+    }
+
+    public void setSavedTools(ArrayList<String> savedTools) {
+        this.savedTools = savedTools;
     }
 }

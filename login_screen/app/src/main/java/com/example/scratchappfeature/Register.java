@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import classes.Profile;
+
 public class Register extends AppCompatActivity {
     EditText mFullName, mEmail, mPassword, mConfirmPassword;
     Button mRegisterButton;
@@ -54,6 +56,10 @@ public class Register extends AppCompatActivity {
             String password = mPassword.getText().toString().trim();
             String confirmPassword = mConfirmPassword.getText().toString().trim();
 
+            if(TextUtils.isEmpty(mFullName.getText().toString())) {
+                mFullName.setError("Please enter a name");
+                return;
+            }
             if(TextUtils.isEmpty(email)){
                 mEmail.setError("Email is required");
                 return;
@@ -75,8 +81,10 @@ public class Register extends AppCompatActivity {
             fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     Toast.makeText(Register.this, "Account successfully created!", Toast.LENGTH_SHORT).show();
-                    //Change Activity to Main
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    // prompt user to create a profile
+                    Intent intent = new Intent(getApplicationContext(), CreateProfileActivity.class);
+                    intent.putExtra("registered_name", mFullName.getText().toString());
+                    startActivity(intent);
                 } else {
                     Toast.makeText(Register.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }

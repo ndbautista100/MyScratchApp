@@ -2,14 +2,17 @@ package com.example.scratchappfeature;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FieldValue;
@@ -26,6 +29,7 @@ public class ToolsRVAdapter extends RecyclerView.Adapter<ToolsRVAdapter.ViewHold
     private ArrayList<String> mToolsList;
     private String mProfileID;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CardView cardItem;
 
     public void setProfileID(String profileID){
         this.mProfileID = profileID;
@@ -48,6 +52,13 @@ public class ToolsRVAdapter extends RecyclerView.Adapter<ToolsRVAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         String name = mToolsList.get(position);
         holder.toolName.setText(name);
+        holder.cardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "asdf;asdf", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         holder.cardItem.setOnLongClickListener(new View.OnLongClickListener(){
             public boolean onLongClick(View view){
                 showMenu(view, position);
@@ -65,7 +76,7 @@ public class ToolsRVAdapter extends RecyclerView.Adapter<ToolsRVAdapter.ViewHold
         void onItemClick(int position);
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
-        View cardItem;
+        public View cardItem;
         TextView toolName;
 
         public ViewHolder (View itemView, OnItemClickListener listener){
@@ -105,10 +116,15 @@ public class ToolsRVAdapter extends RecyclerView.Adapter<ToolsRVAdapter.ViewHold
                     removeAt(position);
                 }
                 if (item.getItemId() == R.id.searchPopUpMenu){
-                    //send to search with tool name.
+                    String name = mToolsList.get(position);
+                    Intent intent = new Intent(mContext, ExploreActivity_Revamp.class);
+                    intent.putExtra("open_explore_from_tools", name);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
                 }
                 return true;
             }
         });
+        popupMenu.show();
     }
 }

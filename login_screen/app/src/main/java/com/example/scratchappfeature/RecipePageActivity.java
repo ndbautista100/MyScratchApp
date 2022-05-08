@@ -26,6 +26,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -148,8 +150,31 @@ public class RecipePageActivity extends AppCompatActivity {
                     .centerInside()
                     .into(recipeImageView);
         }
+    }
 
+    public void shareRecipe() {
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://myscratch.page.link/user-recipe/" + recipe.getDocument_ID()))
+                .setDomainUriPrefix("https://myscratch.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                // Open links with com.example.ios on iOS
+                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                .buildDynamicLink();
 
+        Uri dynamicLinkUri = dynamicLink.getUri();
+        Log.i(TAG, "Created Dynamic Link: " + dynamicLinkUri);
+
+        String recipe_ID = dynamicLinkUri.toString().substring(dynamicLinkUri.toString().lastIndexOf("%2F") + 3);
+        Log.d(TAG, "Recipe ID: " + recipe_ID);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, dynamicLinkUri.toString());
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "Recipe: " + recipe.getName());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     public void uploadImage() {
@@ -293,6 +318,7 @@ public class RecipePageActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_share_recipe:
+                shareRecipe();
                 return true;
             case R.id.action_edit_recipe:
                 openEditRecipeActivity();

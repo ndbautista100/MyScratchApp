@@ -6,45 +6,44 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
     <item
-        android:id="@+id/action_open_search"
+        android:id="@+id/action_open_explore"
         android:orderInCategory="1"
-        android:title="Search"
+        android:title="Explore"
         android:icon="@drawable/searchimageicon"
-        app:showAsAction="always|collapseActionView"
-        app:actionViewClass="android.widget.SearchView"/>
+        app:showAsAction="always"/>
     <item
         android:id="@+id/action_create"
         android:orderInCategory="2"
-        android:title="Create"
+        android:title="@string/create"
         android:icon="@drawable/recipe_icon"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_explore"
-        android:orderInCategory="3"
-        android:title="Explore"
-        android:icon="@drawable/earth_yummy"
-        app:showAsAction="always"/>
-    <item
         android:id="@+id/action_profile"
-        android:orderInCategory="4"
+        android:orderInCategory="3"
         android:title="My Profile"
         android:icon="@drawable/chef"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="5"
-        android:title="@string/action_settings"
+        android:orderInCategory="4"
+        android:title="Settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_ingredients_list"
-        android:orderInCategory="6"
+        android:orderInCategory="5"
         android:title="Ingredients List"
         app:showAsAction="never"
         />
     <item
         android:id="@+id/action_faq"
-        android:orderInCategory="7"
+        android:orderInCategory="6"
         android:title="FAQ Page"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_tools_list"
+        android:orderInCategory="7"
+        android:title="Tools List"
         app:showAsAction="never"
         />
 </menu>

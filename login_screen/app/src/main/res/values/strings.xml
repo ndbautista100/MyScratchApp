@@ -4,6 +4,20 @@
     <string name="add_tool">Add Tool</string>
     <string name="add_ingredient">Add Ingredient</string>
     <string name="cancel">Cancel</string>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <string name="search_hint">Recipes or users…</string>
+=======
+    <!-- TODO: Remove or change this placeholder text -->
+>>>>>>> parent of 94c821d (Merge branch 'main' into Layouts)
+=======
+    <!-- TODO: Remove or change this placeholder text -->
+>>>>>>> parent of 94c821d (Merge branch 'main' into Layouts)
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="test">testtesttest\ntesttesttest\ntesttesttest\ntesttest</string>
+=======
+>>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
     <string name="ingredient_name">Ingredient name</string>
     <string name="tool_name">Tool name</string>
     <string name="recipe_name">Recipe name</string>

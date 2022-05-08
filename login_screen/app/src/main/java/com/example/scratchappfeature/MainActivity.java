@@ -1,17 +1,21 @@
 package com.example.scratchappfeature;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.paging.CombinedLoadStates;
 import androidx.paging.LoadState;
 import androidx.paging.PagingConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +25,7 @@ import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,12 +35,15 @@ import java.util.Map;
 
 import classes.Profile;
 import classes.Recipe;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView userRecipesRV;
     private FirestoreAdapter adapter;
+    private static final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final CollectionReference recipesRef = db.collection("recipes");
     private final CollectionReference profilesRef = db.collection("profile");
     private final PagingConfig pagingConfig = new PagingConfig(6, 3, false);
@@ -59,82 +67,85 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showRecipes() {
-
         ArrayList<String> following = new ArrayList<>();
-        db.collection("profile").whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                        Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
 
-                            Profile profile = document.toObject(Profile.class);
+        db.collection("profile").whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid())
+            .get()
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Log.i(TAG, "Success! " + FirebaseAuth.getInstance().getCurrentUser().getUid() + " => " + document.getData());
+
+                        Profile profile = document.toObject(Profile.class);
+                        if(profile.getFollowing() != null) {
                             for (Map.Entry<String, Integer> entry : profile.getFollowing().entrySet()) {
                                 following.add(entry.getKey());
                             }
                             String joined = TextUtils.join(", ", following);
                             Log.i("Here", joined);
-                            if(following.size() <=0){
+                        }
 
-                            }else {
-                                Query q = FirebaseFirestore.getInstance()
-                                        .collection("recipes")
-                                        .whereIn("user_ID", following);
-                                FirestorePagingOptions<Recipe> firestorePagingOptions = new FirestorePagingOptions.Builder<Recipe>()
-                                        .setLifecycleOwner(this)
-                                        .setQuery(q, pagingConfig, Recipe.class)
-                                        .build();
+                        if (following.size() <= 0) {
+                            // do nothing?
+                        } else {
+                            Query q = FirebaseFirestore.getInstance()
+                                    .collection("recipes")
+                                    .whereIn("user_ID", following);
+                            FirestorePagingOptions<Recipe> firestorePagingOptions = new FirestorePagingOptions.Builder<Recipe>()
+                                    .setLifecycleOwner(this)
+                                    .setQuery(q, pagingConfig, Recipe.class)
+                                    .build();
 
-                                adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
+                            adapter = new FirestoreAdapter(firestorePagingOptions, getApplicationContext());
 
-                                adapter.setOnItemClickListener((documentSnapshot, position) -> openOtherUserRecipe(documentSnapshot.getId()));
+                            adapter.setOnItemClickListener((documentSnapshot, position) -> openOtherUserRecipe(documentSnapshot.getId()));
 
-                                adapter.addLoadStateListener(combinedLoadStates -> {
-                                    LoadState refresh = combinedLoadStates.getRefresh();
-                                    LoadState append = combinedLoadStates.getAppend();
+                            adapter.addLoadStateListener(combinedLoadStates -> {
+                                LoadState refresh = combinedLoadStates.getRefresh();
+                                LoadState append = combinedLoadStates.getAppend();
 
-                                    if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
-                                        // The previous load (either initial or additional) failed. Call
-                                        // the retry() method in order to retry the load operation.
-                                        Toast.makeText(MainActivity.this, "Load failed. Retrying...", Toast.LENGTH_SHORT).show();
-                                        Log.e(TAG, "Load failed. Retrying...");
-                                        adapter.retry();
+                                if (refresh instanceof LoadState.Error || append instanceof LoadState.Error) {
+                                    // The previous load (either initial or additional) failed. Call
+                                    // the retry() method in order to retry the load operation.
+                                    Toast.makeText(MainActivity.this, "Load failed. Retrying...", Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, "Load failed. Retrying...");
+                                    adapter.retry();
+                                }
+
+                                if (refresh instanceof LoadState.Loading) {
+                                    // The initial Load has begun
+                                    Log.d(TAG, "Initial load has begun.");
+                                }
+
+                                if (append instanceof LoadState.Loading) {
+                                    // The adapter has started to load an additional page
+                                    Log.d(TAG, "Loading additional page...");
+                                }
+
+                                if (append instanceof LoadState.NotLoading) {
+                                    LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
+                                    if (notLoading.getEndOfPaginationReached()) {
+                                        // The adapter has finished loading all of the data set
+                                        Log.d(TAG, "Finished loading all data.");
+                                        return null;
                                     }
 
-                                    if (refresh instanceof LoadState.Loading) {
-                                        // The initial Load has begun
-                                        Log.d(TAG, "Initial load has begun.");
+                                    if (refresh instanceof LoadState.NotLoading) {
+                                        // The previous load (either initial or additional) completed
+                                        Log.d(TAG, "Previous load completed.");
+                                        return null;
                                     }
+                                }
+                                return null;
+                            });
 
-                                    if (append instanceof LoadState.Loading) {
-                                        // The adapter has started to load an additional page
-                                        Log.d(TAG, "Loading additional page...");
-                                    }
-
-                                    if (append instanceof LoadState.NotLoading) {
-                                        LoadState.NotLoading notLoading = (LoadState.NotLoading) append;
-                                        if (notLoading.getEndOfPaginationReached()) {
-                                            // The adapter has finished loading all of the data set
-                                            Log.d(TAG, "Finished loading all data.");
-                                            return null;
-                                        }
-
-                                        if (refresh instanceof LoadState.NotLoading) {
-                                            // The previous load (either initial or additional) completed
-                                            Log.d(TAG, "Previous load completed.");
-                                            return null;
-                                        }
-                                    }
-                                    return null;
-                                });
-
-                                userRecipesRV.setHasFixedSize(true);
-                                userRecipesRV.setLayoutManager(new LinearLayoutManager(this));
-                                userRecipesRV.setAdapter(adapter);
-                            }}}});
+                            userRecipesRV.setHasFixedSize(true);
+                            userRecipesRV.setLayoutManager(new LinearLayoutManager(this));
+                            userRecipesRV.setAdapter(adapter);
+                        }}}});
 
 
-        // commented this query out Query query = recipesRef.orderBy("name", Query.Direction.ASCENDING); // order by rating once ratings are implemented
+    // commented this query out Query query = recipesRef.orderBy("name", Query.Direction.ASCENDING); // order by rating once ratings are implemented
 
 
     }
@@ -162,31 +173,34 @@ public class MainActivity extends AppCompatActivity {
 
                         // determine if the id is from a recipe or profile
                         recipesRef.document(doc_ID).get()
-                                .addOnSuccessListener(documentSnapshot -> {
-                                    if(documentSnapshot.exists()) {
-                                        Log.d(TAG, "Recipe DocumentSnapshot: " + documentSnapshot);
-                                        Log.d(TAG, "Recipe ID: " + doc_ID);
-                                        Intent recipeIntent = new Intent(getApplicationContext(), RecipePageActivity.class);
-                                        recipeIntent.putExtra("open_recipe_from_id", doc_ID);
-                                        startActivity(recipeIntent);
-                                    } else {
-                                        profilesRef.document(doc_ID).get().addOnSuccessListener(documentSnapshot1 -> {
-                                            Log.d(TAG, "Profile DocumentSnapshot: " + documentSnapshot1);
-                                            Log.d(TAG, "Profile ID: " + doc_ID);
-                                            Intent profileIntent = new Intent(getApplicationContext(), ProfilePage.class);
-                                            profileIntent.putExtra("open_profile_from_id", doc_ID);
-                                            startActivity(profileIntent);
-                                        }).addOnFailureListener(e1 -> Log.e(TAG, "Document is neither recipe nor profile: " + e1.getMessage()));
-                                    }
-                                }).addOnFailureListener(e -> {
-                            Log.d(TAG, "Document is not a recipe:" + e.getMessage());
-                        });
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if(documentSnapshot.exists()) { // the id is a recipe
+                                    Log.d(TAG, "Recipe DocumentSnapshot: " + documentSnapshot);
+                                    Log.d(TAG, "Recipe ID: " + doc_ID);
+
+                                    // links from RecipePageActivity and ViewOtherRecipe will open the ViewOtherRecipe activity
+                                    // to show the fully customized recipe
+                                    Intent recipeIntent = new Intent(getApplicationContext(), ViewOtherRecipe.class);
+                                    recipeIntent.putExtra("open_recipe_from_id", doc_ID);
+                                    startActivity(recipeIntent);
+                                } else { // the id is a profile
+                                    profilesRef.document(doc_ID).get().addOnSuccessListener(documentSnapshot1 -> {
+                                        Log.d(TAG, "Profile DocumentSnapshot: " + documentSnapshot1);
+                                        Log.d(TAG, "Profile ID: " + doc_ID);
+                                        Intent profileIntent = new Intent(getApplicationContext(), ProfilePage.class);
+                                        profileIntent.putExtra("open_profile_from_id", doc_ID);
+                                        startActivity(profileIntent);
+                                    }).addOnFailureListener(e1 -> Log.e(TAG, "Document is neither recipe nor profile: " + e1.getMessage()));
+                                }
+                            }).addOnFailureListener(e -> {
+                                Log.d(TAG, "Document is not a recipe:" + e.getMessage());
+                            });
                     }
                 })
                 .addOnFailureListener(this, e -> Log.w(TAG, "getDynamicLink failed: ", e));
     }
     public void openRecipePageActivity(String recipe_ID) {
-        Intent intent = new Intent(getApplicationContext(), RecipePageActivity.class);
+        Intent intent = new Intent(this, RecipePageActivity.class);
         intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }
@@ -201,8 +215,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openSearchableActivity() {
-        Intent intent = new Intent(this, SearchableActivity.class);
+    public void openExploreActivity() {
+        Intent intent = new Intent(getApplicationContext(), ExploreActivity_Revamp.class);
         startActivity(intent);
     }
 
@@ -216,8 +230,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void openSettingsActivity() {
-        Intent intent = new Intent(this, SettingsActivity.class);
+    public void openToolsList(){
+        Intent intent = new Intent(this, ToolsListActivity.class);
         startActivity(intent);
     }
 
@@ -230,6 +244,9 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
+    public void openSettingsActivity() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     public void setToolbar() {
@@ -247,22 +264,18 @@ public class MainActivity extends AppCompatActivity {
 
     /*
         Home Page action bar options:
-        - Search for a Recipe
+        - Search for a Recipe/User
         - Open Scratch Notes
         - Open Profile
     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_open_search:
-                openSearchableActivity();
+            case R.id.action_open_explore:
+                openExploreActivity();
                 return true;
             case R.id.action_create:
                 openScratchNotesActivity();
-                return true;
-            case R.id.action_explore:
-                Intent intent = new Intent(getApplicationContext(), ExploreActivity_Revamp.class);
-                startActivity(intent);
                 return true;
             case R.id.action_profile:
                 openProfilePageActivity();
@@ -275,6 +288,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_faq:
                 openFAQPage();
+            case R.id.action_tools_list:
+                openToolsList();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
