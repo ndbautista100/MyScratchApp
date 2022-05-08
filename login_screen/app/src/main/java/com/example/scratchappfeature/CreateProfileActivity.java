@@ -99,7 +99,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         uploadBannerButton.setOnClickListener(view -> bGetContent.launch("image/*"));
 
         Intent intent = getIntent();
-        String displayName = intent.getStringExtra("registered_name");
+        String displayName = intent.getStringExtra("user_display_name");
         nameEditText.setText(displayName);
 
         finishButton.setOnClickListener(view -> {

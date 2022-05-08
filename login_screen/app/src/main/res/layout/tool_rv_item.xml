@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="12sp"
             android:paddingHorizontal="4dp"
-            android:text="Tool Name:"
+            android:text="Name:"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"

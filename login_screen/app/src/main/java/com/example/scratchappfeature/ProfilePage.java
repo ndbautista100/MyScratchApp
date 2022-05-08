@@ -30,39 +30,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-<<<<<<< HEAD
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import java.util.ArrayList;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
-=======
 import com.google.firebase.firestore.Query;
->>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
 
 import classes.Profile;
+import classes.Recipe;
 
 public class ProfilePage extends AppCompatActivity {
     private static final String TAG = "ProfilePage";
-<<<<<<< HEAD
-    private String namestr;
-    private String biostr;
-    private String favoritefoodstr;
-    private String id;
-    private TextView displayname;
-    private TextView displaybio;
-    private TextView displayfavoritefood;
-    private Button finishButton;
-    private Button editbutton;
-    private ImageView profileImage;
-    private ImageButton followBtn;
-
-    private FirebaseAuth fauth;
-    private FirebaseFirestore fstore;
-    private CollectionReference fcollection;
-    private StorageReference storageRef;
-=======
     private TextView displayNameTextView;
     private TextView bioTextView;
     private TextView favoriteFoodTextView;
@@ -74,8 +48,8 @@ public class ProfilePage extends AppCompatActivity {
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference profilesCollection = db.collection("profile");
->>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
     private String userID;
+    private Profile profile;
 
     private RecyclerView recipeRV;
     private FirestoreAdapter adapter;
@@ -84,74 +58,12 @@ public class ProfilePage extends AppCompatActivity {
 
     private Toolbar toolbarProfilePage;
     private ActionBar ab;
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page); // change to correct activity if needed
 
-<<<<<<< HEAD
-        setToolbar();
-
-        displayname = findViewById(R.id.name);
-        displaybio =  findViewById(R.id.bio);
-        displayfavoritefood =  findViewById(R.id.favoriteFood);
-        profileImage = (ImageView) findViewById(R.id.profilePicture);
-        followBtn =  findViewById(R.id.followButton);
-        storageRef = FirebaseStorage.getInstance().getReference();
-
-        fstore = FirebaseFirestore.getInstance();
-        fcollection = fstore.collection("profile");
-        fauth = FirebaseAuth.getInstance();
-        userID = fauth.getCurrentUser().getUid();
-
-        id = fstore.collection("profile").document().getId();
-        fstore.collection("profile").document(userID).get();
-        fstore.collection("profile").document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    if(doc.exists()){
-                        namestr = doc.getString("pname");
-                        biostr = doc.getString("bio");
-                        favoritefoodstr = doc.getString("favoritefood");
-                        displayname.setText(namestr);
-                        displaybio.setText(biostr);
-                        displayfavoritefood.setText(favoritefoodstr);
-
-                        downloadImage();
-                    }
-                    else{
-                        Log.d("docv", "No such info");
-                    }
-                }
-                else{
-                    Log.d("docv", "failed to get with", task.getException());
-                }
-            }
-        });
-
-//        finishButton = (Button) findViewById(R.id.finishButton);
-//        finishButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                returnToMainActivity();
-//            }
-//
-//        });
-//
-        editbutton = (Button) findViewById(R.id.editButton);
-        editbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openEditActivity();
-            }
-=======
         Intent intent = getIntent();
         if (intent.hasExtra("open_profile_from_id")) { // handle intent coming from Dynamic Link in MainActivity
             userID = intent.getStringExtra("open_profile_from_id");
@@ -193,11 +105,7 @@ public class ProfilePage extends AppCompatActivity {
                             Log.d(TAG, "Profile ID: " + profile.getUserID());
 
                             setToolbar();
-                            if (profile.getpname().isEmpty()) {
-                                ab.setTitle("User");
-                            } else {
-                                ab.setTitle(profile.getpname());
-                            }
+                            ab.setTitle(profile.getpname());
 
                             displayNameTextView.setText(profile.getpname());
                             bioTextView.setText(profile.getbio());
@@ -234,7 +142,6 @@ public class ProfilePage extends AppCompatActivity {
                 // Open links with com.example.ios on iOS
                 .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
                 .buildDynamicLink();
->>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
 
         Uri dynamicLinkUri = dynamicLink.getUri();
         Log.i(TAG, "Created Dynamic Link: " + dynamicLinkUri);
@@ -273,9 +180,6 @@ public class ProfilePage extends AppCompatActivity {
         }
     }
 
-<<<<<<< HEAD
-    public void openEditActivity () {
-=======
     public void downloadBannerImage(){
         try {
             // get the profile document from the database
@@ -354,7 +258,6 @@ public class ProfilePage extends AppCompatActivity {
     }
 
     public void openEditProfileActivity () {
->>>>>>> 0b860fca77f9d4109b4e154470198feb347fd07f
         Intent intent = new Intent(this, EditProfilePage.class);
         startActivity(intent);
     }

@@ -6,44 +6,45 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
     <item
-        android:id="@+id/action_open_explore"
+        android:id="@+id/action_open_search"
         android:orderInCategory="1"
-        android:title="Explore"
+        android:title="Search"
         android:icon="@drawable/searchimageicon"
-        app:showAsAction="always"/>
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="android.widget.SearchView"/>
     <item
         android:id="@+id/action_create"
         android:orderInCategory="2"
-        android:title="@string/create"
+        android:title="Create"
         android:icon="@drawable/recipe_icon"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_profile"
+        android:id="@+id/action_explore"
         android:orderInCategory="3"
+        android:title="Explore"
+        android:icon="@drawable/earth_yummy"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_profile"
+        android:orderInCategory="4"
         android:title="My Profile"
         android:icon="@drawable/chef"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="4"
-        android:title="Settings"
+        android:orderInCategory="5"
+        android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_ingredients_list"
-        android:orderInCategory="5"
+        android:orderInCategory="6"
         android:title="Ingredients List"
         app:showAsAction="never"
         />
     <item
         android:id="@+id/action_faq"
-        android:orderInCategory="6"
-        android:title="FAQ Page"
-        app:showAsAction="never"
-        />
-    <item
-        android:id="@+id/action_tools_list"
         android:orderInCategory="7"
-        android:title="Tools List"
+        android:title="FAQ Page"
         app:showAsAction="never"
         />
 </menu>

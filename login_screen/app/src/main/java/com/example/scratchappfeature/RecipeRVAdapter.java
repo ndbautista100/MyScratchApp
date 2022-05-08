@@ -54,11 +54,7 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
-
-    public void setProfileID(String profileID) {
-        this.userID = profileID;
-    }
-
+    public void setProfileID(String profileID){ this.userID = profileID;}
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {
         // creating variables for our views of recycler items.
         private final TextView recipeNameTextView;
@@ -68,9 +64,9 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         private final TextView userProfileName;
         private final CardView cardItem;
 
+
         public RecipeViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
-
             // initializing the views of the RecyclerView
             recipeNameTextView = itemView.findViewById(R.id.recipeNameTextView);
             recipeDescriptionTextView = itemView.findViewById(R.id.recipeDescriptionTextView);
@@ -78,7 +74,6 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
             userProfilePicture = itemView.findViewById(R.id.scratchNotesAvatarImageView);
             userProfileName = itemView.findViewById(R.id.scratchNotesNameTextView);
             cardItem = itemView.findViewById(R.id.imageRVItemLayout);
-
             itemView.setOnClickListener(view -> {
                 if(listener != null) {
                     int position = getAbsoluteAdapterPosition();
@@ -98,15 +93,15 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         String docID = recipeToDelete.getDocument_ID();
         String userIDToDelete = recipeToDelete.getUser_ID();
 
-        // Determine if the recipe to be deleted is the user or another
-        // The user can only delete their own, trying to delete another
-        // will delete it from their saved recipes
+        //Determine if the recipe to be deleted is the user or another
+        //The user can only delete their own, trying to delete another
+        //will delete it from their saved recipes
         if (!userIDToDelete.equals(userID)){
             final Map<String, Object> savedRecipes = new HashMap<>();
             savedRecipes.put("savedRecipes", FieldValue.arrayRemove(docID));
             db.collection("profile")
-                .document(userID)
-                .update(savedRecipes);
+                    .document(userID)
+                    .update(savedRecipes);
         } else {
             db.collection("recipes").document(docID)
                     .delete()
@@ -117,8 +112,8 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
                             StorageReference recipeImageRef = storageReference.child(recipeToDelete.getImageName());
                             Log.d(TAG, "Deleting image: " + recipeToDelete.getImageName());
                             recipeImageRef.delete()
-                                .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipeToDelete.getImageName()))
-                                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+                                    .addOnSuccessListener(unused1 -> Log.i(TAG, "Successfully deleted image: " + recipeToDelete.getImageName()))
+                                    .addOnFailureListener(e -> Log.e(TAG, e.toString()));
                         }
                     })
                     .addOnFailureListener(e -> Log.e(TAG, "Error deleting document", e));
@@ -129,7 +124,6 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
     // constructor class for our Adapter
     public RecipeRVAdapter(ArrayList<Recipe> recipeArrayList, Context context) {
         this.recipeArrayList = recipeArrayList;
-        Log.d(TAG, recipeArrayList.toString());
         recipeArrayListFull = new ArrayList<>(recipeArrayList); // create a copy that doesn't point to the same ArrayList
         this.context = context;
     }
@@ -153,18 +147,21 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
         setAvatar(holder, recipe.getUser_ID());
         holder.recipeNameTextView.setText(recipe.getName());
         holder.recipeDescriptionTextView.setText(recipe.getDescription());
-
-        // Long click on a card item
-        holder.cardItem.setOnLongClickListener(view -> {
-            showMenu(view, position);
-            return true;
+        //Long click on a card item
+        holder.cardItem.setOnLongClickListener(new View.OnLongClickListener(){
+            public boolean onLongClick (View view){
+                showMenu(view, position);
+                return true;
+            }
         });
+
+
 
         // we are using Picasso to load images from URLs into an ImageView
         if(recipe.getImage_URL() != null) {
             Picasso.with(context.getApplicationContext())
-                .load(recipe.getImage_URL())
-                .into(holder.recipeImageView);
+                    .load(recipe.getImage_URL())
+                    .into(holder.recipeImageView);
         }
     }
 
@@ -211,26 +208,26 @@ public class RecipeRVAdapter extends RecyclerView.Adapter<RecipeRVAdapter.Recipe
     };
 
     private void setAvatar(@NonNull RecipeRVAdapter.RecipeViewHolder holder, String user_Id){
-        Log.d(TAG, "user_Id: " + user_Id);
-        db.collection("profile")
-            .document(user_Id)
-            .get()
-            .addOnCompleteListener(task -> {
-                if(task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if(document.exists()) {
-                        holder.userProfileName.setText(document.getString("pname")); // set user's name
 
-                        // we are using Picasso to load profile images from URLs into an ImageView
-                        if(document.getString("profileImageURL") != null) {
-                            Picasso.with(context)
-                                .load(document.getString("profileImageURL"))
-                                .into(holder.userProfilePicture);
+        db.collection("profile")
+                .document(user_Id)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if(document.exists()) {
+                            holder.userProfileName.setText(document.getString("pname")); // set user's name
+
+                            // we are using Picasso to load profile images from URLs into an ImageView
+                            if(document.getString("profileImageURL") != null) {
+                                Picasso.with(context)
+                                        .load(document.getString("profileImageURL"))
+                                        .into(holder.userProfilePicture);
+                            }
                         }
                     }
-                }
-            })
-            .addOnFailureListener(e -> Log.e(TAG, e.toString()));
+                })
+                .addOnFailureListener(e -> Log.e(TAG, e.toString()));
     }
 
 

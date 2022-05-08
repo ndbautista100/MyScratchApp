@@ -20,16 +20,6 @@
         android:icon="@drawable/ic_baseline_person_24">
 
         <Preference
-            android:key="email"
-            android:title="Update email"
-            android:icon="@drawable/ic_baseline_email_24"/>
-
-        <Preference
-            android:key="password"
-            android:title="Change password"
-            android:icon="@drawable/ic_baseline_security_24"/>
-
-        <Preference
             android:key="logout"
             android:title="@string/log_out"
             android:icon="@drawable/ic_baseline_logout_24"/>

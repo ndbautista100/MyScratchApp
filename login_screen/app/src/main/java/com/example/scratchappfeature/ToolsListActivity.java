@@ -1,25 +1,16 @@
 package com.example.scratchappfeature;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import classes.AddIngredientListDialog;
 import classes.AddToolDialogFragment;
@@ -40,7 +31,7 @@ public class ToolsListActivity extends AppCompatActivity implements AddToolDialo
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tools_list);
-        setToolbar();
+        //setToolbar();
 
         fauth = FirebaseAuth.getInstance();
         userID = fauth.getCurrentUser().getUid();
@@ -61,14 +52,14 @@ public class ToolsListActivity extends AppCompatActivity implements AddToolDialo
                             mProfile = document.toObject(Profile.class);
                             //Once we have the user's profile, we can now get their saved recipes
                             //and add them to the recipe arraylist
-                            if (mProfile.getSavedTools() == null ||
-                                    mProfile.getSavedTools().size() == 0) {
+                            if (mProfile.getSavedIngredients() == null ||
+                                    mProfile.getSavedIngredients().size() == 0) {
                                 String emptyList =
-                                        "Lets add some tools. " +
-                                                "\nLet started by tapping on the +";
+                                        "Lets add some ingredients" +
+                                                "/Get started by tapping on the +";
                                 mToolsList.add(emptyList);
                             } else {
-                                for (String ingredient : mProfile.getSavedTools()) {
+                                for (String ingredient : mProfile.getSavedIngredients()) {
                                     mToolsList.add(ingredient);
                                 }
                             }
@@ -83,48 +74,8 @@ public class ToolsListActivity extends AppCompatActivity implements AddToolDialo
     }
 
 
-    private void setToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbarToolsList);
-        setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-
-    }
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tools_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_tool_to_list:
-                //Make Dialog
-                showAddToolDialog();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void showAddToolDialog() {
-        AddToolDialogFragment dialog = new AddToolDialogFragment();
-        dialog.show(getSupportFragmentManager(), "AddIngredientListDialog");
-    }
-
     @Override
     public void applyToolName(String toolName) {
 
-        Map<String, Object> savedTools = new HashMap<>();
-        savedTools.put("savedTools", FieldValue.arrayUnion(toolName));
-        db.collection("profile").document(userID)
-                .update(savedTools);
-
-        getTools();
     }
 }

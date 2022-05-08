@@ -15,7 +15,8 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     private String user_ID;
     private String document_ID;
 
-    private int layoutChoice = 1; //Layout One
+    //private int layoutChoice = 2131427391; //Layout One
+    private int layoutChoice = R.layout.fragment_layout_one;
     private int textBoxColor = 0xF2F2F2; //Gray
     private int backgroundColor = 0xFFFFFF; //White
     private String fontFamily = "sans-serif"; //default font
@@ -150,16 +151,7 @@ public class Recipe implements Serializable { // Serializable allows classes to 
     }
 
     public int getLayoutChoice() {
-        switch(this.layoutChoice){
-            case 2:
-                return R.layout.fragment_layout_two;
-            case 3:
-                return R.layout.fragment_layout_three;
-            case 4:
-                return R.layout.fragment_layout_four;
-            default:
-                return R.layout.fragment_layout_one;
-        }
+        return layoutChoice;
     }
 
     public void setLayoutChoice(int layoutChoice) {
