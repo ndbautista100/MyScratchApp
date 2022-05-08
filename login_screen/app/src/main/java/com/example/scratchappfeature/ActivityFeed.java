@@ -101,7 +101,9 @@ public class ActivityFeed extends Fragment {
         View view = inflater.inflate(R.layout.fragment_activity_feed, container, false);
         activityRV = view.findViewById(R.id.activityRecyclerView);
 
-        activityRV.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
+        lm.setReverseLayout(true);
+        activityRV.setLayoutManager(lm);
 
         showPosts();
         return view;

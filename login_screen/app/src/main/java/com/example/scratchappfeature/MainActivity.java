@@ -241,6 +241,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openAllActivityFeed() {
+        Intent intent = new Intent(this, AllActivityFeed.class);
+        startActivity(intent);
+    }
+
     public void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
@@ -271,6 +276,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_profile:
                 openProfilePageActivity();
+                return true;
+            case R.id.action_allActivityFeed:
+                openAllActivityFeed();
                 return true;
             case R.id.post_activity:
                 PostActivity fragment2 = PostActivity.newInstance();

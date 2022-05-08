@@ -24,25 +24,30 @@
         android:icon="@drawable/chef"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_allActivityFeed"
         android:orderInCategory="4"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:title="Activity Feed"
+        app:showAsAction="never"
+        />
     <item
         android:id="@+id/post_activity"
         android:orderInCategory="5"
         android:title="Post Activity"
-        app:showAsAction="never"
-        />
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="6"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_ingredients_list"
-        android:orderInCategory="6"
+        android:orderInCategory="7"
         android:title="Ingredients List"
         app:showAsAction="never"
         />
     <item
         android:id="@+id/action_tools_list"
-        android:orderInCategory="8"
+        android:orderInCategory="9"
         android:title="Tools List"
         app:showAsAction="never"
         />
