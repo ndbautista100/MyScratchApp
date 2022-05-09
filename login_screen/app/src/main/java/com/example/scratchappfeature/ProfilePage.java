@@ -86,7 +86,7 @@ public class ProfilePage extends AppCompatActivity {
 
         userID = auth.getCurrentUser().getUid();
 
-        recipeRV = findViewById(R.id.recipeRecycler);
+//        recipeRV = findViewById(R.id.recipeRecycler);
 
         showProfileRecipes();
 
