@@ -183,6 +183,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
     public void openRateCommentActivity(String recipe_ID)
     {
         Intent intent = new Intent(this, RateCommentActivity.class);
+        intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
     }
 }

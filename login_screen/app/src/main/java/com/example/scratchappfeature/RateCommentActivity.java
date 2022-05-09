@@ -15,6 +15,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -41,7 +42,9 @@ public class RateCommentActivity extends AppCompatActivity {
     private Uri imageLocationUri;
     private String userID;
     private String dbComment;
+    private String recipe_Id;
     private int stars;
+
 
     private Toolbar toolbarScratchNotes;
     private ActionBar ab;
@@ -52,8 +55,9 @@ public class RateCommentActivity extends AppCompatActivity {
         //MUST GET RECIPE ID
         Intent intent = getIntent();
         if (intent.hasExtra("open_recipe_from_id")) {
-            String recipe_Id = intent.getStringExtra("open_recipe_from_id");
+            recipe_Id = intent.getStringExtra("open_recipe_from_id");
         }
+
         //MUST GET DOCUMENT ID FROM RECIPE ID
         //DocumentReference docRef = db.collection("ratingComment").document(recipe_ID);
         super.onCreate(savedInstanceState);
@@ -83,14 +87,24 @@ public class RateCommentActivity extends AppCompatActivity {
                         rateCommentText.setError("Please enter a description for the rating.");
                         return;
                     }
-
                     String stringRating = String.valueOf(ratingBarNum.getRating());
-                    Toast.makeText(getApplicationContext(), stringRating, Toast.LENGTH_LONG).show();
-                    //Note here
                     stars = ratingBarNum.getNumStars();
-                    saveRating(stars);
                     String dbComment = rateCommentText.getText().toString();
-                    saveComment(dbComment);
+
+                    rateComment = new RateComment(stars, dbComment, recipe_Id);
+
+                    //creates a new document within the collection
+                    db.collection("ratingComments").add(rateComment);
+
+
+                    //String stringRating = String.valueOf(ratingBarNum.getRating());
+                    //Toast.makeText(getApplicationContext(), stringRating, Toast.LENGTH_LONG).show();
+                    //Note here
+//                    stars = ratingBarNum.getNumStars();
+//                    String dbComment = rateCommentText.getText().toString();
+//
+//                    saveRating(stars);
+//                    saveComment(dbComment);
                     openMainActivity();
                 }
             });
@@ -103,14 +117,14 @@ public class RateCommentActivity extends AppCompatActivity {
 
     //TODO: Save rating num array perhaps?
     //Note here
-    private void saveRating(int ratingNum){
-        db.collection("ratingComments").document(rateComment.getDocument_ID())
-                .update("rating", ratingNum);
-    }
-    private void saveComment(String ratingTextComment){
-        db.collection("ratingComments").document(rateComment.getDocument_ID())
-                .update("rating", rateComment);
-    }
+//    private void saveRating(int ratingNum){
+//        db.collection("ratingComments").document(documentID)
+//                .update("ratingNum", ratingNum);
+//    }
+//    private void saveComment(String ratingTextComment){
+//        db.collection("ratingComments").document(documentID)
+//                .update("ratingTextComment", ratingTextComment);
+//    }
     public void openMainActivity()
     {
         Intent intent = new Intent(this, MainActivity.class);
