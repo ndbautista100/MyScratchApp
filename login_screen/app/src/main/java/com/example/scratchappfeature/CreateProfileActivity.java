@@ -84,8 +84,6 @@ public class CreateProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
 
-        profile = new Profile();
-
         nameEditText = findViewById(R.id.createNameEditText);
         bioEditText = findViewById(R.id.createBioEditText);
         favFoodEditText = findViewById(R.id.createFavFoodEditText);
@@ -103,10 +101,10 @@ public class CreateProfileActivity extends AppCompatActivity {
         nameEditText.setText(displayName);
 
         finishButton.setOnClickListener(view -> {
-            profile.setname(nameEditText.getText().toString());
-            profile.setbio(bioEditText.getText().toString());
-            profile.setfavoritefood(favFoodEditText.getText().toString());
-            profile.setUserID(fAuth.getCurrentUser().getUid());
+            profile = new Profile(nameEditText.getText().toString(),
+                    bioEditText.getText().toString(),
+                    favFoodEditText.getText().toString(),
+                    fAuth.getCurrentUser().getUid());
 
             db.collection("profile").document(fAuth.getCurrentUser().getUid())
                     .set(profile)
