@@ -18,22 +18,23 @@
         android:icon="@drawable/recipe_icon"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_profile"
+        android:id="@+id/post_activity"
         android:orderInCategory="3"
+        android:title="Post"
+        android:icon="@drawable/pencil_icon"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_profile"
+        android:orderInCategory="4"
         android:title="My Profile"
         android:icon="@drawable/chef"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_allActivityFeed"
-        android:orderInCategory="4"
+        android:orderInCategory="5"
         android:title="Activity Feed"
         app:showAsAction="never"
         />
-    <item
-        android:id="@+id/post_activity"
-        android:orderInCategory="5"
-        android:title="Post Activity"
-        app:showAsAction="never"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="6"
