@@ -2,6 +2,7 @@ package com.example.scratchappfeature;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -216,6 +217,15 @@ public class ProfileRVAdapter extends RecyclerView.Adapter<ProfileRVAdapter.Prof
                     .load(profile.getProfileImageURL())
                     .into(holder.profileImageView);
         }
+        holder.profileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (context, ProfilePage.class);
+                intent.putExtra("open_profile_from_recipe", profile.getUserID());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

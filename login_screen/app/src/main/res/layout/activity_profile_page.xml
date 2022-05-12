@@ -144,32 +144,45 @@
                 android:layout_below="@id/profileRelativeLayout"
                 android:background="@color/gray" />
 
-            <RelativeLayout
-                android:id="@+id/profileRecyclerViewLayout"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/splitLineView" >
+                android:layout_below="@id/splitLineView"
+                app:tabMode="fixed" />
+            <FrameLayout
+                android:id="@+id/frlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tlayout"
+                android:visibility="visible" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="20dp"
-                    android:text="This user doesn't have any recipes :("
-                    android:textStyle="italic"
-                    android:textSize="20sp"
-                    android:textAlignment="center" />
+<!--            <RelativeLayout-->
+<!--                android:id="@+id/profileRecyclerViewLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/splitLineView" >-->
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recipeRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:layout_marginEnd="10dp"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:text="This user doesn't have any recipes :("-->
+<!--                    android:textStyle="italic"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:textAlignment="center" />-->
 
-            </RelativeLayout>
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/recipeRecycler"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:orientation="vertical"-->
+<!--                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
+
+<!--            </RelativeLayout>-->
 
         </RelativeLayout>
 

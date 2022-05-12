@@ -43,6 +43,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
     private ActionBar ab;
     private FirebaseAuth fauth;
     private String userID;
+    private String banneruserid;
     TextView userTV;
     ImageView profilePic;
     Recipe recipe;
@@ -82,6 +83,14 @@ public class ViewOtherRecipe extends AppCompatActivity {
 
             });
         }
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewOtherRecipe.this, ProfilePage.class);
+                intent.putExtra("open_profile_from_recipe", banneruserid);
+                startActivity(intent);
+            }
+        });
     }
 
     private boolean populatePage(Recipe recipe) {
@@ -131,6 +140,7 @@ public class ViewOtherRecipe extends AppCompatActivity {
                             Picasso.with(this)
                                     .load(document.getString("profileImageURL"))
                                     .into(profilePic);
+                            banneruserid= document.getString("userID");
                             background.setBackgroundColor(recipe.getBackgroundColor());
                             Log.i(TAG, "Found Document");
                         } else {
@@ -215,6 +225,9 @@ public class ViewOtherRecipe extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
             case R.id.share_other_recipe:
                 shareUserRecipe();
                 return true;
@@ -223,7 +236,6 @@ public class ViewOtherRecipe extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 }

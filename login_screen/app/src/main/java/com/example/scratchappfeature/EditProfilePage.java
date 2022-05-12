@@ -144,7 +144,7 @@ public class EditProfilePage extends AppCompatActivity {
         finishButton.setOnClickListener(v -> {
 
             profileRef.update("pname", nameEditText.getText().toString(),
-                    "bio", bioEditText.getText().toString(),
+                     "bio", bioEditText.getText().toString(),
                     "favoritefood", favFoodEditText.getText().toString())
                     .addOnSuccessListener(unused -> Log.i(TAG, "DocumentSnapshot successfully updated!"))
                     .addOnFailureListener(e -> Log.e(TAG, "Error updating document", e));
