@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,10 @@ import androidx.paging.LoadState;
 import androidx.paging.PagingConfig;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,9 +42,12 @@ public class MainActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private RecyclerView userRecipesRV;
     private FirestoreAdapter adapter;
+    private static final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private String userid = auth.getCurrentUser().getUid();
     private final CollectionReference recipesRef = db.collection("recipes");
     private final CollectionReference profilesRef = db.collection("profile");
     private final PagingConfig pagingConfig = new PagingConfig(6, 3, false);
+    Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,6 +241,11 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    public void openAllActivityFeed() {
+        Intent intent = new Intent(this, AllActivityFeed.class);
+        startActivity(intent);
+    }
+
     public void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbarMain);
         setSupportActionBar(toolbar);
@@ -267,6 +281,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_profile:
                 openProfilePageActivity();
                 return true;
+            case R.id.action_allActivityFeed:
+                openAllActivityFeed();
+                return true;
+            case R.id.post_activity:
+                PostActivity fragment2 = PostActivity.newInstance();
+                fragment2.setUserID(userid);
+                fragment=fragment2;
+
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.mainframelayout, fragment)
+                        .commit();
+                return true;
+
             case R.id.action_settings:
                 openSettingsActivity();
                 return true;

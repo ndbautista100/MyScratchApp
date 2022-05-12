@@ -325,7 +325,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/share/baseline_share_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/post_add/baseline_post_add_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -336,8 +336,8 @@
                         <option name="values">
                           <map>
                             <entry key="autoMirrored" value="true" />
-                            <entry key="outputName" value="ic_baseline_share_24" />
-                            <entry key="sourceFile" value="C:\Users\giosa\Documents\School\Fall 2021\CECS 491A\MyScratchApp\home_screen_prototype" />
+                            <entry key="outputName" value="ic_baseline_post_add_24" />
+                            <entry key="sourceFile" value="/C:\Users\giosa\Documents\School\Fall 2021\CECS 491A\MyScratchApp\home_screen_prototype" />
                           </map>
                         </option>
                       </PersistentState>

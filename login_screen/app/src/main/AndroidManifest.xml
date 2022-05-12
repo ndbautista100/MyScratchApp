@@ -11,6 +11,16 @@
         android:theme="@style/Theme.scratchappfeature"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".SplashScreenActivity"
+            android:exported="true"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".CreateProfileActivity"
             android:exported="false"
             android:label="Create Profile" />
@@ -113,13 +123,7 @@
             android:name=".Login"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.scratchappfeature.NoActionBar"></activity>
         <activity
             android:name=".ViewOtherRecipe"
             android:exported="true"
@@ -132,8 +136,7 @@
             android:exported="true"
             android:label="My Scratch"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar"
-            />
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
         <activity
             android:name=".RateCommentActivity"
             android:exported="true"
@@ -146,8 +149,13 @@
             android:exported="true"
             android:label="My Scratch"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.scratchappfeature.NoActionBar"
-            />
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
+        <activity
+            android:name=".AllActivityFeed"
+            android:exported="true"
+            android:label="My Scratch"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.scratchappfeature.NoActionBar" />
     </application>
 
 </manifest>

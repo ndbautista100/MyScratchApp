@@ -24,6 +24,27 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mainframelayout"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:layout_below="@id/appBarLayoutMain"/>
+        <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/appBarLayoutMain"
+        android:text="Follow more users to view their recipes here!"
+        android:textStyle="italic"
+        android:textSize="15sp"
+        android:textAlignment="center" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/userRecipesRecyclerView"
         android:layout_width="match_parent"

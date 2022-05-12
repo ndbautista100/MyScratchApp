@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp">
+
+    <RelativeLayout
+        android:id="@+id/ActivityFeedrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/ActivityFeedProfilePicCardView"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="80dp">
+
+            <ImageView
+                android:id="@+id/ActivityFeedProfilePic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/blankpicture" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/ActivityFeedProfilePicCardView">
+
+            <TextView
+                android:id="@+id/ActivityFeedProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:text="Name"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/ActivityFeedPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ActivityFeedrl"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="Status"/>
+
+    <ImageView
+        android:id="@+id/activitypicture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_marginLeft="5dp"
+        android:visibility="gone"
+        android:layout_below="@id/ActivityFeedPost" />
+
+    <View
+        android:id="@+id/splitLineView"
+        android:layout_width="match_parent"
+        android:layout_height= "2dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/activitypicture"
+        android:background="@color/gray" />
+
+</RelativeLayout>
