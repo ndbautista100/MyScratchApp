@@ -14,6 +14,7 @@ public class QuestionsFAQ {
         //----
         List<String> recipe_edit = new ArrayList<String>();
         recipe_edit.add("Click on your MyScratch icon to view your recipes.");
+        recipe_edit.add("Select the recipe you'd like to edit and remember to save your changes.");
         //----
         List<String> profile_edit = new ArrayList<String>();
         profile_edit.add("Click on the three dots on the top right in the toolbar.");
