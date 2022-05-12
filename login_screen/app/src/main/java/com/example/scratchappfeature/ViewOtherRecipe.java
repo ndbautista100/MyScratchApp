@@ -185,5 +185,89 @@ public class ViewOtherRecipe extends AppCompatActivity {
         Intent intent = new Intent(this, RateCommentActivity.class);
         intent.putExtra("open_recipe_from_id", recipe_ID);
         startActivity(intent);
+    public void shareUserRecipe() {
+        DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("https://myscratch.page.link/user-recipe/" + recipe.getDocument_ID()))
+                .setDomainUriPrefix("https://myscratch.page.link")
+                // Open links with this app on Android
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                // Open links with com.example.ios on iOS
+                .setIosParameters(new DynamicLink.IosParameters.Builder("com.example.ios").build())
+                .buildDynamicLink();
+
+        Uri dynamicLinkUri = dynamicLink.getUri();
+        Log.i(TAG, "Created Dynamic Link: " + dynamicLinkUri);
+
+        String recipe_ID = dynamicLinkUri.toString().substring(dynamicLinkUri.toString().lastIndexOf("%2F") + 3);
+        Log.d(TAG, "User recipe ID: " + recipe_ID);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, dynamicLinkUri.toString());
+        sendIntent.putExtra(Intent.EXTRA_TITLE, "User recipe: " + recipe.getName());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
+    }
+
+    public void saveRecipe() {
+        // If it's not their own recipe, the user can save it
+        if (!recipe.getUser_ID().equals(userID)) {
+            Map<String, Object> savedRecipes = new HashMap<>();
+            savedRecipes.put("savedRecipes", FieldValue.arrayUnion(recipe.getDocument_ID()));
+
+            db.collection("profile").document(userID)
+                .update(savedRecipes)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(ViewOtherRecipe.this, "Saved recipe!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ViewOtherRecipe.this, "Failed to save recipe.", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Failed to save recipe: " + task.getException());
+                    }
+                });
+
+        } else {
+            Toast.makeText(ViewOtherRecipe.this, "You created this wonderful recipe!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void setToolbar() {
+        toolbarViewRecipe = findViewById(R.id.toolbarViewRecipe);
+        setSupportActionBar(toolbarViewRecipe);
+        ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    /*
+        Opens the tool bar
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_other_recipe, menu);
+        return true;
+    }
+
+    /*
+        Other Recipe Page action bar options:
+        - Share Recipe
+        - Save Recipe
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.share_other_recipe:
+                shareUserRecipe();
+                return true;
+            case R.id.save_other_recipe:
+                saveRecipe();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
